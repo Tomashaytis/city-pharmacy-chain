@@ -11,8 +11,8 @@ namespace CityPharmacyChain.Tests
         {
             var allProductsForPharmacy =
                 (from pharmacy in _fixture.PharmacyList
-                join pharmacyProduct in _fixture.PharmacyProductList on pharmacy.PharmacyNumber equals pharmacyProduct.PharmacyNumber
-                join product in _fixture.ProductList on pharmacyProduct.ProductCode equals product.ProductCode
+                join pharmacyProduct in _fixture.PharmacyProductList on pharmacy.PharmacyId equals pharmacyProduct.PharmacyId
+                join product in _fixture.ProductList on pharmacyProduct.ProductId equals product.ProductId
                 orderby product.Name
                 where pharmacy.Name is "April"
                 select new
@@ -40,8 +40,8 @@ namespace CityPharmacyChain.Tests
         {
             var productCount =
                 (from pharmacy in _fixture.PharmacyList
-                join pharmacyProduct in _fixture.PharmacyProductList on pharmacy.PharmacyNumber equals pharmacyProduct.PharmacyNumber
-                join product in _fixture.ProductList on pharmacyProduct.ProductCode equals product.ProductCode
+                join pharmacyProduct in _fixture.PharmacyProductList on pharmacy.PharmacyId equals pharmacyProduct.PharmacyId
+                join product in _fixture.ProductList on pharmacyProduct.ProductId equals product.ProductId
                 orderby product.Name
                 where product.Name is "Levomekol"
                 select new
@@ -62,10 +62,10 @@ namespace CityPharmacyChain.Tests
         {
             var pharmaceuticalGroupPriceForPharmacy =
                 (from pharmaceuticalGroup in _fixture.PharmaceuticalGroups
-                join product in _fixture.ProductList on pharmaceuticalGroup.ProductCode equals product.ProductCode
-                join pharmacyProduct in _fixture.PharmacyProductList on product.ProductCode equals pharmacyProduct.ProductCode
-                join pharmacy in _fixture.PharmacyList on pharmacyProduct.PharmacyNumber equals pharmacy.PharmacyNumber
-                join priceListEntry in _fixture.PriceList on product.ProductCode equals priceListEntry.ProductCode
+                join product in _fixture.ProductList on pharmaceuticalGroup.ProductId equals product.ProductId
+                join pharmacyProduct in _fixture.PharmacyProductList on product.ProductId equals pharmacyProduct.ProductId
+                join pharmacy in _fixture.PharmacyList on pharmacyProduct.PharmacyId equals pharmacy.PharmacyId
+                join priceListEntry in _fixture.PriceList on product.ProductId equals priceListEntry.ProductId
                 select new
                 {
                     pharmaceuticalGroup.Name,
@@ -90,19 +90,19 @@ namespace CityPharmacyChain.Tests
         {
             var tmpMaxProductSoldVolumes =
                 (from pharmacy in _fixture.PharmacyList
-                join priceListEntry in _fixture.PriceList on pharmacy.PharmacyNumber equals priceListEntry.PharmacyNumber
-                join product in _fixture.ProductList on priceListEntry.ProductCode equals product.ProductCode
+                join priceListEntry in _fixture.PriceList on pharmacy.PharmacyId equals priceListEntry.PharmacyId
+                join product in _fixture.ProductList on priceListEntry.ProductId equals product.ProductId
                 where product.Name == "Levomekol" && (priceListEntry.SaleDate > DateTime.Parse("2024-08-15") && priceListEntry.SaleDate < DateTime.Parse("2024-09-20"))
-                group priceListEntry by priceListEntry.PharmacyNumber into results
+                group priceListEntry by priceListEntry.PharmacyId into results
                 select new
                 {
-                    PharmacyNumber = results.Key,
+                    PharmacyId = results.Key,
                     SoldCount = results.Count(),
                     SoldVolume = results.Sum(p => p.SoldCount),
                 }).ToList();
             var maxProductSoldVolumes =
                 (from maxProductSoldVolume in tmpMaxProductSoldVolumes
-                 join pharmacy in _fixture.PharmacyList on maxProductSoldVolume.PharmacyNumber equals pharmacy.PharmacyNumber
+                 join pharmacy in _fixture.PharmacyList on maxProductSoldVolume.PharmacyId equals pharmacy.PharmacyId
                  orderby maxProductSoldVolume.SoldCount descending, maxProductSoldVolume.SoldVolume descending
                  select new
                  {
@@ -123,18 +123,18 @@ namespace CityPharmacyChain.Tests
         {
             var tmpPharmaciesWithBigProductSoldVolumes =
                 (from pharmacy in _fixture.PharmacyList
-                join priceListEntry in _fixture.PriceList on pharmacy.PharmacyNumber equals priceListEntry.PharmacyNumber
-                join product in _fixture.ProductList on priceListEntry.ProductCode equals product.ProductCode
+                join priceListEntry in _fixture.PriceList on pharmacy.PharmacyId equals priceListEntry.PharmacyId
+                join product in _fixture.ProductList on priceListEntry.ProductId equals product.ProductId
                 where pharmacy.Address.Contains("Lenin ave.") && product.Name == "Levomekol"
-                group priceListEntry by priceListEntry.PharmacyNumber into result
+                group priceListEntry by priceListEntry.PharmacyId into result
                 select new
                 {
-                    PharmacyNumber = result.Key,
+                    PharmacyId = result.Key,
                     SoldVolume = result.Sum(p => p.SoldCount),
                 }).ToList();
             var pharmaciesWithBigProductSoldVolumes =
                  (from entry in tmpPharmaciesWithBigProductSoldVolumes
-                 join pharmacy in _fixture.PharmacyList on entry.PharmacyNumber equals pharmacy.PharmacyNumber
+                 join pharmacy in _fixture.PharmacyList on entry.PharmacyId equals pharmacy.PharmacyId
                  where entry.SoldVolume > 2
                  select new
                  {
@@ -152,18 +152,18 @@ namespace CityPharmacyChain.Tests
         {
             var tmpPharmaciesWithMinProductPrice =
                 (from pharmacy in _fixture.PharmacyList
-                join pharmacyProduct in _fixture.PharmacyProductList on pharmacy.PharmacyNumber equals pharmacyProduct.PharmacyNumber
-                join product in _fixture.ProductList on pharmacyProduct.ProductCode equals product.ProductCode
+                join pharmacyProduct in _fixture.PharmacyProductList on pharmacy.PharmacyId equals pharmacyProduct.PharmacyId
+                join product in _fixture.ProductList on pharmacyProduct.ProductId equals product.ProductCode
                 where product.Name == "Levomekol"
                 group pharmacyProduct by pharmacy.PharmacyNumber into result
                 select new
                 {
-                    PharmacyNumber = result.Key,
+                    PharmacyId = result.Key,
                     SoldVolume = result.Min(p => p.Price),
                 }).ToList();
             var pharmaciesWithMinProductPrice =
                  (from entry in tmpPharmaciesWithMinProductPrice
-                 join pharmacy in _fixture.PharmacyList on entry.PharmacyNumber equals pharmacy.PharmacyNumber
+                 join pharmacy in _fixture.PharmacyList on entry.PharmacyId equals pharmacy.PharmacyId
                  let min = tmpPharmaciesWithMinProductPrice.Min(p => p.SoldVolume)
                  where entry.SoldVolume < min + 0.01 && entry.SoldVolume > min - 0.01
                  select new

@@ -1,4 +1,4 @@
-﻿namespace CityPharmacyChain.Domain;
+﻿namespace CityPharmacyChain.Domain.Entity;
 
 public enum PaymentType
 {

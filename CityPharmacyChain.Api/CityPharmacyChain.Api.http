@@ -1,4 +1,4 @@
-@CityPharmacyChain.Api_HostAddress = http://localhost:5000
+@CityPharmacyChain.Api_HostAddress = http://localhost:5086
 
 GET {{CityPharmacyChain.Api_HostAddress}}/weatherforecast/
 Accept: application/json
