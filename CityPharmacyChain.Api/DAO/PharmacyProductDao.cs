@@ -1,14 +1,14 @@
 ﻿using CityPharmacyChain.Domain.Entity;
 
-namespace CityPharmacyChain.Domain.Repository;
+namespace CityPharmacyChain.Api.DAO;
 
-public class PharmacyProductRepository
+public class PharmacyProductDao : IDao<PharmacyProduct>
 {
-    public List<PharmacyProduct> PharmacyProductList { get; set; } = [];
+    public List<PharmacyProduct> Values { get; set; } = [];
 
-    public PharmacyProductRepository()
+    public PharmacyProductDao()
     {
-        PharmacyProductList =
+        Values =
         [
             new PharmacyProduct(1, 1, 1, 15, 146),
             new PharmacyProduct(2, 2, 1, 10, 190),
@@ -47,47 +47,47 @@ public class PharmacyProductRepository
 
     public PharmacyProduct GetById(int id)
     {
-        var selection = PharmacyProductList.Where(x => x.ProductId == id).ToList();
+        var selection = Values.Where(x => x.ProductId == id).ToList();
         if (selection.Count is 0)
             throw new Exception($"There is no record with the id {id} in the data.");
         return selection[0];
     }
 
-    public void Create(PharmacyProduct pharmacyProduct)
+    public void Create(PharmacyProduct obj)
     {
         var id = 1;
-        if (PharmacyProductList.Count != 0)
-            id = PharmacyProductList.Max(x => x.PharmacyProductId) + 1;
-        pharmacyProduct.PharmacyProductId = id;
-        PharmacyProductList.Add(pharmacyProduct);
+        if (Values.Count != 0)
+            id = Values.Max(x => x.PharmacyProductId) + 1;
+        obj.PharmacyProductId = id;
+        Values.Add(obj);
     }
 
-    public void Update(PharmacyProduct pharmacyProduct)
+    public void Update(PharmacyProduct obj)
     {
-        for (var i = 0; i < PharmacyProductList.Count; i++)
+        for (var i = 0; i < Values.Count; i++)
         {
-            if (PharmacyProductList[i].PharmacyProductId == pharmacyProduct.PharmacyProductId)
+            if (Values[i].PharmacyProductId == obj.PharmacyProductId)
             {
-                PharmacyProductList[i] = pharmacyProduct;
+                Values[i] = obj;
                 return;
             }
         }
-        throw new Exception($"There is no record with the id {pharmacyProduct.PharmacyProductId} in the data.");
+        throw new Exception($"There is no record with the id {obj.PharmacyProductId} in the data.");
     }
 
     public void Delete(int id)
     {
         var index = -1;
-        for (var i = 0; i < PharmacyProductList.Count; i++)
+        for (var i = 0; i < Values.Count; i++)
         {
-            if (PharmacyProductList[i].PharmacyProductId == id)
+            if (Values[i].PharmacyProductId == id)
             {
                 index = i;
                 break;
             }
         }
         if (index != -1)
-            PharmacyProductList.RemoveAt(index);
+            Values.RemoveAt(index);
         else
             throw new Exception($"There is no record with the id {id} in the data.");
     }

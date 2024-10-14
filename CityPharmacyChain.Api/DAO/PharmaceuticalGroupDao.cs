@@ -1,14 +1,14 @@
 ﻿using CityPharmacyChain.Domain.Entity;
 
-namespace CityPharmacyChain.Domain.Repository;
+namespace CityPharmacyChain.Api.DAO;
 
-public class PharmaceuticalGroupRepository
+public class PharmaceuticalGroupDao : IDao<PharmaceuticalGroup>
 {
-    public List<PharmaceuticalGroup> PharmaceuticalGroups { get; set; } = [];
+    public List<PharmaceuticalGroup> Values { get; set; } = [];
 
-    public PharmaceuticalGroupRepository()
+    public PharmaceuticalGroupDao()
     {
-        PharmaceuticalGroups =
+        Values =
         [
             new PharmaceuticalGroup(1, 1, "Anticoagulant"),
                 new PharmaceuticalGroup(2, 2, "Antibacterial agent"),
@@ -27,47 +27,47 @@ public class PharmaceuticalGroupRepository
 
     public PharmaceuticalGroup GetById(int id)
     {
-        var selection = PharmaceuticalGroups.Where(x => x.PharmaceuticalGroupId == id).ToList();
+        var selection = Values.Where(x => x.PharmaceuticalGroupId == id).ToList();
         if (selection.Count is 0)
             throw new Exception($"There is no record with the id {id} in the data.");
         return selection[0];
     }
 
-    public void Create(PharmaceuticalGroup pharmaceuticalGroup)
+    public void Create(PharmaceuticalGroup obj)
     {
         var id = 1;
-        if (PharmaceuticalGroups.Count != 0)
-            id = PharmaceuticalGroups.Max(x => x.PharmaceuticalGroupId) + 1;
-        pharmaceuticalGroup.PharmaceuticalGroupId = id;
-        PharmaceuticalGroups.Add(pharmaceuticalGroup);
+        if (Values.Count != 0)
+            id = Values.Max(x => x.PharmaceuticalGroupId) + 1;
+        obj.PharmaceuticalGroupId = id;
+        Values.Add(obj);
     }
 
-    public void Update(PharmaceuticalGroup pharmaceuticalGroup)
+    public void Update(PharmaceuticalGroup obj)
     {
-        for (var i = 0; i < PharmaceuticalGroups.Count; i++)
+        for (var i = 0; i < Values.Count; i++)
         {
-            if (PharmaceuticalGroups[i].PharmaceuticalGroupId == pharmaceuticalGroup.PharmaceuticalGroupId)
+            if (Values[i].PharmaceuticalGroupId == obj.PharmaceuticalGroupId)
             {
-                PharmaceuticalGroups[i] = pharmaceuticalGroup;
+                Values[i] = obj;
                 return;
             }
         }
-        throw new Exception($"There is no record with the id {pharmaceuticalGroup.PharmaceuticalGroupId} in the data.");
+        throw new Exception($"There is no record with the id {obj.PharmaceuticalGroupId} in the data.");
     }
 
     public void Delete(int id)
     {
         var index = -1;
-        for (var i = 0; i < PharmaceuticalGroups.Count; i++)
+        for (var i = 0; i < Values.Count; i++)
         {
-            if (PharmaceuticalGroups[i].PharmaceuticalGroupId == id)
+            if (Values[i].PharmaceuticalGroupId == id)
             {
                 index = i;
                 break;
             }
         }
         if (index != -1)
-            PharmaceuticalGroups.RemoveAt(index);
+            Values.RemoveAt(index);
         else
             throw new Exception($"There is no record with the id {id} in the data.");
     }

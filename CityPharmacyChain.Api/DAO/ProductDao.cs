@@ -1,14 +1,14 @@
 ﻿using CityPharmacyChain.Domain.Entity;
 
-namespace CityPharmacyChain.Domain.Repository;
+namespace CityPharmacyChain.Api.DAO;
 
-public class ProductRepository
+public class ProductDao : IDao<Product>
 {
-    public List<Product> ProductList { get; set; } = [];
+    public List<Product> Values { get; set; } = [];
 
-    public ProductRepository()
+    public ProductDao()
     {
-        ProductList =
+        Values =
         [
             new Product(1, 1, "Heparin ointment", "Ointment for external use"),
             new Product(2, 2, "Levomekol", "Ointment for external use"),
@@ -24,47 +24,47 @@ public class ProductRepository
 
     public Product GetById(int id)
     {
-        var selection = ProductList.Where(x => x.ProductId == id).ToList();
+        var selection = Values.Where(x => x.ProductId == id).ToList();
         if (selection.Count is 0)
             throw new Exception($"There is no record with the id {id} in the data.");
         return selection[0];
     }
 
-    public void Create(Product product)
+    public void Create(Product obj)
     {
         var id = 1;
-        if (ProductList.Count != 0)
-            id = ProductList.Max(x => x.ProductId) + 1;
-        product.ProductId = id;
-        ProductList.Add(product);
+        if (Values.Count != 0)
+            id = Values.Max(x => x.ProductId) + 1;
+        obj.ProductId = id;
+        Values.Add(obj);
     }
 
-    public void Update(Product product)
+    public void Update(Product obj)
     {
-        for (var i = 0; i < ProductList.Count; i++)
+        for (var i = 0; i < Values.Count; i++)
         {
-            if (ProductList[i].ProductId == product.ProductId)
+            if (Values[i].ProductId == obj.ProductId)
             {
-                ProductList[i] = product;
+                Values[i] = obj;
                 return;
             }
         }
-        throw new Exception($"There is no record with the id {product.ProductId} in the data.");
+        throw new Exception($"There is no record with the id {obj.ProductId} in the data.");
     }
 
     public void Delete(int id)
     {
         var index = -1;
-        for (var i = 0; i < ProductList.Count; i++)
+        for (var i = 0; i < Values.Count; i++)
         {
-            if (ProductList[i].ProductId == id)
+            if (Values[i].ProductId == id)
             {
                 index = i;
                 break;
             }
         }
         if (index != -1)
-            ProductList.RemoveAt(index);
+            Values.RemoveAt(index);
         else
             throw new Exception($"There is no record with the id {id} in the data.");
     }
