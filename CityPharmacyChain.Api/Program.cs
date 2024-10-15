@@ -14,11 +14,11 @@ namespace CityPharmacyChain.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddSingleton<IService<Pharmacy, PharmacyDto>, PharmacyService>();
-            builder.Services.AddSingleton<IService<Product, ProductDto>, ProductService>();
-            builder.Services.AddSingleton<IService<PharmaceuticalGroup, PharmaceuticalGroupDto>, PharmaceuticalGroupService>();
-            builder.Services.AddSingleton<IService<PriceListEntry, PriceListEntryDto>, PriceListEntryService>();
-            builder.Services.AddSingleton<IService<PharmacyProduct, PharmacyProductDto>, PharmacyProductService>();
+            builder.Services.AddSingleton<PharmacyService>();
+            builder.Services.AddSingleton<ProductService>();
+            builder.Services.AddSingleton<PharmaceuticalGroupService>();
+            builder.Services.AddSingleton<PriceListEntryService>();
+            builder.Services.AddSingleton<PharmacyProductService>();
 
             builder.Services.AddSingleton<IRepository<Pharmacy>, PharmacyRepository>();
             builder.Services.AddSingleton<IRepository<Product>, ProductRepository>();

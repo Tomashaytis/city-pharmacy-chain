@@ -8,5 +8,5 @@ public class PriceListEntry(int priceListEntryId = 0, int productId = 0, int pha
     public int SoldCount { get; set; } = soldCount;
     public string Manufacturer { get; set; } = manufacturer;
     public string PaymentType { get; set; } = paymentType;
-    public DateTime SaleDate { get; set; } = saleDate ?? new DateTime();
+    public DateTime? SaleDate { get; set; } = saleDate;
 }

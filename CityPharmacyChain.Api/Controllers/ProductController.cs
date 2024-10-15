@@ -7,10 +7,10 @@ namespace CityPharmacyChain.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class PharmacyController(PharmacyService service) : Controller
+public class ProductController(ProductService service) : Controller
 {
     [HttpGet("{id}")]
-    public ActionResult<PharmacyDto> GetById(int id)
+    public ActionResult<ProductDto> GetById(int id)
     {
         var value = service.GetById(id);
         if (value is null)
@@ -19,13 +19,13 @@ public class PharmacyController(PharmacyService service) : Controller
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Pharmacy>> GetAll()
+    public ActionResult<IEnumerable<Product>> GetAll()
     {
         return Ok(service.GetAll());
     }
 
     [HttpPut("{id}")]
-    public ActionResult<Pharmacy> Put(int id, [FromBody] PharmacyDto dto)
+    public ActionResult<Product> Put(int id, [FromBody] ProductDto dto)
     {
         var entity = service.Put(id, dto);
         if (entity is null)
@@ -34,7 +34,7 @@ public class PharmacyController(PharmacyService service) : Controller
     }
 
     [HttpPost]
-    public ActionResult<Pharmacy> Post([FromBody] PharmacyDto dto)
+    public ActionResult<Product> Post([FromBody] ProductDto dto)
     {
         var entity = service.Post(dto);
         return Ok(entity);
