@@ -27,13 +27,9 @@ public class PharmacyRepository : IRepository<Pharmacy>
         return _values.Find(x => x.PharmacyId == id);
     }
 
-    public bool Post(Pharmacy entity)
+    public void Post(Pharmacy entity)
     {
-        var value = GetById(entity.PharmacyId);
-        if (value is not null)
-            return false;
         _values.Add(entity);
-        return true;
     }
 
     public bool Put(Pharmacy entity)
@@ -56,5 +52,20 @@ public class PharmacyRepository : IRepository<Pharmacy>
             return false;
         _values.Remove(value);
         return true;
+    }
+
+    public int GetFreeId()
+    {
+        var ids = new HashSet<int>();
+        foreach (var value in _values)
+        {
+            ids.Add(value.PharmacyId);
+        }
+        for (var i = 1; i < ids.Max(); i++)
+        {
+            if (!ids.Contains(i))
+                return i;
+        }
+        return ids.Max() + 1;
     }
 }

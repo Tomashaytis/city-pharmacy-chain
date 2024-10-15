@@ -35,13 +35,9 @@ public class PharmaceuticalGroupRepository : IRepository<PharmaceuticalGroup>
         return _values.Find(x => x.PharmaceuticalGroupId == id);
     }
 
-    public bool Post(PharmaceuticalGroup entity)
+    public void Post(PharmaceuticalGroup entity)
     {
-        var value = GetById(entity.PharmaceuticalGroupId);
-        if (value is not null)
-            return false;
         _values.Add(entity);
-        return true;
     }
 
     public bool Put(PharmaceuticalGroup entity)
@@ -61,5 +57,20 @@ public class PharmaceuticalGroupRepository : IRepository<PharmaceuticalGroup>
             return false;
         _values.Remove(value);
         return true;
+    }
+
+    public int GetFreeId()
+    {
+        var ids = new HashSet<int>();
+        foreach(var value in _values)
+        {
+            ids.Add(value.PharmaceuticalGroupId);
+        }
+        for (var i = 1; i < ids.Max(); i++)
+        {
+            if (!ids.Contains(i))
+                return i;
+        }
+        return ids.Max() + 1;
     }
 }

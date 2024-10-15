@@ -5,30 +5,37 @@ using CityPharmacyChain.Domain.Repository;
 
 namespace CityPharmacyChain.Api.Services;
 
-public class PharmacyService(IRepository<Pharmacy> repository, IMapper mapper)
+public class PharmacyService(IRepository<Pharmacy> repository, IMapper mapper) : IService<Pharmacy, PharmacyDto>
 {
-    public void Post(Pharmacy entity)
+    public IEnumerable<Pharmacy> GetAll()
     {
+        return mapper.Map<IEnumerable<Pharmacy>>(repository.GetAll());
+    }
+
+    public PharmacyDto GetById(int id)
+    {
+        return mapper.Map<PharmacyDto>(repository.GetById(id));
+    }
+
+    public Pharmacy? Put(int id, PharmacyDto dto)
+    {
+        var entity = mapper.Map<Pharmacy>(dto);
+        entity.PharmacyId = id;
+        if (repository.Put(entity))
+            return entity;
+        return null;
+    }
+
+    public Pharmacy Post(PharmacyDto dto)
+    {
+        var entity = mapper.Map<Pharmacy>(dto);
+        entity.PharmacyId = repository.GetFreeId();
         repository.Post(entity);
+        return entity;
     }
 
-    public void Delete(int id)
+    public bool Delete(int id)
     {
-        repository.Delete(id);
-    }
-
-    public IEnumerable<PharmacyDtoGet> GetAll()
-    {
-        return mapper.Map<IEnumerable<PharmacyDtoGet>>(repository.GetAll());
-    }
-
-    public PharmacyDtoGet GetById(int id)
-    {
-        return mapper.Map<PharmacyDtoGet>(repository.GetById(id));
-    }
-
-    public void Put(Pharmacy entity)
-    {
-        repository.Put(entity);
+        return repository.Delete(id);
     }
 }

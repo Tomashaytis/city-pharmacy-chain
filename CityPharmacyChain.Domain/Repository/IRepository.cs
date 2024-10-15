@@ -6,9 +6,11 @@ public interface IRepository<T>
 
     public T? GetById(int id);
 
-    public bool Post(T entity);
+    public void Post(T entity);
 
     public bool Put(T entity);
 
     public bool Delete(int id);
+
+    public int GetFreeId();
 }

@@ -8,10 +8,10 @@ public class Mapping : Profile
 {
     public Mapping()
     {
-        CreateMap<Pharmacy, PharmacyDtoGet>().ReverseMap();
-        CreateMap<PharmaceuticalGroup, PharmaceuticalGroupDtoGet>().ReverseMap();
-        CreateMap<Product, ProductDtoGet>().ReverseMap();
-        CreateMap<PriceListEntry, PriceListEntryDtoGet>().ReverseMap();
-        CreateMap<PharmacyProduct, PharmacyProductDtoGet>().ReverseMap();
+        CreateMap<Pharmacy, PharmacyDto>().ReverseMap();
+        CreateMap<PharmaceuticalGroup, PharmaceuticalGroupDto>().ReverseMap();
+        CreateMap<Product, ProductDto>().ReverseMap();
+        CreateMap<PriceListEntry, PriceListEntryDto>().ReverseMap();
+        CreateMap<PharmacyProduct, PharmacyProductDto>().ReverseMap();
     }
 }

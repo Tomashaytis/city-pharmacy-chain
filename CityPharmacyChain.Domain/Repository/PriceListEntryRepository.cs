@@ -47,13 +47,9 @@ public class PriceListEntryRepository : IRepository<PriceListEntry>
         return _values.Find(x => x.PriceListEntryId == id);
     }
 
-    public bool Post(PriceListEntry entity)
+    public void Post(PriceListEntry entity)
     {
-        var value = GetById(entity.PriceListEntryId);
-        if (value is not null)
-            return false;
         _values.Add(entity);
-        return true;
     }
 
     public bool Put(PriceListEntry entity)
@@ -77,5 +73,20 @@ public class PriceListEntryRepository : IRepository<PriceListEntry>
             return false;
         _values.Remove(value);
         return true;
+    }
+
+    public int GetFreeId()
+    {
+        var ids = new HashSet<int>();
+        foreach (var value in _values)
+        {
+            ids.Add(value.PriceListEntryId);
+        }
+        for (var i = 1; i < ids.Max(); i++)
+        {
+            if (!ids.Contains(i))
+                return i;
+        }
+        return ids.Max() + 1;
     }
 }
