@@ -1,6 +1,6 @@
-﻿namespace CityPharmacyChain.Api.DTO;
+﻿namespace CityPharmacyChain.Api.Dto;
 
-public class PriceListEntryDto(int soldCount, string manufacturer, string paymentType, DateTime saleDate)
+public class PriceListEntryDtoGet(int soldCount, string manufacturer, string paymentType, DateTime saleDate)
 {
     public int SoldCount { get; set; } = soldCount;
     public string Manufacturer { get; set; } = manufacturer;

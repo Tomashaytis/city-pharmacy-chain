@@ -1,14 +1,14 @@
 ﻿using CityPharmacyChain.Domain.Entity;
 
-namespace CityPharmacyChain.Api.DAO;
+namespace CityPharmacyChain.Domain.Repository;
 
-public class PriceListEntryDao : IDao<PriceListEntry>
+public class PriceListEntryRepository : IRepository<PriceListEntry>
 {
-    public List<PriceListEntry> Values { get; set; } = [];
+    private List<PriceListEntry> _values;
 
-    public PriceListEntryDao()
+    public PriceListEntryRepository()
     {
-        Values =
+        _values =
         [
             new PriceListEntry(1, 1, 1, 1, "JSC Nizhpharm", "cashless", DateTime.Parse("2024-08-01")),
             new PriceListEntry(2, 2, 1, 2,  "JSC Nizhpharm", "cash", DateTime.Parse("2024-09-12")),
@@ -37,50 +37,45 @@ public class PriceListEntryDao : IDao<PriceListEntry>
         ];
     }
 
-    public PriceListEntry GetById(int id)
+    public IEnumerable<PriceListEntry> GetAll()
     {
-        var selection = Values.Where(x => x.PriceListEntryId == id).ToList();
-        if (selection.Count is 0)
-            throw new Exception($"There is no record with the id {id} in the data.");
-        return selection[0];
+        return _values;
     }
 
-    public void Create(PriceListEntry obj)
+    public PriceListEntry? GetById(int id)
     {
-        var id = 1;
-        if (Values.Count != 0)
-            id = Values.Max(x => x.PriceListEntryId) + 1;
-        obj.PriceListEntryId = id;
-        Values.Add(obj);
+        return _values.Find(x => x.PriceListEntryId == id);
     }
 
-    public void Update(PriceListEntry obj)
+    public bool Post(PriceListEntry entity)
     {
-        for (var i = 0; i < Values.Count; i++)
-        {
-            if (Values[i].PriceListEntryId == obj.PriceListEntryId)
-            {
-                Values[i] = obj;
-                return;
-            }
-        }
-        throw new Exception($"There is no record with the id {obj.PriceListEntryId} in the data.");
+        var value = GetById(entity.PriceListEntryId);
+        if (value is not null)
+            return false;
+        _values.Add(entity);
+        return true;
     }
 
-    public void Delete(int id)
+    public bool Put(PriceListEntry entity)
     {
-        var index = -1;
-        for (var i = 0; i < Values.Count; i++)
-        {
-            if (Values[i].PriceListEntryId == id)
-            {
-                index = i;
-                break;
-            }
-        }
-        if (index != -1)
-            Values.RemoveAt(index);
-        else
-            throw new Exception($"There is no record with the id {id} in the data.");
+        var value = GetById(entity.PriceListEntryId);
+        if (value is null)
+            return false;
+        value.ProductId = entity.ProductId;
+        value.PharmacyId = entity.PharmacyId;
+        value.Manufacturer = entity.Manufacturer;
+        value.SaleDate = entity.SaleDate;;
+        value.PaymentType = entity.PaymentType;
+        value.SoldCount = entity.SoldCount;
+        return true;
+    }
+
+    public bool Delete(int id)
+    {
+        var value = GetById(id);
+        if (value is null)
+            return false;
+        _values.Remove(value);
+        return true;
     }
 }

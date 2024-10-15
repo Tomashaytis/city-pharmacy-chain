@@ -1,6 +1,6 @@
-﻿namespace CityPharmacyChain.Api.DTO;
+﻿namespace CityPharmacyChain.Api.Dto;
 
-public class PharmacyDto(int pharmacyNumber, string name, long phoneNumber, string address, string directorFullName)
+public class PharmacyDtoGet(int pharmacyNumber, string name, long phoneNumber, string address, string directorFullName)
 {
     public int PharmacyNumber { get; set; } = pharmacyNumber;
     public string Name { get; set; } = name;

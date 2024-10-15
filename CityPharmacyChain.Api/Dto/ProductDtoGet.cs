@@ -1,6 +1,6 @@
-﻿namespace CityPharmacyChain.Api.DTO;
+﻿namespace CityPharmacyChain.Api.Dto;
 
-public class ProductDto(int productCode, string name, string productGroup)
+public class ProductDtoGet(int productCode, string name, string productGroup)
 {
     public int ProductCode { get; set; } = productCode;
     public string Name { get; set; } = name;
