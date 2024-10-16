@@ -56,9 +56,9 @@ public class PharmacyController(PharmacyService service) : Controller
     }
 
     [HttpGet("GetPharmaciesWithLargeProductSoldVolume")]
-    public ActionResult<IEnumerable<string>> GetPharmaciesWithLargeProductSoldVolume(string district, string productName)
+    public ActionResult<IEnumerable<string>> GetPharmaciesWithLargeProductSoldVolume(string district, string productName, int volume)
     {
-        return Ok(service.GetPharmaciesWithLargeProductSoldVolume(district, productName));
+        return Ok(service.GetPharmaciesWithLargeProductSoldVolume(district, productName, volume));
     }
 
     [HttpGet("GetPharmaciesWithMinProductPrice")]

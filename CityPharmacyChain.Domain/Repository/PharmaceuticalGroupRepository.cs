@@ -4,31 +4,54 @@ namespace CityPharmacyChain.Domain.Repository;
 
 public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<PharmaceuticalGroup>
 {
+    /// <summary>
+    /// Метод возвращает все объекты класса фармацевтическая группа из базы данных в виде коллекции
+    /// </summary>
+    /// <returns>Коллекция объектов класса фармацевтическая группа</returns>
     public IEnumerable<PharmaceuticalGroup> GetAll()
     {
         return dataBase.PharmaceuticalGroups;
     }
 
+    /// <summary>
+    /// Метод возвращает объект класса фармацевтическая группа из базы данных по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор фармацевтической группы</param>
+    /// <returns>Объект класса фармацевтическая группа</returns>
     public PharmaceuticalGroup? GetById(int id)
     {
         return dataBase.PharmaceuticalGroups.Find(x => x.PharmaceuticalGroupId == id);
     }
 
-    public void Post(PharmaceuticalGroup entity)
+    /// <summary>
+    /// Метод добавляет новый объект класса фармацевтическая группа в базу данных 
+    /// </summary>
+    /// <param name="pharmaceuticalGroup">Объект класса фармацевтическая группа</param>
+    public void Post(PharmaceuticalGroup pharmaceuticalGroup)
     {
-        dataBase.PharmaceuticalGroups.Add(entity);
+        dataBase.PharmaceuticalGroups.Add(pharmaceuticalGroup);
     }
 
-    public bool Put(PharmaceuticalGroup entity)
+    /// <summary>
+    /// Метод модифицирует существующий объект класса фармацевтическая группа в базе данных
+    /// </summary>
+    /// <param name="pharmacy">Объект класса фармацевтическая группа</param>
+    /// <returns>Успешность операции модификации</returns>
+    public bool Put(PharmaceuticalGroup pharmaceuticalGroup)
     {
-        var value = GetById(entity.PharmaceuticalGroupId);
+        var value = GetById(pharmaceuticalGroup.PharmaceuticalGroupId);
         if (value is null)
             return false;
-        value.ProductId = entity.ProductId;
-        value.Name = entity.Name;
+        value.ProductId = pharmaceuticalGroup.ProductId;
+        value.Name = pharmaceuticalGroup.Name;
         return true;
     }
 
+    /// <summary>
+    /// Метод удаляет существующий объект класса фармацевтическая группа из базы данных по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор фармацевтической группы</param>
+    /// <returns>Успешность операции удаления</returns>
     public bool Delete(int id)
     {
         var value = GetById(id);
@@ -38,6 +61,10 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
         return true;
     }
 
+    /// <summary>
+    /// Метод возвращает минимальный незанятый идентификатор в базе данных для объектов класса фармацевтическая группа
+    /// </summary>
+    /// <returns>Минимальный незанятый идентификатор</returns>
     public int GetFreeId()
     {
         var ids = new HashSet<int>();
@@ -53,6 +80,10 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
         return ids.Max() + 1;
     }
 
+    /// <summary>
+    /// Метод возвращает список с информацией о средней стоимости препаратов в каждой фармацевтической группе для каждой аптеки
+    /// </summary>
+    /// <returns>Список с информацией о средней стоимости препаратов в каждой фармацевтической группе для каждой аптеки</returns>
     public List<Tuple<string, string, double>> GetPharmaceuticalGroupPriceForEachPharmacy()
     {
         var result = new List<Tuple<string, string, double>>();

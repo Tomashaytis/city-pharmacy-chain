@@ -53,9 +53,9 @@ public class PharmacyService(PharmacyRepository repository, IMapper mapper) : IS
                 };
     }
 
-    public IEnumerable<string> GetPharmaciesWithLargeProductSoldVolume(string district, string productName)
+    public IEnumerable<string> GetPharmaciesWithLargeProductSoldVolume(string district, string productName, int volume)
     {
-        return repository.GetPharmaciesWithLargeProductSoldVolume(district, productName);
+        return repository.GetPharmaciesWithLargeProductSoldVolume(district, productName, volume);
     }
 
     public IEnumerable<string> GetPharmaciesWithMinProductPrice(string productName)

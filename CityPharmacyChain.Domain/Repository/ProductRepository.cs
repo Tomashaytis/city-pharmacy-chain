@@ -4,21 +4,39 @@ namespace CityPharmacyChain.Domain.Repository;
 
 public class ProductRepository(DataBase dataBase) : IRepository<Product>
 {
+    /// <summary>
+    /// Метод возвращает все объекты класса препарат из базы данных в виде коллекции
+    /// </summary>
+    /// <returns>Коллекция объектов класса препарат</returns>
     public IEnumerable<Product> GetAll()
     {
         return dataBase.Products;
     }
 
+    /// <summary>
+    /// Метод возвращает объект класса препарат из базы данных по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор препарата</param>
+    /// <returns>Объект класса аптека</returns>
     public Product? GetById(int id)
     {
         return dataBase.Products.Find(x => x.ProductId == id);
     }
 
+    /// <summary>
+    /// Метод добавляет новый объект класса препарат в базу данных 
+    /// </summary>
+    /// <param name="pharmacy">Объект класса препарат</param>
     public void Post(Product entity)
     {
         dataBase.Products.Add(entity);
     }
 
+    /// <summary>
+    /// Метод модифицирует существующий объект класса препарат в базе данных
+    /// </summary>
+    /// <param name="pharmacy">Объект класса препарат</param>
+    /// <returns>Успешность операции модификации</returns>
     public bool Put(Product entity)
     {
         var value = GetById(entity.ProductId);
@@ -30,6 +48,11 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
         return true;
     }
 
+    /// <summary>
+    /// Метод удаляет существующий объект класса препарат из базы данных по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор препарата</param>
+    /// <returns>Успешность операции удаления</returns>
     public bool Delete(int id)
     {
         var value = GetById(id);
@@ -39,6 +62,10 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
         return true;
     }
 
+    /// <summary>
+    /// Метод возвращает минимальный незанятый идентификатор в базе данных для объектов класса препарат
+    /// </summary>
+    /// <returns>Минимальный незанятый идентификатор</returns>
     public int GetFreeId()
     {
         var ids = new HashSet<int>();
@@ -54,6 +81,11 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
         return ids.Max() + 1;
     }
 
+    /// <summary>
+    /// Метод возвращает список всех аптек, в которых присутствует в наличии препарат с названием productName, с указанием количества данного препарата в них
+    /// </summary>
+    /// <param name="productName">Название препарата</param>
+    /// <returns>Список всех аптек, в которых присутствует в наличии препарат с названием productName, с указанием количества данного препарата в них</returns>
     public List<Tuple<string, int>> GetProductCountForEachPharmacy(string productName)
     {
         return (from pharmacy in dataBase.Pharmacies

@@ -2,12 +2,34 @@
 
 namespace CityPharmacyChain.Domain.Repository;
 
+/// <summary>
+/// Класс, имитирующий работу с базой данных
+/// </summary>
 public class DataBase
 {
+    /// <summary>
+    /// Список с записями в прайс-листе
+    /// </summary>
     public List<PriceListEntry> Prices { get; set; }
+
+    /// <summary>
+    /// Список с аптеками
+    /// </summary>
     public List<Pharmacy> Pharmacies { get; set; }
+
+    /// <summary>
+    /// Список с препаратами
+    /// </summary>
     public List<Product> Products { get; set; }
+
+    /// <summary>
+    /// Список с фармацевтическими группами препаратов
+    /// </summary>
     public List<PharmaceuticalGroup> PharmaceuticalGroups { get; set; }
+
+    /// <summary>
+    /// Список со связями препарат-аптека
+    /// </summary>
     public List<PharmacyProduct> PharmacyProducts { get; set; }
 
     public DataBase()
