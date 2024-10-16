@@ -20,11 +20,11 @@ namespace CityPharmacyChain.Api
             builder.Services.AddSingleton<PriceListEntryService>();
             builder.Services.AddSingleton<PharmacyProductService>();
 
-            builder.Services.AddSingleton<IRepository<Pharmacy>, PharmacyRepository>();
-            builder.Services.AddSingleton<IRepository<Product>, ProductRepository>();
-            builder.Services.AddSingleton<IRepository<PharmaceuticalGroup>, PharmaceuticalGroupRepository>();
-            builder.Services.AddSingleton<IRepository<PriceListEntry>, PriceListEntryRepository>();
-            builder.Services.AddSingleton<IRepository<PharmacyProduct>, PharmacyProductRepository>();
+            builder.Services.AddSingleton<PharmacyRepository>();
+            builder.Services.AddSingleton<ProductRepository>();
+            builder.Services.AddSingleton<PharmaceuticalGroupRepository>();
+            builder.Services.AddSingleton<PriceListEntryRepository>();
+            builder.Services.AddSingleton<PharmacyProductRepository>();
 
             builder.Services.AddSingleton<DataBase>();
 

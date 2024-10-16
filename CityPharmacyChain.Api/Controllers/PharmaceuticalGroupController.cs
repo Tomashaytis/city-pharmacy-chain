@@ -48,5 +48,11 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service) :
             return NotFound($"Pharmacy with id {id} not found.");
         return Ok();
     }
+
+    [HttpGet("GetPharmaceuticalGroupPriceForEachPharmacy")]
+    public ActionResult<IEnumerable<PharmaceuticalGroupPriceDto>> GetProductsForPharmacy()
+    {
+        return Ok(service.GetPharmaceuticalGroupPriceForEachPharmacy());
+    }
 }
 

@@ -5,7 +5,7 @@ using CityPharmacyChain.Domain.Repository;
 
 namespace CityPharmacyChain.Api.Services;
 
-public class PharmaceuticalGroupService(IRepository<PharmaceuticalGroup> repository, IMapper mapper) : IService<PharmaceuticalGroup, PharmaceuticalGroupDto>
+public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository, IMapper mapper) : IService<PharmaceuticalGroup, PharmaceuticalGroupDto>
 {
     public IEnumerable<PharmaceuticalGroup> GetAll()
     {
@@ -37,5 +37,16 @@ public class PharmaceuticalGroupService(IRepository<PharmaceuticalGroup> reposit
     public bool Delete(int id)
     {
         return repository.Delete(id);
+    }
+
+    public IEnumerable<PharmaceuticalGroupPriceDto> GetPharmaceuticalGroupPriceForEachPharmacy()
+    {
+        return from data in repository.GetPharmaceuticalGroupPriceForEachPharmacy()
+               select new PharmaceuticalGroupPriceDto
+               {
+                   PharmacyName = data.Item1,
+                   PharmaceuticalGroupName = data.Item2,
+                   Price = data.Item3,
+               };
     }
 }

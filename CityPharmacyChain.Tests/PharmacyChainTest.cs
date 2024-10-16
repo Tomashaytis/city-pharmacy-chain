@@ -119,7 +119,7 @@ namespace CityPharmacyChain.Tests
         }
 
         [Fact]
-        public void TestSelectPharmaciesWithBigProductSoldVolume()
+        public void TestSelectPharmaciesWithLargeProductSoldVolume()
         {
             var tmpPharmaciesWithBigProductSoldVolumes =
                 (from pharmacy in _fixture.PharmacyList

@@ -54,4 +54,29 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
         }
         return ids.Max() + 1;
     }
+
+    public List<Tuple<string, int, int>> GetTopFivePharmaciesBySoldVolume(string productName, DateTime start, DateTime end)
+    {
+        var tmpMaxProductSoldVolumes = 
+            (from pharmacy in dataBase.Pharmacies
+            join priceListEntry in dataBase.Prices on pharmacy.PharmacyId equals priceListEntry.PharmacyId
+            join product in dataBase.Products on priceListEntry.ProductId equals product.ProductId
+            where product.Name == productName && (priceListEntry.SaleDate > start && priceListEntry.SaleDate < end)
+            group priceListEntry by priceListEntry.PharmacyId into groups
+            select new
+            {
+                PharmacyId = groups.Key,
+                SoldCount = groups.Count(),
+                SoldVolume = groups.Sum(p => p.SoldCount),
+            }).ToList();
+        return (from maxProductSoldVolume in tmpMaxProductSoldVolumes
+                join pharmacy in dataBase.Pharmacies on maxProductSoldVolume.PharmacyId equals pharmacy.PharmacyId
+                orderby maxProductSoldVolume.SoldCount descending, maxProductSoldVolume.SoldVolume descending
+                select new Tuple<string, int, int>
+                (
+                    pharmacy.Name,
+                    maxProductSoldVolume.SoldCount,
+                    maxProductSoldVolume.SoldVolume
+                )).Take(5).ToList();
+    }
 }

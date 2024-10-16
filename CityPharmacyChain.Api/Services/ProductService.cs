@@ -2,10 +2,11 @@
 using CityPharmacyChain.Api.Dto;
 using CityPharmacyChain.Domain.Entity;
 using CityPharmacyChain.Domain.Repository;
+using System.Collections;
 
 namespace CityPharmacyChain.Api.Services;
 
-public class ProductService(IRepository<Product> repository, IMapper mapper) : IService<Product, ProductDto>
+public class ProductService(ProductRepository repository, IMapper mapper) : IService<Product, ProductDto>
 {
     public IEnumerable<Product> GetAll()
     {
@@ -37,5 +38,15 @@ public class ProductService(IRepository<Product> repository, IMapper mapper) : I
     public bool Delete(int id)
     {
         return repository.Delete(id);
+    }
+
+    public IEnumerable<ProductCountDto> GetProductCountForEachPharmacy(string productName)
+    {
+        return from productCount in repository.GetProductCountForEachPharmacy(productName)
+               select new ProductCountDto
+               {
+                   ProductName = productCount.Item1,
+                   Count = productCount.Item2,
+               };
     }
 }

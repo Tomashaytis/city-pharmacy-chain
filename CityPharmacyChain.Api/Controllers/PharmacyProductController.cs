@@ -48,4 +48,10 @@ public class PharmacyProductController(PharmacyProductService service) : Control
             return NotFound($"Pharmacy with id {id} not found.");
         return Ok();
     }
+
+    [HttpGet("GetTopFivePharmaciesBySoldVolume")]
+    public ActionResult<IEnumerable<ProductSoldVolumeDto>> GetTopFivePharmaciesBySoldVolume(string productName, DateTime start, DateTime end)
+    {
+        return Ok(service.GetTopFivePharmaciesBySoldVolume(productName, start, end));
+    }
 }

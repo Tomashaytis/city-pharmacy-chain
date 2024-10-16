@@ -5,7 +5,7 @@ using CityPharmacyChain.Domain.Repository;
 
 namespace CityPharmacyChain.Api.Services;
 
-public class PharmacyService(IRepository<Pharmacy> repository, IMapper mapper) : IService<Pharmacy, PharmacyDto>
+public class PharmacyService(PharmacyRepository repository, IMapper mapper) : IService<Pharmacy, PharmacyDto>
 {
     public IEnumerable<Pharmacy> GetAll()
     {
@@ -41,6 +41,25 @@ public class PharmacyService(IRepository<Pharmacy> repository, IMapper mapper) :
 
     public IEnumerable<ProductForPharmacyDto> GetProductsForPharmacy(string pharmacyName)
     {
-        throw new NotImplementedException();
+        var products = repository.GetProductsForPharmacies(pharmacyName);
+        return from product in products
+                select new ProductForPharmacyDto
+                {
+                    ProductCode = product.Item1,
+                    Name = product.Item2,
+                    Count = product.Item3,
+                    ProductGroup = product.Item4,
+                    Price = product.Item5,
+                };
+    }
+
+    public IEnumerable<string> GetPharmaciesWithLargeProductSoldVolume(string district, string productName)
+    {
+        return repository.GetPharmaciesWithLargeProductSoldVolume(district, productName);
+    }
+
+    public IEnumerable<string> GetPharmaciesWithMinProductPrice(string productName)
+    {
+        return repository.GetPharmaciesWithMinProductPrice(productName);
     }
 }

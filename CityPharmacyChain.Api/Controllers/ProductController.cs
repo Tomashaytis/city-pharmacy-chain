@@ -48,4 +48,10 @@ public class ProductController(ProductService service) : Controller
             return NotFound($"Pharmacy with id {id} not found.");
         return Ok();
     }
+
+    [HttpGet("GetProductCountForEachPharmacy")]
+    public ActionResult<IEnumerable<ProductForPharmacyDto>> GetProductsForPharmacy(string productName)
+    {
+        return Ok(service.GetProductCountForEachPharmacy(productName));
+    }
 }

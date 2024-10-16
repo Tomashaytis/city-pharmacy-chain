@@ -40,12 +40,30 @@ public class PharmacyController(PharmacyService service) : Controller
         return Ok(entity);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete]
     public IActionResult Delete(int id)
     {
         var result = service.Delete(id);
         if (!result)
             return NotFound($"Pharmacy with id {id} not found.");
         return Ok();
+    }
+
+    [HttpGet("GetProductsForPharmacy")]
+    public ActionResult<IEnumerable<ProductForPharmacyDto>> GetProductsForPharmacy(string pharmacyName)
+    {
+        return Ok(service.GetProductsForPharmacy(pharmacyName));
+    }
+
+    [HttpGet("GetPharmaciesWithLargeProductSoldVolume")]
+    public ActionResult<IEnumerable<string>> GetPharmaciesWithLargeProductSoldVolume(string district, string productName)
+    {
+        return Ok(service.GetPharmaciesWithLargeProductSoldVolume(district, productName));
+    }
+
+    [HttpGet("GetPharmaciesWithMinProductPrice")]
+    public ActionResult<IEnumerable<string>> GetPharmaciesWithMinProductPrice(string productName)
+    {
+        return Ok(service.GetPharmaciesWithMinProductPrice(productName));
     }
 }

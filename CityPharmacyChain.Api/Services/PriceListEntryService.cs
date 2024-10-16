@@ -5,7 +5,7 @@ using CityPharmacyChain.Domain.Repository;
 
 namespace CityPharmacyChain.Api.Services;
 
-public class PriceListEntryService(IRepository<PriceListEntry> repository, IMapper mapper) : IService<PriceListEntry, PriceListEntryDto>
+public class PriceListEntryService(PriceListEntryRepository repository, IMapper mapper) : IService<PriceListEntry, PriceListEntryDto>
 {
     public IEnumerable<PriceListEntry> GetAll()
     {

@@ -53,4 +53,18 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
         }
         return ids.Max() + 1;
     }
+
+    public List<Tuple<string, int>> GetProductCountForEachPharmacy(string productName)
+    {
+        return (from pharmacy in dataBase.Pharmacies
+               join pharmacyProduct in dataBase.PharmacyProducts on pharmacy.PharmacyId equals pharmacyProduct.PharmacyId
+               join product in dataBase.Products on pharmacyProduct.ProductId equals product.ProductId
+               orderby product.Name
+               where product.Name == productName
+               select new Tuple<string, int>
+               (
+                   pharmacy.Name,
+                   pharmacyProduct.Count
+               )).ToList();
+    }
 }
