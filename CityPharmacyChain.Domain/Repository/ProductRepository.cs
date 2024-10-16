@@ -26,25 +26,25 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
     /// <summary>
     /// Метод добавляет новый объект класса препарат в базу данных 
     /// </summary>
-    /// <param name="pharmacy">Объект класса препарат</param>
-    public void Post(Product entity)
+    /// <param name="product">Объект класса препарат</param>
+    public void Post(Product product)
     {
-        dataBase.Products.Add(entity);
+        dataBase.Products.Add(product);
     }
 
     /// <summary>
     /// Метод модифицирует существующий объект класса препарат в базе данных
     /// </summary>
-    /// <param name="pharmacy">Объект класса препарат</param>
+    /// <param name="product">Объект класса препарат</param>
     /// <returns>Успешность операции модификации</returns>
-    public bool Put(Product entity)
+    public bool Put(Product product)
     {
-        var value = GetById(entity.ProductId);
+        var value = GetById(product.ProductId);
         if (value is null)
             return false;
-        value.ProductGroup = entity.ProductGroup;
-        value.ProductCode = entity.ProductCode;
-        value.Name = entity.Name;
+        value.ProductGroup = product.ProductGroup;
+        value.ProductCode = product.ProductCode;
+        value.Name = product.Name;
         return true;
     }
 

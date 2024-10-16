@@ -26,28 +26,28 @@ public class PriceListEntryRepository(DataBase dataBase) : IRepository<PriceList
     /// <summary>
     /// Метод добавляет новый объект класса запись в прайс-листе в базу данных 
     /// </summary>
-    /// <param name="pharmacy">Объект класса запись в прайс-листе</param>
-    public void Post(PriceListEntry entity)
+    /// <param name="priceListEntry">Объект класса запись в прайс-листе</param>
+    public void Post(PriceListEntry priceListEntry)
     {
-        dataBase.Prices.Add(entity);
+        dataBase.Prices.Add(priceListEntry);
     }
 
     /// <summary>
     /// Метод модифицирует существующий объект класса запись в прайс-листе в базе данных
     /// </summary>
-    /// <param name="pharmacy">Объект класса запись в прайс-листе</param>
+    /// <param name="priceListEntry">Объект класса запись в прайс-листе</param>
     /// <returns>Успешность операции модификации</returns>
-    public bool Put(PriceListEntry entity)
+    public bool Put(PriceListEntry priceListEntry)
     {
-        var value = GetById(entity.PriceListEntryId);
+        var value = GetById(priceListEntry.PriceListEntryId);
         if (value is null)
             return false;
-        value.ProductId = entity.ProductId;
-        value.PharmacyId = entity.PharmacyId;
-        value.Manufacturer = entity.Manufacturer;
-        value.SaleDate = entity.SaleDate;;
-        value.PaymentType = entity.PaymentType;
-        value.SoldCount = entity.SoldCount;
+        value.ProductId = priceListEntry.ProductId;
+        value.PharmacyId = priceListEntry.PharmacyId;
+        value.Manufacturer = priceListEntry.Manufacturer;
+        value.SaleDate = priceListEntry.SaleDate;;
+        value.PaymentType = priceListEntry.PaymentType;
+        value.SoldCount = priceListEntry.SoldCount;
         return true;
     }
 

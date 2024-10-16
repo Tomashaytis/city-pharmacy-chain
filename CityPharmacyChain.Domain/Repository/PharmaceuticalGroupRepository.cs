@@ -35,7 +35,7 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
     /// <summary>
     /// Метод модифицирует существующий объект класса фармацевтическая группа в базе данных
     /// </summary>
-    /// <param name="pharmacy">Объект класса фармацевтическая группа</param>
+    /// <param name="pharmaceuticalGroup">Объект класса фармацевтическая группа</param>
     /// <returns>Успешность операции модификации</returns>
     public bool Put(PharmaceuticalGroup pharmaceuticalGroup)
     {

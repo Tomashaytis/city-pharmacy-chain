@@ -14,7 +14,7 @@ public class PharmacyController(PharmacyService service) : Controller
     {
         var value = service.GetById(id);
         if (value is null)
-            return NotFound($"Pharmacy with id {id} not found.");
+            return NotFound($"PharmacyProduct with id {id} not found.");
         return Ok(value);
     }
 
@@ -29,7 +29,7 @@ public class PharmacyController(PharmacyService service) : Controller
     {
         var entity = service.Put(id, dto);
         if (entity is null)
-            return NotFound($"Pharmacy with id {id} not found.");
+            return NotFound($"PharmacyProduct with id {id} not found.");
         return Ok(entity);
     }
 
@@ -45,8 +45,8 @@ public class PharmacyController(PharmacyService service) : Controller
     {
         var result = service.Delete(id);
         if (!result)
-            return NotFound($"Pharmacy with id {id} not found.");
-        return Ok();
+            return NotFound($"PharmacyProduct with id {id} not found.");
+        return Ok("PharmacyProduct was successfully deleted");
     }
 
     [HttpGet("GetProductsForPharmacy")]

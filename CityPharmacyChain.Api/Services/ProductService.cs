@@ -8,38 +8,68 @@ namespace CityPharmacyChain.Api.Services;
 
 public class ProductService(ProductRepository repository, IMapper mapper) : IService<Product, ProductDto>
 {
+    /// <summary>
+    /// Метод возвращает все объекты класса препарат из базы данных в виде коллекции
+    /// </summary>
+    /// <returns>Коллекция объектов класса препарат</returns>
     public IEnumerable<Product> GetAll()
     {
         return mapper.Map<IEnumerable<Product>>(repository.GetAll());
     }
 
+    /// <summary>
+    /// Метод возвращает объект класса препарат из базы данных по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор препарата</param>
+    /// <returns>Объект класса препарат</returns>
     public ProductDto GetById(int id)
     {
         return mapper.Map<ProductDto>(repository.GetById(id));
     }
 
-    public Product? Put(int id, ProductDto dto)
+    /// <summary>
+    /// Метод добавляет новый объект класса препарат в базу данных 
+    /// </summary>
+    /// <param name="productDto">Объект класса препарат</param>
+    /// <return>Добавленный объект класса препарат</return>
+    public Product? Put(int id, ProductDto productDto)
     {
-        var entity = mapper.Map<Product>(dto);
+        var entity = mapper.Map<Product>(productDto);
         entity.ProductId = id;
         if (repository.Put(entity))
             return entity;
         return null;
     }
 
-    public Product Post(ProductDto dto)
+    /// <summary>
+    /// Метод модифицирует существующий объект класса препарат в базе данных
+    /// </summary>
+    /// <param name="id">Идентификатор препарата</param>
+    /// <param name="productDto">Объект класса препарат</param>
+    /// <returns>Изменённый объект класса препарат или null при отсутствии объекта в базе данных</returns>
+    public Product Post(ProductDto productDto)
     {
-        var entity = mapper.Map<Product>(dto);
+        var entity = mapper.Map<Product>(productDto);
         entity.ProductId = repository.GetFreeId();
         repository.Post(entity);
         return entity;
     }
 
+    /// <summary>
+    /// Метод удаляет существующий объект класса препарат из базы данных по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор препарата</param>
+    /// <returns>Успешность операции удаления</returns>
     public bool Delete(int id)
     {
         return repository.Delete(id);
     }
 
+    /// <summary>
+    /// Метод возвращает коллекцию объектов с информацией о всех аптеках, в которых присутствует в наличии препарат с названием productName, с указанием количества данного препарата в них
+    /// </summary>
+    /// <param name="productName">Название препарата</param>
+    /// <returns>Коллекция объектов с информацией о всех аптеках, в которых присутствует в наличии препарат с названием productName, с указанием количества данного препарата в них</returns>
     public IEnumerable<ProductCountDto> GetProductCountForEachPharmacy(string productName)
     {
         return from productCount in repository.GetProductCountForEachPharmacy(productName)

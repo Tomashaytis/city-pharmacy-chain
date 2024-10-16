@@ -26,26 +26,26 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
     /// <summary>
     /// Метод добавляет новый объект класса связь препарат-аптека в базу данных 
     /// </summary>
-    /// <param name="pharmacy">Объект класса связь препарат-аптека</param>
-    public void Post(PharmacyProduct entity)
+    /// <param name="pharmacyProduct">Объект класса связь препарат-аптека</param>
+    public void Post(PharmacyProduct pharmacyProduct)
     {
-        dataBase.PharmacyProducts.Add(entity);
+        dataBase.PharmacyProducts.Add(pharmacyProduct);
     }
 
     /// <summary>
     /// Метод модифицирует существующий объект класса связь препарат-аптека в базе данных
     /// </summary>
-    /// <param name="pharmacy">Объект класса связь препарат-аптека</param>
+    /// <param name="pharmacyProduct">Объект класса связь препарат-аптека</param>
     /// <returns>Успешность операции модификации</returns>
-    public bool Put(PharmacyProduct entity)
+    public bool Put(PharmacyProduct pharmacyProduct)
     {
-        var value = GetById(entity.PharmacyProductId);
+        var value = GetById(pharmacyProduct.PharmacyProductId);
         if (value is null)
             return false;
-        value.ProductId = entity.ProductId;
-        value.PharmacyId = entity.PharmacyId;
-        value.Price = entity.Price;
-        value.Count = entity.Count;
+        value.ProductId = pharmacyProduct.ProductId;
+        value.PharmacyId = pharmacyProduct.PharmacyId;
+        value.Price = pharmacyProduct.Price;
+        value.Count = pharmacyProduct.Count;
         return true;
     }
 
@@ -83,12 +83,12 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
     }
 
     /// <summary>
-    /// Метод возвращает топ 5 аптек по количеству и объёму продаж препарата с названием productName во временном интервале от start до end
+    /// Метод возвращает список из топ 5 аптек по количеству и объёму продаж препарата с названием productName во временном интервале от start до end
     /// </summary>
     /// <param name="productName">Название препарата</param>
     /// <param name="start">Начало временного интервала</param>
     /// <param name="end">Конец временного интервала</param>
-    /// <returns>Топ 5 аптек по количеству и объёму продаж препарата с названием productName во временном интервале от start до end</returns>
+    /// <returns>Список из топ 5 аптек по количеству и объёму продаж препарата с названием productName во временном интервале от start до end</returns>
     public List<Tuple<string, int, int>> GetTopFivePharmaciesBySoldVolume(string productName, DateTime start, DateTime end)
     {
         var tmpMaxProductSoldVolumes = 

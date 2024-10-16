@@ -14,7 +14,7 @@ public class PriceListEntryController(PriceListEntryService service) : Controlle
     {
         var value = service.GetById(id);
         if (value is null)
-            return NotFound($"Pharmacy with id {id} not found.");
+            return NotFound($"PriceListEntry with id {id} not found.");
         return Ok(value);
     }
 
@@ -29,7 +29,7 @@ public class PriceListEntryController(PriceListEntryService service) : Controlle
     {
         var entity = service.Put(id, dto);
         if (entity is null)
-            return NotFound($"Pharmacy with id {id} not found.");
+            return NotFound($"PriceListEntry with id {id} not found.");
         return Ok(entity);
     }
 
@@ -45,7 +45,7 @@ public class PriceListEntryController(PriceListEntryService service) : Controlle
     {
         var result = service.Delete(id);
         if (!result)
-            return NotFound($"Pharmacy with id {id} not found.");
-        return Ok();
+            return NotFound($"PriceListEntry with id {id} not found.");
+        return Ok("PriceListEntry was successfully deleted");
     }
 }
