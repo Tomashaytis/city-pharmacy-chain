@@ -2,42 +2,21 @@
 
 namespace CityPharmacyChain.Domain.Repository;
 
-public class PharmaceuticalGroupRepository : IRepository<PharmaceuticalGroup>
+public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<PharmaceuticalGroup>
 {
-    private List<PharmaceuticalGroup> _values;
-
-    public PharmaceuticalGroupRepository()
-    {
-        _values =
-        [
-            new PharmaceuticalGroup(1, 1, "Anticoagulant"),
-            new PharmaceuticalGroup(2, 2, "Antibacterial agent"),
-            new PharmaceuticalGroup(3, 2, "Desinfectant"),
-            new PharmaceuticalGroup(4, 3, "Liniment"),
-            new PharmaceuticalGroup(5, 4, "Nonsteroidal anti-inflammatory drug"),
-            new PharmaceuticalGroup(6, 5, "Vasoconstrictor drug"),
-            new PharmaceuticalGroup(7, 6, "Antibacterial agent"),
-            new PharmaceuticalGroup(8, 7, "Antibacterial agent"),
-            new PharmaceuticalGroup(9, 8, "Analgesic agent"),
-            new PharmaceuticalGroup(10, 8, "Nonsteroidal anti-inflammatory drug"),
-            new PharmaceuticalGroup(11, 8, "Psychostimulant"),
-            new PharmaceuticalGroup(12, 9, "Nonsteroidal anti-inflammatory drug"),
-        ];
-    }
-
     public IEnumerable<PharmaceuticalGroup> GetAll()
     {
-        return _values;
+        return dataBase.PharmaceuticalGroups;
     }
 
     public PharmaceuticalGroup? GetById(int id)
     {
-        return _values.Find(x => x.PharmaceuticalGroupId == id);
+        return dataBase.PharmaceuticalGroups.Find(x => x.PharmaceuticalGroupId == id);
     }
 
     public void Post(PharmaceuticalGroup entity)
     {
-        _values.Add(entity);
+        dataBase.PharmaceuticalGroups.Add(entity);
     }
 
     public bool Put(PharmaceuticalGroup entity)
@@ -55,14 +34,14 @@ public class PharmaceuticalGroupRepository : IRepository<PharmaceuticalGroup>
         var value = GetById(id);
         if (value is null)
             return false;
-        _values.Remove(value);
+        dataBase.PharmaceuticalGroups.Remove(value);
         return true;
     }
 
     public int GetFreeId()
     {
         var ids = new HashSet<int>();
-        foreach(var value in _values)
+        foreach(var value in dataBase.PharmaceuticalGroups)
         {
             ids.Add(value.PharmaceuticalGroupId);
         }

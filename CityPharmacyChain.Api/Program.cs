@@ -26,6 +26,8 @@ namespace CityPharmacyChain.Api
             builder.Services.AddSingleton<IRepository<PriceListEntry>, PriceListEntryRepository>();
             builder.Services.AddSingleton<IRepository<PharmacyProduct>, PharmacyProductRepository>();
 
+            builder.Services.AddSingleton<DataBase>();
+
             builder.Services.AddAutoMapper(typeof(Mapping));
 
             builder.Services.AddControllers();

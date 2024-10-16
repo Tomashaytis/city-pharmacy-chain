@@ -2,34 +2,21 @@
 
 namespace CityPharmacyChain.Domain.Repository;
 
-public class PharmacyRepository : IRepository<Pharmacy>
+public class PharmacyRepository(DataBase dataBase) : IRepository<Pharmacy>
 {
-    private List<Pharmacy> _values { get; set; } = [];
-
-    public PharmacyRepository()
-    {
-        _values =
-        [
-            new Pharmacy(1, 100, "VITA", 89456372837, "Samara, Novo-Sadovaya st., 36", "Ivanov Ivan Ivanovich"),
-            new Pharmacy(2, 201, "April", 86748356473, "Samara, Lenin ave., 6", "Sergeev Gennady Vasilievich"),
-            new Pharmacy(3, 103, "BE HEALTHY!", 87443856936, "Samara, Lenin ave., 14", "Andreeva Nadezhda Ivanovna"),
-            new Pharmacy(4, 432, "Implosion", 89975362563, "Samara, Lenin ave., 6", "Petrov Petr Sergeevich"),
-        ];
-    }
-
     public IEnumerable<Pharmacy> GetAll()
     {
-        return _values;
+        return dataBase.Pharmacies;
     }
 
     public Pharmacy? GetById(int id)
     {
-        return _values.Find(x => x.PharmacyId == id);
+        return dataBase.Pharmacies.Find(x => x.PharmacyId == id);
     }
 
     public void Post(Pharmacy entity)
     {
-        _values.Add(entity);
+        dataBase.Pharmacies.Add(entity);
     }
 
     public bool Put(Pharmacy entity)
@@ -50,14 +37,14 @@ public class PharmacyRepository : IRepository<Pharmacy>
         var value = GetById(id);
         if (value is null)
             return false;
-        _values.Remove(value);
+        dataBase.Pharmacies.Remove(value);
         return true;
     }
 
     public int GetFreeId()
     {
         var ids = new HashSet<int>();
-        foreach (var value in _values)
+        foreach (var value in dataBase.Pharmacies)
         {
             ids.Add(value.PharmacyId);
         }

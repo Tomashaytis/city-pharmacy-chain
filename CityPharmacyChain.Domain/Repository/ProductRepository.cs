@@ -2,39 +2,21 @@
 
 namespace CityPharmacyChain.Domain.Repository;
 
-public class ProductRepository : IRepository<Product>
+public class ProductRepository(DataBase dataBase) : IRepository<Product>
 {
-    private List<Product> _values { get; set; } = [];
-
-    public ProductRepository()
-    {
-        _values =
-        [
-            new Product(1, 1, "Heparin ointment", "Ointment for external use"),
-            new Product(2, 2, "Levomekol", "Ointment for external use"),
-            new Product(3, 3, "Vishnevsky ointment", "Ointment for external use"),
-            new Product(4, 4, "Nurofen", "Pills"),
-            new Product(5, 5, "Rinostop", "Nasal spray"),
-            new Product(6, 6, "Streptocide", "Powder for external use"),
-            new Product(7, 7, "Sodium sulfacyl", "Капли глазные"),
-            new Product(8, 8, "Pentalgin", "Gel for external use"),
-            new Product(9, 9, "Trombo", "Pills"),
-        ];
-    }
-
     public IEnumerable<Product> GetAll()
     {
-        return _values;
+        return dataBase.Products;
     }
 
     public Product? GetById(int id)
     {
-        return _values.Find(x => x.ProductId == id);
+        return dataBase.Products.Find(x => x.ProductId == id);
     }
 
     public void Post(Product entity)
     {
-        _values.Add(entity);
+        dataBase.Products.Add(entity);
     }
 
     public bool Put(Product entity)
@@ -53,14 +35,14 @@ public class ProductRepository : IRepository<Product>
         var value = GetById(id);
         if (value is null)
             return false;
-        _values.Remove(value);
+        dataBase.Products.Remove(value);
         return true;
     }
 
     public int GetFreeId()
     {
         var ids = new HashSet<int>();
-        foreach (var value in _values)
+        foreach (var value in dataBase.Products)
         {
             ids.Add(value.ProductId);
         }

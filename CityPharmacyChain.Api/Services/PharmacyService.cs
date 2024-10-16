@@ -38,4 +38,9 @@ public class PharmacyService(IRepository<Pharmacy> repository, IMapper mapper) :
     {
         return repository.Delete(id);
     }
+
+    public IEnumerable<ProductForPharmacyDto> GetProductsForPharmacy(string pharmacyName)
+    {
+        throw new NotImplementedException();
+    }
 }

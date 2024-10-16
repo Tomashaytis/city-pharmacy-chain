@@ -1,18 +1,18 @@
 ﻿using CityPharmacyChain.Domain.Entity;
 
-namespace CityPharmacyChain.Tests;
+namespace CityPharmacyChain.Domain.Repository;
 
-public class PharmacyChainFixture
+public class DataBase
 {
-    public List<PriceListEntry> PriceList { get; set; }
-    public List<Pharmacy> PharmacyList { get; set; }
-    public List<Product> ProductList { get; set; }
-    public List<PharmaceuticalGroup> PharmaceuticalGroupList { get; set; }
-    public List<PharmacyProduct> PharmacyProductList { get; set; }
+    public List<PriceListEntry> Prices { get; set; }
+    public List<Pharmacy> Pharmacies { get; set; }
+    public List<Product> Products { get; set; }
+    public List<PharmaceuticalGroup> PharmaceuticalGroups { get; set; }
+    public List<PharmacyProduct> PharmacyProducts { get; set; }
 
-    public PharmacyChainFixture()
+    public DataBase()
     {
-        PharmacyList =
+        Pharmacies =
         [
             new Pharmacy(1, 1, "VITA", 89456372837, "Samara, Novo-Sadovaya st., 36", "Ivanov Ivan Ivanovich"),
             new Pharmacy(2, 2, "April", 86748356473, "Samara, Lenin ave., 6", "Sergeev Gennady Vasilievich"),
@@ -20,7 +20,7 @@ public class PharmacyChainFixture
             new Pharmacy(4, 4, "Implosion", 89975362563, "Samara, Lenin ave., 6", "Petrov Petr Sergeevich"),
         ];
 
-        PriceList =
+        Prices =
         [
             new PriceListEntry(1, 1, 1, 1, "JSC Nizhpharm", "cashless", DateTime.Parse("2024-08-01")),
             new PriceListEntry(2, 2, 1, 2,  "JSC Nizhpharm", "cash", DateTime.Parse("2024-09-12")),
@@ -48,7 +48,7 @@ public class PharmacyChainFixture
             new PriceListEntry(21, 7, 4, 1, "JSC Lekko", "cash", DateTime.Parse("2024-09-03")),
         ];
 
-        PharmaceuticalGroupList =
+        PharmaceuticalGroups =
         [
             new PharmaceuticalGroup(1, 1, "Anticoagulant"),
             new PharmaceuticalGroup(2, 2, "Antibacterial agent"),
@@ -64,7 +64,7 @@ public class PharmacyChainFixture
             new PharmaceuticalGroup(12, 9, "Nonsteroidal anti-inflammatory drug"),
         ];
 
-        ProductList =
+        Products =
         [
             new Product(1, 1, "Heparin ointment", "Ointment for external use"),
             new Product(2, 2, "Levomekol", "Ointment for external use"),
@@ -77,7 +77,7 @@ public class PharmacyChainFixture
             new Product(9, 9, "Trombo", "Pills"),
         ];
 
-        PharmacyProductList =
+        PharmacyProducts =
         [
             new PharmacyProduct(1, 1, 1, 15, 146),
             new PharmacyProduct(2, 2, 1, 10, 190),

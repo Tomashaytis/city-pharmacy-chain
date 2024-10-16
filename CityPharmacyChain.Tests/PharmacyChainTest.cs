@@ -61,7 +61,7 @@ namespace CityPharmacyChain.Tests
         public void TestSelectAvgProductPriceForPharmacy()
         {
             var pharmaceuticalGroupPriceForPharmacy =
-                (from pharmaceuticalGroup in _fixture.PharmaceuticalGroups
+                (from pharmaceuticalGroup in _fixture.PharmaceuticalGroupList
                 join product in _fixture.ProductList on pharmaceuticalGroup.ProductId equals product.ProductId
                 join pharmacyProduct in _fixture.PharmacyProductList on product.ProductId equals pharmacyProduct.ProductId
                 join pharmacy in _fixture.PharmacyList on pharmacyProduct.PharmacyId equals pharmacy.PharmacyId
