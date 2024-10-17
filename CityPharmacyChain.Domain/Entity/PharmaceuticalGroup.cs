@@ -1,5 +1,11 @@
 ﻿namespace CityPharmacyChain.Domain.Entity;
 
+/// <summary>
+/// Класс Entity для сущности класса фармацевтическая группа
+/// </summary>
+/// <param name="pharmaceuticalGroupId">Идентификатор фармацевтической группы препарата</param>
+/// <param name="productId">Идентификатор препарата</param>
+/// <param name="name">Название фармацевтической группы препарата</param>
 public class PharmaceuticalGroup(int pharmaceuticalGroupId = 0, int productId = 0, string name = "")
 {
     /// <summary>

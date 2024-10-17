@@ -5,6 +5,11 @@ using CityPharmacyChain.Domain.Repository;
 
 namespace CityPharmacyChain.Api.Services;
 
+/// <summary>
+/// Сервис для работы с сущностями класса аптека
+/// </summary>
+/// <param name="repository">Репозиторий для работы с сущностями класса аптека</param>
+/// <param name="mapper">Средство для составления отображения между сущностями класса DTO и Entity</param>
 public class PharmacyService(PharmacyRepository repository, IMapper mapper) : IService<Pharmacy, PharmacyDto>
 {
     /// <summary>
@@ -40,7 +45,7 @@ public class PharmacyService(PharmacyRepository repository, IMapper mapper) : IS
     }
 
     /// <summary>
-    /// Метод модифицирует существующий объект класса аптека в базе данных
+    /// Метод модифицирует существующий объект класса аптека в базе данных по его идентификатору
     /// </summary>
     /// <param name="id">Идентификатор аптеки</param>
     /// <param name="pharmacyDto">Объект класса аптека</param>
@@ -65,16 +70,17 @@ public class PharmacyService(PharmacyRepository repository, IMapper mapper) : IS
     }
 
     /// <summary>
-    /// Метод возвращает коллекцию объектов с информацией о характеристиках препаратов для аптеке с названием pharmacyName, упорядоченный по названию препарата
+    /// Метод возвращает коллекцию объектов с информацией о характеристиках препаратов в аптеке с названием pharmacyName, упорядоченной по названию препарата
     /// </summary>
     /// <param name="pharmacyName">Название аптеки</param>
-    /// <returns>Коллекция объектов с информацией о характеристиках препаратов для аптеки с именем pharmacyName, упорядоченный по названию препарата</returns>
+    /// <returns>Коллекция объектов с информацией о характеристиках препаратов в аптеке с названием pharmacyName, упорядоченной по названию препарата</returns>
     public IEnumerable<ProductForPharmacyDto> GetProductsForPharmacy(string pharmacyName)
     {
         var products = repository.GetProductsForPharmacies(pharmacyName);
         return from product in products
                 select new ProductForPharmacyDto
                 {
+                    PharmacyName = pharmacyName,
                     ProductCode = product.Item1,
                     Name = product.Item2,
                     Count = product.Item3,

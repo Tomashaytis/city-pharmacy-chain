@@ -2,6 +2,10 @@
 
 namespace CityPharmacyChain.Domain.Repository;
 
+/// <summary>
+/// Репозиторий для работы с сущностями класса запись в прайс-листе
+/// </summary>
+/// <param name="dataBase">Объект базы данных</param>
 public class PriceListEntryRepository(DataBase dataBase) : IRepository<PriceListEntry>
 {
     /// <summary>

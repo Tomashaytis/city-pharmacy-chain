@@ -1,7 +1,14 @@
-﻿using CityPharmacyChain.Domain.Entity;
+﻿namespace CityPharmacyChain.Api.Dto;
 
-namespace CityPharmacyChain.Api.Dto;
-
+/// <summary>
+/// Класс DTO для сущности класса запись в прайс-листе
+/// </summary>
+/// <param name="productId">Идентификатор препарата</param>
+/// <param name="pharmacyId">Идентификатор аптеки</param>
+/// <param name="soldCount">Количество проданных препаратов</param>
+/// <param name="manufacturer">Производитель препарата</param>
+/// <param name="paymentType">Способ оплаты (наличные/картой)</param>
+/// <param name="saleDate">Дата продажи препарата</param>
 public class PriceListEntryDto(int productId = 0, int pharmacyId = 0, int soldCount = 0, string manufacturer = "", string paymentType = "", DateTime? saleDate = null)
 {
     /// <summary>

@@ -5,6 +5,11 @@ using CityPharmacyChain.Domain.Repository;
 
 namespace CityPharmacyChain.Api.Services;
 
+/// <summary>
+/// Сервис для работы с сущностями класса связь препарат-аптека
+/// </summary>
+/// <param name="repository">Репозиторий для работы с сущностями класса связь препарат-аптека</param>
+/// <param name="mapper">Средство для составления отображения между сущностями класса DTO и Entity</param>
 public class PharmacyProductService(PharmacyProductRepository repository, IMapper mapper) : IService<PharmacyProduct, PharmacyProductDto>
 {
     /// <summary>
@@ -40,7 +45,7 @@ public class PharmacyProductService(PharmacyProductRepository repository, IMappe
     }
 
     /// <summary>
-    /// Метод модифицирует существующий объект класса связь препарат-аптека в базе данных
+    /// Метод модифицирует существующий объект класса связь препарат-аптека в базе данных по его идентификатору
     /// </summary>
     /// <param name="id">Идентификатор связи препарат-аптека</param>
     /// <param name="pharmacyProductDto">Объект класса связь препарат-аптека</param>
@@ -76,6 +81,7 @@ public class PharmacyProductService(PharmacyProductRepository repository, IMappe
         return from data in repository.GetTopFivePharmaciesBySoldVolume(productName, start, end)
                select new ProductSoldVolumeDto
                {
+                   ProductName = productName,
                    PharmacyName = data.Item1,
                    SoldCount = data.Item2,
                    SoldVolume = data.Item3,

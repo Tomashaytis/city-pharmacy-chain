@@ -2,10 +2,14 @@
 using CityPharmacyChain.Api.Dto;
 using CityPharmacyChain.Domain.Entity;
 using CityPharmacyChain.Domain.Repository;
-using System.Collections;
 
 namespace CityPharmacyChain.Api.Services;
 
+/// <summary>
+/// Сервис для работы с сущностями класса препарат
+/// </summary>
+/// <param name="repository">Репозиторий для работы с сущностями класса препарат</param>
+/// <param name="mapper">Средство для составления отображения между сущностями класса DTO и Entity</param>
 public class ProductService(ProductRepository repository, IMapper mapper) : IService<Product, ProductDto>
 {
     /// <summary>
@@ -32,6 +36,20 @@ public class ProductService(ProductRepository repository, IMapper mapper) : ISer
     /// </summary>
     /// <param name="productDto">Объект класса препарат</param>
     /// <return>Добавленный объект класса препарат</return>
+    public Product Post(ProductDto productDto)
+    {
+        var entity = mapper.Map<Product>(productDto);
+        entity.ProductId = repository.GetFreeId();
+        repository.Post(entity);
+        return entity;
+    }
+
+    /// <summary>
+    /// Метод модифицирует существующий объект класса препарат в базе данных по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор препарата</param>
+    /// <param name="productDto">Объект класса препарат</param>
+    /// <returns>Изменённый объект класса препарат или null при отсутствии объекта в базе данных</returns>
     public Product? Put(int id, ProductDto productDto)
     {
         var entity = mapper.Map<Product>(productDto);
@@ -39,20 +57,6 @@ public class ProductService(ProductRepository repository, IMapper mapper) : ISer
         if (repository.Put(entity))
             return entity;
         return null;
-    }
-
-    /// <summary>
-    /// Метод модифицирует существующий объект класса препарат в базе данных
-    /// </summary>
-    /// <param name="id">Идентификатор препарата</param>
-    /// <param name="productDto">Объект класса препарат</param>
-    /// <returns>Изменённый объект класса препарат или null при отсутствии объекта в базе данных</returns>
-    public Product Post(ProductDto productDto)
-    {
-        var entity = mapper.Map<Product>(productDto);
-        entity.ProductId = repository.GetFreeId();
-        repository.Post(entity);
-        return entity;
     }
 
     /// <summary>
@@ -66,16 +70,17 @@ public class ProductService(ProductRepository repository, IMapper mapper) : ISer
     }
 
     /// <summary>
-    /// Метод возвращает коллекцию объектов с информацией о всех аптеках, в которых присутствует в наличии препарат с названием productName, с указанием количества данного препарата в них
+    /// Метод возвращает коллекцию объектов с информацией о всех аптеках, у которых есть в наличии препарат с названием productName, с указанием количества данного препарата в них
     /// </summary>
     /// <param name="productName">Название препарата</param>
-    /// <returns>Коллекция объектов с информацией о всех аптеках, в которых присутствует в наличии препарат с названием productName, с указанием количества данного препарата в них</returns>
+    /// <returns>Коллекция объектов с информацией о всех аптеках, у которых есть в наличии препарат с названием productName, с указанием количества данного препарата в них</returns>
     public IEnumerable<ProductCountDto> GetProductCountForEachPharmacy(string productName)
     {
         return from productCount in repository.GetProductCountForEachPharmacy(productName)
                select new ProductCountDto
                {
-                   ProductName = productCount.Item1,
+                   ProductName = productName,
+                   PharmacyName = productCount.Item1,
                    Count = productCount.Item2,
                };
     }

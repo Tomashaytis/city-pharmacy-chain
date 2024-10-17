@@ -1,5 +1,13 @@
 ﻿namespace CityPharmacyChain.Api.Dto;
 
+/// <summary>
+/// Класс DTO для сущности класса аптека
+/// </summary>
+/// <param name="pharmacyNumber">Номер аптеки</param>
+/// <param name="name">Название аптеки</param>
+/// <param name="phoneNumber">Телефон аптеки</param>
+/// <param name="address">Адрес аптеки</param>
+/// <param name="directorFullName">Полное имя директора аптеки</param>
 public class PharmacyDto(int pharmacyNumber = 0, string name = "", long phoneNumber = 0, string address = "", string directorFullName = "")
 {
     /// <summary>

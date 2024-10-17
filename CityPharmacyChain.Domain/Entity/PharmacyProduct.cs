@@ -1,5 +1,13 @@
 ﻿namespace CityPharmacyChain.Domain.Entity;
 
+/// <summary>
+/// Класс Entity для сущности класса связь препарат-аптека
+/// </summary>
+/// <param name="pharmacyProductId">Идентификатор связи препарат-аптека</param>
+/// <param name="productId">Идентификатор препарата</param>
+/// <param name="pharmacyId">Идентификатор аптеки</param>
+/// <param name="count">Количество препарата на складе аптеки</param>
+/// <param name="price">Цена препарата в аптеке</param>
 public class PharmacyProduct(int pharmacyProductId = 0, int productId = 0, int pharmacyId = 0, int count = 0, double price = 0)
 {
     /// <summary>

@@ -5,10 +5,29 @@ using CityPharmacyChain.Domain.Entity;
 
 namespace CityPharmacyChain.Api.Controllers;
 
+/// <summary>
+/// Контроллер для работы с сущностями класса запись в прайс-листе
+/// </summary>
+/// <param name="service">Сервис для работы с сущностями класса запись в прайс-листе</param>
 [ApiController]
 [Route("[controller]")]
 public class PriceListEntryController(PriceListEntryService service) : Controller
 {
+    /// <summary>
+    /// GET запрос по получению всех объектов класса запись в прайс-листе из базы данных
+    /// </summary>
+    /// <returns>Коллекция объектов класса запись в прайс-листе в формате JSON</returns>
+    [HttpGet]
+    public ActionResult<IEnumerable<PriceListEntry>> GetAll()
+    {
+        return Ok(service.GetAll());
+    }
+
+    /// <summary>
+    /// GET запрос по получению объекта класса запись в прайс-листе из базы данных по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор записи в прайс-листе</param>
+    /// <returns>Объект класса запись в прайс-листе в формате JSON или статус NotFound при отсутствии объекта в базе данных</returns>
     [HttpGet("{id}")]
     public ActionResult<PriceListEntryDto> GetById(int id)
     {
@@ -18,34 +37,44 @@ public class PriceListEntryController(PriceListEntryService service) : Controlle
         return Ok(value);
     }
 
-    [HttpGet]
-    public ActionResult<IEnumerable<PriceListEntry>> GetAll()
+    /// <summary>
+    /// POST запрос по добавлению объекта класса запись в прайс-листе в базу данных
+    /// </summary>
+    /// <param name="priceListEntryDto">Объект класса запись в прайс-листе в формате JSON</param>
+    /// <returns>Добавленный объект класса запись в прайс-листе в формате JSON</returns>
+    [HttpPost]
+    public ActionResult<PriceListEntry> Post([FromBody] PriceListEntryDto priceListEntryDto)
     {
-        return Ok(service.GetAll());
+        var entity = service.Post(priceListEntryDto);
+        return Ok(entity);
     }
 
+    /// <summary>
+    /// PUT запрос по модификации объекта класса запись в прайс-листе из базы данных по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор записи в прайс-листе</param>
+    /// <param name="priceListEntryDto">Объект класса запись в прайс-листе в формате JSON</param>
+    /// <returns>Изменённый объект класса запись в прайс-листе в формате JSON или статус NotFound при отсутствии объекта в базе данных</returns>
     [HttpPut("{id}")]
-    public ActionResult<PriceListEntry> Put(int id, [FromBody] PriceListEntryDto dto)
+    public ActionResult<PriceListEntry> Put(int id, [FromBody] PriceListEntryDto priceListEntryDto)
     {
-        var entity = service.Put(id, dto);
+        var entity = service.Put(id, priceListEntryDto);
         if (entity is null)
             return NotFound($"PriceListEntry with id {id} not found.");
         return Ok(entity);
     }
 
-    [HttpPost]
-    public ActionResult<PriceListEntry> Post([FromBody] PriceListEntryDto dto)
-    {
-        var entity = service.Post(dto);
-        return Ok(entity);
-    }
-
+    /// <summary>
+    /// DELETE запрос по удалению существующего объекта класса запись в прайс-листе из базы данных по его идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор записи в прайс-листе</param>
+    /// <returns>Сообщение об успешности операции удаления или статус NotFound при отсутствии объекта в базе данных</returns>
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
         var result = service.Delete(id);
         if (!result)
             return NotFound($"PriceListEntry with id {id} not found.");
-        return Ok("PriceListEntry was successfully deleted");
+        return Ok("PriceListEntry was successfully deleted.");
     }
 }

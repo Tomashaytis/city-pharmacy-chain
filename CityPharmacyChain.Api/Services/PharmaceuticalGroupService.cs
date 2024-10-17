@@ -5,6 +5,11 @@ using CityPharmacyChain.Domain.Repository;
 
 namespace CityPharmacyChain.Api.Services;
 
+/// <summary>
+/// Сервис для работы с сущностями класса фармацевтическая группа
+/// </summary>
+/// <param name="repository">Репозиторий для работы с сущностями класса фармацевтическая группа</param>
+/// <param name="mapper">Средство для составления отображения между сущностями класса DTO и Entity</param>
 public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository, IMapper mapper) : IService<PharmaceuticalGroup, PharmaceuticalGroupDto>
 {
     /// <summary>
@@ -29,8 +34,9 @@ public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository
     /// <summary>
     /// Метод добавляет новый объект класса фармацевтическая группа в базу данных 
     /// </summary>
-    /// <param name="pharmacy">Объект класса фармацевтическая группа</param>
+    /// <param name="pharmaceuticalGroupDto">Объект класса фармацевтическая группа</param>
     /// <return>Добавленный объект класса фармацевтическая группа</return>
+    
     public PharmaceuticalGroup Post(PharmaceuticalGroupDto pharmaceuticalGroupDto)
     {
         var entity = mapper.Map<PharmaceuticalGroup>(pharmaceuticalGroupDto);
@@ -40,7 +46,7 @@ public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository
     }
 
     /// <summary>
-    /// Метод модифицирует существующий объект класса фармацевтическая группа в базе данных
+    /// Метод модифицирует существующий объект класса фармацевтическая группа в базе данных по его идентификатору
     /// </summary>
     /// <param name="id">Идентификатор фармацевтической группы</param>
     /// <param name="pharmaceuticalGroupDto">Данные для объекта класса фармацевтическая группа</param>

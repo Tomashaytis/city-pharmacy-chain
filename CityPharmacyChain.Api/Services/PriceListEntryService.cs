@@ -5,6 +5,11 @@ using CityPharmacyChain.Domain.Repository;
 
 namespace CityPharmacyChain.Api.Services;
 
+/// <summary>
+/// Сервис для работы с сущностями класса запись в прайс-листе
+/// </summary>
+/// <param name="repository">Репозиторий для работы с сущностями класса запись в прайс-листе</param>
+/// <param name="mapper">Средство для составления отображения между сущностями класса DTO и Entity</param>
 public class PriceListEntryService(PriceListEntryRepository repository, IMapper mapper) : IService<PriceListEntry, PriceListEntryDto>
 {
     /// <summary>
@@ -40,7 +45,7 @@ public class PriceListEntryService(PriceListEntryRepository repository, IMapper 
     }
 
     /// <summary>
-    /// Метод модифицирует существующий объект класса запись в прайс-листе в базе данных
+    /// Метод модифицирует существующий объект класса запись в прайс-листе в базе данных по его идентификатору
     /// </summary>
     /// <param name="id">Идентификатор записи в прайс-листе</param>
     /// <param name="priceListEntryDto">Объект класса запись в прайс-листе</param>

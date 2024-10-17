@@ -2,6 +2,10 @@
 
 namespace CityPharmacyChain.Domain.Repository;
 
+/// <summary>
+/// Репозиторий для работы с сущностями класса связь препарат-аптека
+/// </summary>
+/// <param name="dataBase">Объект базы данных</param>
 public class PharmacyProductRepository(DataBase dataBase) : IRepository<PharmacyProduct>
 {
     /// <summary>

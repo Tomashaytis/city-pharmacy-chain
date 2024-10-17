@@ -4,8 +4,14 @@ using CityPharmacyChain.Api.Dto;
 
 namespace CityPharmacyChain.Api;
 
+/// <summary>
+/// Средство для составления отображения между сущностями класса DTO и Entity
+/// </summary>
 public class Mapping : Profile
 {
+    /// <summary>
+    /// Конструктор, создающий отображения между сущностями класса DTO и Entity
+    /// </summary>
     public Mapping()
     {
         CreateMap<Pharmacy, PharmacyDto>().ReverseMap();

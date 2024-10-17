@@ -1,5 +1,15 @@
 ﻿namespace CityPharmacyChain.Domain.Entity;
 
+/// <summary>
+/// Класс Entity для сущности класса запись в прайс-листе
+/// </summary>
+/// <param name="priceListEntryId">Идентификатор записи в прайс-листе</param>
+/// <param name="productId">Идентификатор препарата</param>
+/// <param name="pharmacyId">Идентификатор аптеки</param>
+/// <param name="soldCount">Количество проданных препаратов</param>
+/// <param name="manufacturer">Производитель препарата</param>
+/// <param name="paymentType">Тип оплаты (наличные/картой)</param>
+/// <param name="saleDate">Дата и время продажи препарата</param>
 public class PriceListEntry(int priceListEntryId = 0, int productId = 0, int pharmacyId = 0, int soldCount = 0, string manufacturer = "", string paymentType = "", DateTime? saleDate = null)
 {
     /// <summary>

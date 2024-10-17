@@ -2,6 +2,10 @@
 
 namespace CityPharmacyChain.Domain.Repository;
 
+/// <summary>
+/// Репозиторий для работы с сущностями класса аптека
+/// </summary>
+/// <param name="dataBase">Объект базы данных</param>
 public class PharmacyRepository(DataBase dataBase) : IRepository<Pharmacy>
 {
     /// <summary>
@@ -84,10 +88,10 @@ public class PharmacyRepository(DataBase dataBase) : IRepository<Pharmacy>
     }
 
     /// <summary>
-    /// Метод возвращает список с характеристиками препаратов для аптеке с названием pharmacyName, упорядоченный по названию препарата
+    /// Метод возвращает список с характеристиками препаратов в аптеке с названием pharmacyName, упорядоченный по названию препарата
     /// </summary>
     /// <param name="pharmacyName">Название аптеки</param>
-    /// <returns>Список с характеристиками препаратов для аптеки с именем pharmacyName, упорядоченный по названию препарата</returns>
+    /// <returns>Список с характеристиками препаратов в аптеке с названием pharmacyName, упорядоченный по названию препарата</returns>
     public List<Tuple<int, string, int, string, double>> GetProductsForPharmacies(string pharmacyName)
     {
         return (from pharmacy in dataBase.Pharmacies

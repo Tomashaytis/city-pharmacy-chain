@@ -1,7 +1,7 @@
-using CityPharmacyChain.Api.Dto;
 using CityPharmacyChain.Api.Services;
-using CityPharmacyChain.Domain.Entity;
 using CityPharmacyChain.Domain.Repository;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace CityPharmacyChain.Api
 {
@@ -12,7 +12,14 @@ namespace CityPharmacyChain.Api
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                var solutionName = "CityPharmacyChain.Domain";
+                xmlFilename = $"{solutionName}.xml";
+                options.IncludeXmlComments(Path.Combine("..", solutionName, "obj", "Debug", "net8.0", xmlFilename));
+            });
 
             builder.Services.AddSingleton<PharmacyService>();
             builder.Services.AddSingleton<ProductService>();
