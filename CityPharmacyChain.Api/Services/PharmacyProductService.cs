@@ -26,7 +26,7 @@ public class PharmacyProductService(PharmacyProductRepository repository, IMappe
     /// </summary>
     /// <param name="id">Идентификатор связи препарат-аптека</param>
     /// <returns>Объект класса связь препарат-аптека</returns>
-    public PharmacyProductDto GetById(int id)
+    public PharmacyProductDto? GetById(int id)
     {
         return mapper.Map<PharmacyProductDto>(repository.GetById(id));
     }

@@ -6,20 +6,20 @@
 /// <param name="productName">Название препарата</param>
 /// <param name="pharmacyName">Название препарата</param>
 /// <param name="count">Количество препарата на складе аптеки</param>
-public class ProductCountDto(string productName = "", string pharmacyName = "", int count = 0)
+public class ProductCountDto(string? productName = null, string? pharmacyName = null, int? count = null)
 {
     /// <summary>
     /// Название препарата
     /// </summary>
-    public string ProductName { get; set; } = productName;
+    public string? ProductName { get; set; } = productName;
 
     /// <summary>
     /// Название аптеки
     /// </summary>
-    public string PharmacyName { get; set; } = pharmacyName;
+    public string? PharmacyName { get; set; } = pharmacyName;
 
     /// <summary>
     /// Количество препарата на складе аптеки
     /// </summary>
-    public int Count { get; set; } = count;
+    public int? Count { get; set; } = count;
 }

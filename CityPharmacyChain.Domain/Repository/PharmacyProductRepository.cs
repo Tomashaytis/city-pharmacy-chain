@@ -93,7 +93,7 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
     /// <param name="start">Начало временного интервала</param>
     /// <param name="end">Конец временного интервала</param>
     /// <returns>Список из топ 5 аптек по количеству и объёму продаж препарата с названием productName во временном интервале от start до end</returns>
-    public List<Tuple<string, int, int>> GetTopFivePharmaciesBySoldVolume(string productName, DateTime start, DateTime end)
+    public List<Tuple<string?, int?, int?>> GetTopFivePharmaciesBySoldVolume(string productName, DateTime start, DateTime end)
     {
         var tmpMaxProductSoldVolumes = 
             (from pharmacy in dataBase.Pharmacies
@@ -110,7 +110,7 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
         return (from maxProductSoldVolume in tmpMaxProductSoldVolumes
                 join pharmacy in dataBase.Pharmacies on maxProductSoldVolume.PharmacyId equals pharmacy.PharmacyId
                 orderby maxProductSoldVolume.SoldCount descending, maxProductSoldVolume.SoldVolume descending
-                select new Tuple<string, int, int>
+                select new Tuple<string?, int?, int?>
                 (
                     pharmacy.Name,
                     maxProductSoldVolume.SoldCount,

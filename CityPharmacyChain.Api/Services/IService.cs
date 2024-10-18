@@ -18,7 +18,7 @@ public interface IService<T, D>
     /// </summary>
     /// <param name="id">Идентификатор объекта</param>
     /// <returns>Объект класса T</returns>
-    public D GetById(int id);
+    public D? GetById(int id);
 
     /// <summary>
     /// Метод добавляет новый объект класса T в базу данных 

@@ -6,20 +6,20 @@
 /// <param name="productCode">Код препарата</param>
 /// <param name="name">Название препарата</param>
 /// <param name="productGroup">Товарная группа препарата</param>
-public class ProductDto(int productCode = 0, string name = "", string productGroup = "")
+public class ProductDto(int? productCode = null, string? name = null, string? productGroup = null)
 {
     /// <summary>
     /// Код препарата
     /// </summary>
-    public int ProductCode { get; set; } = productCode;
+    public int? ProductCode { get; set; } = productCode;
 
     /// <summary>
     /// Название препарата
     /// </summary>
-    public string Name { get; set; } = name;
+    public string? Name { get; set; } = name;
 
     /// <summary>
     /// Товарная группа препарата
     /// </summary>
-    public string ProductGroup { get; set; } = productGroup;
+    public string? ProductGroup { get; set; } = productGroup;
 }

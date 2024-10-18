@@ -26,7 +26,7 @@ public class PharmacyService(PharmacyRepository repository, IMapper mapper) : IS
     /// </summary>
     /// <param name="id">Идентификатор аптеки</param>
     /// <returns>Объект класса аптека</returns>
-    public PharmacyDto GetById(int id)
+    public PharmacyDto? GetById(int id)
     {
         return mapper.Map<PharmacyDto>(repository.GetById(id));
     }

@@ -26,7 +26,7 @@ public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository
     /// </summary>
     /// <param name="id">Идентификатор фармацевтической группы</param>
     /// <returns>Объект класса фармацевтическая группа</returns>
-    public PharmaceuticalGroupDto GetById(int id)
+    public PharmaceuticalGroupDto? GetById(int id)
     {
         return mapper.Map<PharmaceuticalGroupDto>(repository.GetById(id));
     }

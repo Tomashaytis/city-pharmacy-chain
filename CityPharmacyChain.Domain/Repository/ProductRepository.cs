@@ -90,14 +90,14 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
     /// </summary>
     /// <param name="productName">Название препарата</param>
     /// <returns>Список всех аптек, у которых есть в наличии препарат с названием productName, с указанием количества данного препарата в них</returns>
-    public List<Tuple<string, int>> GetProductCountForEachPharmacy(string productName)
+    public List<Tuple<string?, int?>> GetProductCountForEachPharmacy(string productName)
     {
         return (from pharmacy in dataBase.Pharmacies
                join pharmacyProduct in dataBase.PharmacyProducts on pharmacy.PharmacyId equals pharmacyProduct.PharmacyId
                join product in dataBase.Products on pharmacyProduct.ProductId equals product.ProductId
                orderby product.Name
                where product.Name == productName
-               select new Tuple<string, int>
+               select new Tuple<string?, int?>
                (
                    pharmacy.Name,
                    pharmacyProduct.Count

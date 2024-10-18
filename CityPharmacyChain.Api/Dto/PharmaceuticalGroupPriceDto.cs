@@ -6,20 +6,20 @@
 /// <param name="pharmacyName">Название аптеки</param>
 /// <param name="pharmaceuticalGroupName">Название фармацевтической группы</param>
 /// <param name="price">Цена препарата</param>
-public class PharmaceuticalGroupPriceDto(string pharmacyName = "", string pharmaceuticalGroupName = "", double price = 0)
+public class PharmaceuticalGroupPriceDto(string? pharmacyName = null, string? pharmaceuticalGroupName = null, double? price = null)
 {
     /// <summary>
     /// Название аптеки
     /// </summary>
-    public string PharmacyName { get; set; } = pharmacyName;
+    public string? PharmacyName { get; set; } = pharmacyName;
 
     /// <summary>
     /// Название фармацевтической группы
     /// </summary>
-    public string PharmaceuticalGroupName { get; set; } = pharmaceuticalGroupName;
+    public string? PharmaceuticalGroupName { get; set; } = pharmaceuticalGroupName;
 
     /// <summary>
     /// Цена препарата
     /// </summary>
-    public double Price { get; set; } = price;
+    public double? Price { get; set; } = price;
 }

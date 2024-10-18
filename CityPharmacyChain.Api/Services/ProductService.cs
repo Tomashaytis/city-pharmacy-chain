@@ -26,7 +26,7 @@ public class ProductService(ProductRepository repository, IMapper mapper) : ISer
     /// </summary>
     /// <param name="id">Идентификатор препарата</param>
     /// <returns>Объект класса препарат</returns>
-    public ProductDto GetById(int id)
+    public ProductDto? GetById(int id)
     {
         return mapper.Map<ProductDto>(repository.GetById(id));
     }

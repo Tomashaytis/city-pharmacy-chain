@@ -26,7 +26,7 @@ public class PriceListEntryService(PriceListEntryRepository repository, IMapper 
     /// </summary>
     /// <param name="id">Идентификатор записи в прайс-листе</param>
     /// <returns>Объект класса запись в прайс-листе</returns>
-    public PriceListEntryDto GetById(int id)
+    public PriceListEntryDto? GetById(int id)
     {
         return mapper.Map<PriceListEntryDto>(repository.GetById(id));
     }
