@@ -14,7 +14,7 @@ public class Pharmacy(int pharmacyId = 0, int? pharmacyNumber = null, string? na
     /// <summary>
     /// Идентификатор аптеки
     /// </summary>
-    public required int PharmacyId { get; set; } = pharmacyId;
+    public int PharmacyId { get; set; } = pharmacyId;
 
     /// <summary>
     /// Номер аптеки

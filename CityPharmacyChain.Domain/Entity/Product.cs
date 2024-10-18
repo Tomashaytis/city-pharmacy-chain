@@ -12,7 +12,7 @@ public class Product(int productId = 0, int productCode = 0, string? name = null
     /// <summary>
     /// Идентификатор препарата
     /// </summary>
-    public required int ProductId { get; set; } = productId;
+    public int ProductId { get; set; } = productId;
 
     /// <summary>
     /// Код препарата

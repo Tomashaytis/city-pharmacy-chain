@@ -69,7 +69,7 @@ public class PharmacyController(PharmacyService service) : Controller
     /// </summary>
     /// <param name="id">Идентификатор аптеки</param>
     /// <returns>Сообщение об успешности операции удаления или статус NotFound при отсутствии объекта в базе данных</returns>
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
         var result = service.Delete(id);

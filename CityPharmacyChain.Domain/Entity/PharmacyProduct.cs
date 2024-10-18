@@ -8,22 +8,22 @@
 /// <param name="pharmacyId">Идентификатор аптеки</param>
 /// <param name="count">Количество препарата на складе аптеки</param>
 /// <param name="price">Цена препарата в аптеке</param>
-public class PharmacyProduct(int pharmacyProductId = 0, int productId = 0, int pharmacyId = 0, int? count = null, double? price = null)
+public class PharmacyProduct(int pharmacyProductId = 0, int? productId = null, int? pharmacyId = null, int? count = null, double? price = null)
 {
     /// <summary>
     /// Идентификатор связи препарат-аптека
     /// </summary>
-    public required int PharmacyProductId { get; set; } = pharmacyProductId;
+    public int PharmacyProductId { get; set; } = pharmacyProductId;
 
     /// <summary>
     /// Идентификатор препарата
     /// </summary>
-    public required int ProductId { get; set; } = productId;
+    public int? ProductId { get; set; } = productId;
 
     /// <summary>
     /// Идентификатор аптеки
     /// </summary>
-    public required int PharmacyId { get; set; } = pharmacyId;
+    public int? PharmacyId { get; set; } = pharmacyId;
 
     /// <summary>
     /// Количество препарата на складе аптеки

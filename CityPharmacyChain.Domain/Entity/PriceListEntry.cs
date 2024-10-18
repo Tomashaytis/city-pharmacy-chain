@@ -10,22 +10,22 @@
 /// <param name="manufacturer">Производитель препарата</param>
 /// <param name="paymentType">Тип оплаты (наличные/картой)</param>
 /// <param name="saleDate">Дата и время продажи препарата</param>
-public class PriceListEntry(int priceListEntryId = 0, int productId = 0, int pharmacyId = 0, int? soldCount = null, string? manufacturer = null, string? paymentType = null, DateTime? saleDate = null)
+public class PriceListEntry(int priceListEntryId = 0, int? productId = null, int? pharmacyId = null, int? soldCount = null, string? manufacturer = null, string? paymentType = null, DateTime? saleDate = null)
 {
     /// <summary>
     /// Идентификатор записи в прайс-листе
     /// </summary>
-    public required int PriceListEntryId { get; set; } = priceListEntryId;
+    public int PriceListEntryId { get; set; } = priceListEntryId;
 
     /// <summary>
     /// Идентификатор препарата
     /// </summary>
-    public required int ProductId { get; set; } = productId;
+    public int? ProductId { get; set; } = productId;
 
     /// <summary>
     /// Идентификатор аптеки
     /// </summary>
-    public required int PharmacyId { get; set; } = pharmacyId;
+    public int? PharmacyId { get; set; } = pharmacyId;
     
     /// <summary>
     /// Количество проданных препаратов

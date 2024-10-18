@@ -9,17 +9,17 @@
 /// <param name="manufacturer">Производитель препарата</param>
 /// <param name="paymentType">Способ оплаты (наличные/картой)</param>
 /// <param name="saleDate">Дата продажи препарата</param>
-public class PriceListEntryDto(int productId = 0, int pharmacyId = 0, int? soldCount = null, string? manufacturer = null, string? paymentType = null, DateTime? saleDate = null)
+public class PriceListEntryDto(int? productId = null, int? pharmacyId = null, int? soldCount = null, string? manufacturer = null, string? paymentType = null, DateTime? saleDate = null)
 {
     /// <summary>
     /// Идентификатор препарата
     /// </summary>
-    public required int ProductId { get; set; } = productId;
+    public int? ProductId { get; set; } = productId;
 
     /// <summary>
     /// Идентификатор аптеки
     /// </summary>
-    public required int PharmacyId { get; set; } = pharmacyId;
+    public int? PharmacyId { get; set; } = pharmacyId;
 
     /// <summary>
     /// Количество проданных препаратов
