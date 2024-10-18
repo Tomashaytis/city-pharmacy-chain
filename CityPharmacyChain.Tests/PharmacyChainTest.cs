@@ -17,10 +17,10 @@ namespace CityPharmacyChain.Tests
                 where pharmacy.Name is "April"
                 select new
                 {
-                    product.ProductCode,
-                    product.Name,
-                    pharmacyProduct.Count,
-                    product.ProductGroup,
+                    ProductCode = product.ProductCode ?? 0,
+                    Name = product.Name ?? "",
+                    Count = pharmacyProduct.Count ?? 0,
+                    ProductGroup = product.ProductGroup ?? "",
                 }).ToList();
             
             Assert.Equal(allProductsForPharmacy,
@@ -46,8 +46,8 @@ namespace CityPharmacyChain.Tests
                 where product.Name is "Levomekol"
                 select new
                 {
-                    pharmacy.Name,
-                    pharmacyProduct.Count,
+                    Name = pharmacy.Name ?? "",
+                    Count = pharmacyProduct.Count ?? 0,
                 }).ToList();
             Assert.Equal(productCount, 
                 [
@@ -68,9 +68,9 @@ namespace CityPharmacyChain.Tests
                 join priceListEntry in _fixture.PriceList on product.ProductId equals priceListEntry.ProductId
                 select new
                 {
-                    pharmaceuticalGroup.Name,
-                    PharmacyName = pharmacy.Name,
-                    pharmacyProduct.Price,
+                    Name = pharmaceuticalGroup.Name ?? "",
+                    PharmacyName = pharmacy.Name ?? "",
+                    Price = pharmacyProduct.Price ?? 0,
                 }).ToList();
             var avgPharmaceuticalGroupPriceForPharmacy =
                 (from entry in pharmaceuticalGroupPriceForPharmacy
@@ -96,7 +96,7 @@ namespace CityPharmacyChain.Tests
                 group priceListEntry by priceListEntry.PharmacyId into results
                 select new
                 {
-                    PharmacyId = results.Key,
+                    PharmacyId = results.Key ?? 0,
                     SoldCount = results.Count(),
                     SoldVolume = results.Sum(p => p.SoldCount),
                 }).ToList();
@@ -106,9 +106,9 @@ namespace CityPharmacyChain.Tests
                  orderby maxProductSoldVolume.SoldCount descending, maxProductSoldVolume.SoldVolume descending
                  select new
                  {
-                     pharmacy.Name,
+                     Name = pharmacy.Name ?? "",
                      maxProductSoldVolume.SoldCount,
-                     maxProductSoldVolume.SoldVolume
+                     SoldVolume = maxProductSoldVolume.SoldVolume ?? 0,
                  }).Take(5).ToList();
             Assert.Equal(maxProductSoldVolumes,
                 [
@@ -125,7 +125,7 @@ namespace CityPharmacyChain.Tests
                 (from pharmacy in _fixture.PharmacyList
                 join priceListEntry in _fixture.PriceList on pharmacy.PharmacyId equals priceListEntry.PharmacyId
                 join product in _fixture.ProductList on priceListEntry.ProductId equals product.ProductId
-                where pharmacy.Address.Contains("Lenin ave.") && product.Name == "Levomekol"
+                where pharmacy.Address is not null && pharmacy.Address.Contains("Lenin ave.") && product.Name == "Levomekol"
                 group priceListEntry by priceListEntry.PharmacyId into result
                 select new
                 {
@@ -138,7 +138,7 @@ namespace CityPharmacyChain.Tests
                  where entry.SoldVolume > 2
                  select new
                  {
-                     pharmacy.Name,
+                     Name = pharmacy.Name ?? "",
                  }).ToList();
             Assert.Equal(pharmaciesWithBigProductSoldVolumes,
                 [
@@ -168,7 +168,7 @@ namespace CityPharmacyChain.Tests
                  where entry.SoldVolume < min + 0.01 && entry.SoldVolume > min - 0.01
                  select new
                  {
-                     pharmacy.Name,
+                     Name = pharmacy.Name ?? "",
                  }).ToList();
             Assert.Equal(pharmaciesWithMinProductPrice,
                 [
