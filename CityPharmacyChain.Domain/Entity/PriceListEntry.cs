@@ -10,7 +10,7 @@
 /// <param name="manufacturer">Производитель препарата</param>
 /// <param name="paymentType">Тип оплаты (наличные/картой)</param>
 /// <param name="saleDate">Дата и время продажи препарата</param>
-public class PriceListEntry(int priceListEntryId = 0, int? productId = null, int? pharmacyId = null, int? soldCount = null, string? manufacturer = null, string? paymentType = null, DateTime? saleDate = null)
+public class PriceListEntry(int priceListEntryId = 0, int? productId = null, int? pharmacyId = null, int? soldCount = null, string? manufacturer = null, PaymentType? paymentType = null, DateTime? saleDate = null)
 {
     /// <summary>
     /// Идентификатор записи в прайс-листе
@@ -40,7 +40,7 @@ public class PriceListEntry(int priceListEntryId = 0, int? productId = null, int
     /// <summary>
     /// Тип оплаты (наличные/картой)
     /// </summary>
-    public string? PaymentType { get; set; } = paymentType;
+    public PaymentType? PaymentType { get; set; } = paymentType;
 
     /// <summary>
     /// Дата и время продажи препарата

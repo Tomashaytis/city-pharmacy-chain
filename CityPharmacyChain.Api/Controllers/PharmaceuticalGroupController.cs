@@ -2,6 +2,7 @@
 using CityPharmacyChain.Api.Dto;
 using Microsoft.AspNetCore.Mvc;
 using CityPharmacyChain.Domain.Entity;
+using Microsoft.Extensions.Logging;
 
 namespace CityPharmacyChain.Api.Controllers;
 
@@ -9,9 +10,10 @@ namespace CityPharmacyChain.Api.Controllers;
 /// Контроллер для работы с сущностями класса фармацевтическая группа
 /// </summary>
 /// <param name="service">Сервис для работы с сущностями класса фармацевтическая группа</param>
+/// <param name="logger">Логгер</param>
 [ApiController]
 [Route("[controller]")]
-public class PharmaceuticalGroupController(PharmaceuticalGroupService service) : Controller
+public class PharmaceuticalGroupController(PharmaceuticalGroupService service, ILogger<Product> logger) : Controller
 {
     /// <summary>
     /// GET запрос по получению всех объектов класса фармацевтическая группа из базы данных
@@ -20,6 +22,7 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service) :
     [HttpGet]
     public ActionResult<IEnumerable<PharmaceuticalGroup>> GetAll()
     {
+        logger.LogInformation("{date} : Get : Get all pharmaceutical groups.", DateTime.Now);
         return Ok(service.GetAll());
     }
 
@@ -33,7 +36,11 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service) :
     {
         var value = service.GetById(id);
         if (value is null)
+        {
+            logger.LogError("{date} : NotFound : Pharmaceutical group with id={id} not found.", DateTime.Now, id);
             return NotFound($"PharmaceuticalGroup with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Get : Get pharmaceutical group with id={id}.", DateTime.Now, id);
         return Ok(value);
     }
 
@@ -45,7 +52,13 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service) :
     [HttpPost]
     public ActionResult<PharmaceuticalGroup> Post([FromBody] PharmaceuticalGroupDto pharmaceuticalGroupDto)
     {
+        if (!ModelState.IsValid)
+        {
+            logger.LogError("{date} : BadRequest : Bad request structure for post pharmaceutical group operation.", DateTime.Now);
+            return BadRequest(ModelState);
+        }
         var entity = service.Post(pharmaceuticalGroupDto);
+        logger.LogInformation("{date} : Post : Post pharmaceutical group with id={id}.", DateTime.Now, entity.PharmaceuticalGroupId);
         return Ok(entity);
     }
 
@@ -58,9 +71,18 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service) :
     [HttpPut("{id}")]
     public ActionResult<PharmaceuticalGroup> Put(int id, [FromBody] PharmaceuticalGroupDto pharmaceuticalGroupDto)
     {
+        if (!ModelState.IsValid)
+        {
+            logger.LogError("{date} : BadRequest : Bad request structure for put pharmaceutical group operation.", DateTime.Now);
+            return BadRequest(ModelState);
+        }
         var entity = service.Put(id, pharmaceuticalGroupDto);
         if (entity is null)
+        {
+            logger.LogError("{date} : NotFound : Pharmaceutical group with id={id} not found.", DateTime.Now, id);
             return NotFound($"PharmaceuticalGroup with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Put : Put pharmaceutical group with id={id}.", DateTime.Now, id);
         return Ok(entity);
     }
 
@@ -74,7 +96,11 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service) :
     {
         var result = service.Delete(id);
         if (!result)
+        {
+            logger.LogError("{date} : NotFound : Pharmaceutical group with id={id} not found.", DateTime.Now, id);
             return NotFound($"PharmaceuticalGroup with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Delete : Delete pharmaceutical group with id={id}.", DateTime.Now, id);
         return Ok("PharmaceuticalGroup was successfully deleted.");
     }
 
@@ -85,6 +111,7 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service) :
     [HttpGet("GetPharmaceuticalGroupPriceForEachPharmacy")]
     public ActionResult<IEnumerable<PharmaceuticalGroupPriceDto>> GetProductsForPharmacy()
     {
+        logger.LogInformation("{date} : Get : Get specific data.", DateTime.Now);
         return Ok(service.GetPharmaceuticalGroupPriceForEachPharmacy());
     }
 }

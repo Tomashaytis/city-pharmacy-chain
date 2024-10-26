@@ -1,4 +1,6 @@
-﻿namespace CityPharmacyChain.Api.Dto;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CityPharmacyChain.Api.Dto;
 
 /// <summary>
 /// Класс DTO для сущности класса количество препаратов на складе аптеки
@@ -11,15 +13,18 @@ public class ProductCountDto(string? productName = null, string? pharmacyName = 
     /// <summary>
     /// Название препарата
     /// </summary>
+    [StringLength(50, ErrorMessage = "Product name too long.")]
     public string? ProductName { get; set; } = productName;
 
     /// <summary>
     /// Название аптеки
     /// </summary>
+    [StringLength(50, ErrorMessage = "Pharmacy name too long.")]
     public string? PharmacyName { get; set; } = pharmacyName;
 
     /// <summary>
     /// Количество препарата на складе аптеки
     /// </summary>
+    [Range(0, 1000, ErrorMessage = "Product count must be between 0 and 1000.")]
     public int? Count { get; set; } = count;
 }

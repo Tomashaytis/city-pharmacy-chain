@@ -92,14 +92,14 @@ public class PharmacyRepository(DataBase dataBase) : IRepository<Pharmacy>
     /// </summary>
     /// <param name="pharmacyName">Название аптеки</param>
     /// <returns>Список с характеристиками препаратов в аптеке с названием pharmacyName, упорядоченный по названию препарата</returns>
-    public List<Tuple<int?, string?, int?, string?, double?>> GetProductsForPharmacies(string pharmacyName)
+    public List<Tuple<int?, string?, int?, string?, decimal?>> GetProductsForPharmacies(string pharmacyName)
     {
         return (from pharmacy in dataBase.Pharmacies
                join pharmacyProduct in dataBase.PharmacyProducts on pharmacy.PharmacyId equals pharmacyProduct.PharmacyId
                join product in dataBase.Products on pharmacyProduct.ProductId equals product.ProductId
                orderby product.Name
                where pharmacy.Name == pharmacyName
-               select new Tuple<int?, string?, int?, string?, double?>
+               select new Tuple<int?, string?, int?, string?, decimal?>
                (
                    product.ProductCode,
                    product.Name,
@@ -156,7 +156,7 @@ public class PharmacyRepository(DataBase dataBase) : IRepository<Pharmacy>
         return (from entry in tmpPharmaciesWithMinProductPrice
                 join pharmacy in dataBase.Pharmacies on entry.PharmacyId equals pharmacy.PharmacyId
                 let min = tmpPharmaciesWithMinProductPrice.Min(p => p.SoldVolume)
-                where entry.SoldVolume < min + 0.01 && entry.SoldVolume > min - 0.01
+                where entry.SoldVolume < min + 0.01m && entry.SoldVolume > min - 0.01m
                 select pharmacy.Name).ToList();
     }
 }

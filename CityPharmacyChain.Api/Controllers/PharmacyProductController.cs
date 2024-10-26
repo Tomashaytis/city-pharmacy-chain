@@ -9,9 +9,10 @@ namespace CityPharmacyChain.Api.Controllers;
 /// Контроллер для работы с сущностями класса связь препарат-аптека
 /// </summary>
 /// <param name="service">Сервис для работы с сущностями класса связь препарат-аптека</param>
+/// <param name="logger">Логгер</param>
 [ApiController]
 [Route("[controller]")]
-public class PharmacyProductController(PharmacyProductService service) : Controller
+public class PharmacyProductController(PharmacyProductService service, ILogger<Product> logger) : Controller
 {
     /// <summary>
     /// GET запрос по получению всех объектов класса связь препарат-аптека из базы данных
@@ -20,6 +21,7 @@ public class PharmacyProductController(PharmacyProductService service) : Control
     [HttpGet]
     public ActionResult<IEnumerable<PharmacyProduct>> GetAll()
     {
+        logger.LogInformation("{date} : Get : Get all pharmacy-products.", DateTime.Now);
         return Ok(service.GetAll());
     }
 
@@ -33,7 +35,11 @@ public class PharmacyProductController(PharmacyProductService service) : Control
     {
         var value = service.GetById(id);
         if (value is null)
+        {
+            logger.LogError("{date} : NotFound : Pharmacy-product with id={id} not found.", DateTime.Now, id);
             return NotFound($"PharmacyProduct with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Get : Get pharmacy-product with id={id}.", DateTime.Now, id);
         return Ok(value);
     }
 
@@ -45,7 +51,13 @@ public class PharmacyProductController(PharmacyProductService service) : Control
     [HttpPost]
     public ActionResult<PharmacyProduct> Post([FromBody] PharmacyProductDto pharmacyProductDto)
     {
+        if (!ModelState.IsValid)
+        {
+            logger.LogError("{date} : BadRequest : Bad request structure for post pharmacy-product operation.", DateTime.Now);
+            return BadRequest(ModelState);
+        }
         var entity = service.Post(pharmacyProductDto);
+        logger.LogInformation("{date} : Post : Post pharmacy-product with id={id}.", DateTime.Now, entity.PharmacyProductId);
         return Ok(entity);
     }
 
@@ -59,9 +71,18 @@ public class PharmacyProductController(PharmacyProductService service) : Control
     [HttpPut("{id}")]
     public ActionResult<PharmacyProduct> Put(int id, [FromBody] PharmacyProductDto pharmacyProductDto)
     {
+        if (!ModelState.IsValid)
+        {
+            logger.LogError("{date} : BadRequest : Bad request structure for put pharmacy-product operation.", DateTime.Now);
+            return BadRequest(ModelState);
+        }
         var entity = service.Put(id, pharmacyProductDto);
         if (entity is null)
+        {
+            logger.LogError("{date} : NotFound : Pharmacy-product with id={id} not found.", DateTime.Now, id);
             return NotFound($"PharmacyProduct with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Put : Put pharmacy-product with id={id}.", DateTime.Now, id);
         return Ok(entity);
     }
 
@@ -75,7 +96,11 @@ public class PharmacyProductController(PharmacyProductService service) : Control
     {
         var result = service.Delete(id);
         if (!result)
+        {
+            logger.LogError("{date} : NotFound : Pharmacy-product with id={id} not found.", DateTime.Now, id);
             return NotFound($"PharmacyProduct with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Delete : Delete pharmacy-product with id={id}.", DateTime.Now, id);
         return Ok("PharmacyProduct was successfully deleted.");
     }
 
@@ -89,6 +114,7 @@ public class PharmacyProductController(PharmacyProductService service) : Control
     [HttpGet("GetTopFivePharmaciesBySoldVolume")]
     public ActionResult<IEnumerable<ProductSoldVolumeDto>> GetTopFivePharmaciesBySoldVolume(string productName, DateTime start, DateTime end)
     {
+        logger.LogInformation("{date} : Get : Get specific data.", DateTime.Now);
         return Ok(service.GetTopFivePharmaciesBySoldVolume(productName, start, end));
     }
 }

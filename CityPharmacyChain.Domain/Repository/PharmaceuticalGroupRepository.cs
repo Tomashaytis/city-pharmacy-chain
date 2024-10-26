@@ -88,9 +88,9 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
     /// Метод возвращает список с информацией о средней стоимости препаратов в каждой фармацевтической группе для каждой аптеки
     /// </summary>
     /// <returns>Список с информацией о средней стоимости препаратов в каждой фармацевтической группе для каждой аптеки</returns>
-    public List<Tuple<string?, string?, double?>> GetPharmaceuticalGroupPriceForEachPharmacy()
+    public List<Tuple<string?, string?, decimal?>> GetPharmaceuticalGroupPriceForEachPharmacy()
     {
-        var result = new List<Tuple<string?, string?, double?>>();
+        var result = new List<Tuple<string?, string?, decimal?>>();
         foreach (var item in dataBase.Pharmacies)
         {
             var pharmaceuticalGroupPriceForPharmacy =
@@ -109,7 +109,7 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
                 (from entry in pharmaceuticalGroupPriceForPharmacy
                  where entry.PharmacyName == item.Name
                  group entry by entry.Name into groups
-                 select new Tuple<string?, string?, double?>
+                 select new Tuple<string?, string?, decimal?>
                  (
                      item.Name,
                      groups.Key,

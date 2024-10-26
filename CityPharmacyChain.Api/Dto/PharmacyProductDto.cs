@@ -1,4 +1,6 @@
-﻿namespace CityPharmacyChain.Api.Dto;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CityPharmacyChain.Api.Dto;
 
 /// <summary>
 /// Класс DTO для сущности класса связь препарат-аптека
@@ -7,7 +9,7 @@
 /// <param name="pharmacyId">Идентификатор аптеки</param>
 /// <param name="count">Количество препарата на складе аптеки</param>
 /// <param name="price">Цена препарата</param>
-public class PharmacyProductDto(int? productId = null, int? pharmacyId = null, int? count = null, double? price = null)
+public class PharmacyProductDto(int? productId = null, int? pharmacyId = null, int? count = null, decimal? price = null)
 {
     /// <summary>
     /// Идентификатор препарата
@@ -22,10 +24,12 @@ public class PharmacyProductDto(int? productId = null, int? pharmacyId = null, i
     /// <summary>
     /// Количество препарата на складе аптеки
     /// </summary>
+    [Range(0, 1000, ErrorMessage = "Product count must be between 0 and 1000.")]
     public int? Count { get; set; } = count;
 
     /// <summary>
     /// Цена препарата
     /// </summary>
-    public double? Price { get; set; } = price;
+    [Range(0, 100000, ErrorMessage = "Product price must be between 0₽ and 100000₽.")]
+    public decimal? Price { get; set; } = price;
 }

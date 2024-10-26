@@ -9,9 +9,10 @@ namespace CityPharmacyChain.Api.Controllers;
 /// Контроллер для работы с сущностями класса препарат
 /// </summary>
 /// <param name="service">Сервис для работы с сущностями препарат</param>
+/// <param name="logger">Логгер</param>
 [ApiController]
 [Route("[controller]")]
-public class ProductController(ProductService service) : Controller
+public class ProductController(ProductService service, ILogger<Product> logger) : Controller
 {
     /// <summary>
     /// GET запрос по получению всех объектов класса препарат из базы данных
@@ -20,6 +21,7 @@ public class ProductController(ProductService service) : Controller
     [HttpGet]
     public ActionResult<IEnumerable<Product>> GetAll()
     {
+        logger.LogInformation("{date} : Get : Get all products.", DateTime.Now);
         return Ok(service.GetAll());
     }
 
@@ -33,7 +35,11 @@ public class ProductController(ProductService service) : Controller
     {
         var value = service.GetById(id);
         if (value is null)
+        {
+            logger.LogError("{date} : NotFound : Product with id={id} not found.", DateTime.Now, id);
             return NotFound($"Product with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Get : Get product with id={id}.", DateTime.Now, id);
         return Ok(value);
     }
 
@@ -45,7 +51,13 @@ public class ProductController(ProductService service) : Controller
     [HttpPost]
     public ActionResult<Product> Post([FromBody] ProductDto productDto)
     {
+        if (!ModelState.IsValid)
+        {
+            logger.LogError("{date} : BadRequest : Bad request structure for post product operation.", DateTime.Now);
+            return BadRequest(ModelState);
+        }
         var entity = service.Post(productDto);
+        logger.LogInformation("{date} : Post : Post product with id={id}.", DateTime.Now, entity.ProductId);
         return Ok(entity);
     }
 
@@ -58,9 +70,18 @@ public class ProductController(ProductService service) : Controller
     [HttpPut("{id}")]
     public ActionResult<Product> Put(int id, [FromBody] ProductDto productDto)
     {
+        if (!ModelState.IsValid)
+        {
+            logger.LogError("{date} : BadRequest : Bad request structure for put product operation.", DateTime.Now);
+            return BadRequest(ModelState);
+        }
         var entity = service.Put(id, productDto);
         if (entity is null)
+        {
+            logger.LogError("{date} : NotFound : Product with id={id} not found.", DateTime.Now, id);
             return NotFound($"Product with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Put : Put product with id={id}.", DateTime.Now, id);
         return Ok(entity);
     }
 
@@ -74,7 +95,11 @@ public class ProductController(ProductService service) : Controller
     {
         var result = service.Delete(id);
         if (!result)
+        {
+            logger.LogError("{date} : NotFound : Product with id={id} not found.", DateTime.Now, id);
             return NotFound($"Product with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Delete : Delete product with id={id}.", DateTime.Now, id);
         return Ok("Product was successfully deleted.");
     }
 
@@ -86,6 +111,7 @@ public class ProductController(ProductService service) : Controller
     [HttpGet("GetProductCountForEachPharmacy")]
     public ActionResult<IEnumerable<ProductForPharmacyDto>> GetProductsForPharmacy(string productName)
     {
+        logger.LogInformation("{date} : Get : Get specific data.", DateTime.Now);
         return Ok(service.GetProductCountForEachPharmacy(productName));
     }
 }

@@ -8,7 +8,7 @@
 /// <param name="pharmacyId">Идентификатор аптеки</param>
 /// <param name="count">Количество препарата на складе аптеки</param>
 /// <param name="price">Цена препарата в аптеке</param>
-public class PharmacyProduct(int pharmacyProductId = 0, int? productId = null, int? pharmacyId = null, int? count = null, double? price = null)
+public class PharmacyProduct(int pharmacyProductId = 0, int? productId = null, int? pharmacyId = null, int? count = null, decimal? price = null)
 {
     /// <summary>
     /// Идентификатор связи препарат-аптека
@@ -33,5 +33,5 @@ public class PharmacyProduct(int pharmacyProductId = 0, int? productId = null, i
     /// <summary>
     /// Цена препарата в аптеке
     /// </summary>
-    public double? Price { get; set; } = price;
+    public decimal? Price { get; set; } = price;
 }

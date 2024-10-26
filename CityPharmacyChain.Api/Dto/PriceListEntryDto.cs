@@ -1,4 +1,7 @@
-﻿namespace CityPharmacyChain.Api.Dto;
+﻿using CityPharmacyChain.Domain.Entity;
+using System.ComponentModel.DataAnnotations;
+
+namespace CityPharmacyChain.Api.Dto;
 
 /// <summary>
 /// Класс DTO для сущности класса запись в прайс-листе
@@ -24,16 +27,19 @@ public class PriceListEntryDto(int? productId = null, int? pharmacyId = null, in
     /// <summary>
     /// Количество проданных препаратов
     /// </summary>
+    [Range(0, 1000, ErrorMessage = "Sold count must be between 0 and 1000.")]
     public int? SoldCount { get; set; } = soldCount;
 
     /// <summary>
     /// Производитель препарата
     /// </summary>
+    [StringLength(50, ErrorMessage = "Manufacturer name too long.")]
     public string? Manufacturer { get; set; } = manufacturer;
 
     /// <summary>
     /// Способ оплаты (наличные/картой)
     /// </summary>
+    [EnumDataType(typeof(PaymentType), ErrorMessage = "Unknown payment type.")]
     public string? PaymentType { get; set; } = paymentType;
 
     /// <summary>

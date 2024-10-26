@@ -9,9 +9,10 @@ namespace CityPharmacyChain.Api.Controllers;
 /// Контроллер для работы с сущностями класса запись в прайс-листе
 /// </summary>
 /// <param name="service">Сервис для работы с сущностями класса запись в прайс-листе</param>
+/// <param name="logger">Логгер</param>
 [ApiController]
 [Route("[controller]")]
-public class PriceListEntryController(PriceListEntryService service) : Controller
+public class PriceListEntryController(PriceListEntryService service, ILogger<Product> logger) : Controller
 {
     /// <summary>
     /// GET запрос по получению всех объектов класса запись в прайс-листе из базы данных
@@ -20,6 +21,7 @@ public class PriceListEntryController(PriceListEntryService service) : Controlle
     [HttpGet]
     public ActionResult<IEnumerable<PriceListEntry>> GetAll()
     {
+        logger.LogInformation("{date} : Get : Get all price list entries.", DateTime.Now);
         return Ok(service.GetAll());
     }
 
@@ -33,7 +35,11 @@ public class PriceListEntryController(PriceListEntryService service) : Controlle
     {
         var value = service.GetById(id);
         if (value is null)
+        {
+            logger.LogError("{date} : NotFound : Price list entry with id={id} not found.", DateTime.Now, id);
             return NotFound($"PriceListEntry with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Get : Get price list entry with id={id}.", DateTime.Now, id);
         return Ok(value);
     }
 
@@ -45,7 +51,13 @@ public class PriceListEntryController(PriceListEntryService service) : Controlle
     [HttpPost]
     public ActionResult<PriceListEntry> Post([FromBody] PriceListEntryDto priceListEntryDto)
     {
+        if (!ModelState.IsValid)
+        {
+            logger.LogError("{date} : BadRequest : Bad request structure for post price list entry operation.", DateTime.Now);
+            return BadRequest(ModelState);
+        }
         var entity = service.Post(priceListEntryDto);
+        logger.LogInformation("{date} : Post : Post price list entry with id={id}.", DateTime.Now, entity.PriceListEntryId);
         return Ok(entity);
     }
 
@@ -58,9 +70,18 @@ public class PriceListEntryController(PriceListEntryService service) : Controlle
     [HttpPut("{id}")]
     public ActionResult<PriceListEntry> Put(int id, [FromBody] PriceListEntryDto priceListEntryDto)
     {
+        if (!ModelState.IsValid)
+        {
+            logger.LogError("{date} : BadRequest : Bad request structure for put price list entry operation.", DateTime.Now);
+            return BadRequest(ModelState);
+        }
         var entity = service.Put(id, priceListEntryDto);
         if (entity is null)
+        {
+            logger.LogError("{date} : NotFound : Price list entry with id={id} not found.", DateTime.Now, id);
             return NotFound($"PriceListEntry with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Put : Put price list entry with id={id}.", DateTime.Now, id);
         return Ok(entity);
     }
 
@@ -74,7 +95,11 @@ public class PriceListEntryController(PriceListEntryService service) : Controlle
     {
         var result = service.Delete(id);
         if (!result)
+        {
+            logger.LogError("{date} : NotFound : Price list entry with id={id} not found.", DateTime.Now, id);
             return NotFound($"PriceListEntry with id {id} not found.");
+        }
+        logger.LogInformation("{date} : Delete : Delete price list entry with id={id}.", DateTime.Now, id);
         return Ok("PriceListEntry was successfully deleted.");
     }
 }

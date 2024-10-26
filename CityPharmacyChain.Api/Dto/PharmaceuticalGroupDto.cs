@@ -1,4 +1,6 @@
-﻿namespace CityPharmacyChain.Api.Dto;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CityPharmacyChain.Api.Dto;
 
 /// <summary>
 /// Класс DTO для сущности класса фармацевтическая группа
@@ -15,5 +17,6 @@ public class PharmaceuticalGroupDto(int? productId = null, string? name = null)
     /// <summary>
     /// Название фармацевтической группы
     /// </summary>
+    [StringLength(50, ErrorMessage = "Pharmaceutical group name too long.")]
     public string? Name { get; set; } = name;
 }

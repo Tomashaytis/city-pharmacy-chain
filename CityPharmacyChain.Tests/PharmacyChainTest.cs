@@ -80,7 +80,7 @@ namespace CityPharmacyChain.Tests
                     Price = result.Average(p => p.Price),
                 }).First();
             Assert.Equal("Anticoagulant", avgPharmaceuticalGroupPriceForPharmacy.Name);
-            Assert.True(Math.Abs(avgPharmaceuticalGroupPriceForPharmacy.Price - 146) < 0.01);
+            Assert.True(Math.Abs(avgPharmaceuticalGroupPriceForPharmacy.Price - 146) < 0.01m);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace CityPharmacyChain.Tests
                  (from entry in tmpPharmaciesWithMinProductPrice
                  join pharmacy in _fixture.PharmacyList on entry.PharmacyId equals pharmacy.PharmacyId
                  let min = tmpPharmaciesWithMinProductPrice.Min(p => p.SoldVolume)
-                 where entry.SoldVolume < min + 0.01 && entry.SoldVolume > min - 0.01
+                 where entry.SoldVolume < min + 0.01m && entry.SoldVolume > min - 0.01m
                  select new
                  {
                      Name = pharmacy.Name ?? "",
