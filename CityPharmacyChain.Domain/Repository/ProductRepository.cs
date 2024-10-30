@@ -5,8 +5,8 @@ namespace CityPharmacyChain.Domain.Repository;
 /// <summary>
 /// Репозиторий для работы с сущностями класса препарат
 /// </summary>
-/// <param name="dataBase">Объект базы данных</param>
-public class ProductRepository(DataBase dataBase) : IRepository<Product>
+/// <param name="context">Контекст базы данных</param>
+public class ProductRepository(CityPharmacyChainContext context) : IRepository<Product>
 {
     /// <summary>
     /// Метод возвращает все объекты класса препарат из базы данных в виде коллекции
@@ -14,7 +14,7 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
     /// <returns>Коллекция объектов класса препарат</returns>
     public IEnumerable<Product> GetAll()
     {
-        return dataBase.Products;
+        return [.. context.Products];
     }
 
     /// <summary>
@@ -24,7 +24,7 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
     /// <returns>Объект класса аптека</returns>
     public Product? GetById(int id)
     {
-        return dataBase.Products.Find(x => x.ProductId == id);
+        return context.Products.FirstOrDefault(x => x.ProductId == id);
     }
 
     /// <summary>
@@ -33,7 +33,8 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
     /// <param name="product">Объект класса препарат</param>
     public void Post(Product product)
     {
-        dataBase.Products.Add(product);
+        context.Products.Add(product);
+        context.SaveChanges();
     }
 
     /// <summary>
@@ -46,9 +47,8 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
         var value = GetById(product.ProductId);
         if (value is null)
             return false;
-        value.ProductGroup = product.ProductGroup;
-        value.ProductCode = product.ProductCode;
-        value.Name = product.Name;
+        context.Entry(value).CurrentValues.SetValues(product);
+        context.SaveChanges();
         return true;
     }
 
@@ -62,7 +62,8 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
         var value = GetById(id);
         if (value is null)
             return false;
-        dataBase.Products.Remove(value);
+        context.Products.Remove(value);
+        context.SaveChanges();
         return true;
     }
 
@@ -73,7 +74,7 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
     public int GetFreeId()
     {
         var ids = new HashSet<int>();
-        foreach (var value in dataBase.Products)
+        foreach (var value in context.Products.ToList())
         {
             ids.Add(value.ProductId);
         }
@@ -92,15 +93,15 @@ public class ProductRepository(DataBase dataBase) : IRepository<Product>
     /// <returns>Список всех аптек, у которых есть в наличии препарат с названием productName, с указанием количества данного препарата в них</returns>
     public List<Tuple<string?, int?>> GetProductCountForEachPharmacy(string productName)
     {
-        return (from pharmacy in dataBase.Pharmacies
-               join pharmacyProduct in dataBase.PharmacyProducts on pharmacy.PharmacyId equals pharmacyProduct.PharmacyId
-               join product in dataBase.Products on pharmacyProduct.ProductId equals product.ProductId
+        return [.. (from pharmacy in context.Pharmacies
+               join pharmacyProduct in context.PharmacyProducts on pharmacy.PharmacyId equals pharmacyProduct.PharmacyId
+               join product in context.Products on pharmacyProduct.ProductId equals product.ProductId
                orderby product.Name
                where product.Name == productName
                select new Tuple<string?, int?>
                (
                    pharmacy.Name,
                    pharmacyProduct.Count
-               )).ToList();
+               ))];
     }
 }

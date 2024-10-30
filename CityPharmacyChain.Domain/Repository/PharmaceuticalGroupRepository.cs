@@ -5,8 +5,8 @@ namespace CityPharmacyChain.Domain.Repository;
 /// <summary>
 /// Репозиторий для работы с сущностями класса фармацевтическая группа
 /// </summary>
-/// <param name="dataBase">Объект базы данных</param>
-public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<PharmaceuticalGroup>
+/// <param name="context">Контекст базы данных</param>
+public class PharmaceuticalGroupRepository(CityPharmacyChainContext context) : IRepository<PharmaceuticalGroup>
 {
     /// <summary>
     /// Метод возвращает все объекты класса фармацевтическая группа из базы данных в виде коллекции
@@ -14,7 +14,7 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
     /// <returns>Коллекция объектов класса фармацевтическая группа</returns>
     public IEnumerable<PharmaceuticalGroup> GetAll()
     {
-        return dataBase.PharmaceuticalGroups;
+        return [.. context.PharmaceuticalGroups];
     }
 
     /// <summary>
@@ -24,7 +24,7 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
     /// <returns>Объект класса фармацевтическая группа</returns>
     public PharmaceuticalGroup? GetById(int id)
     {
-        return dataBase.PharmaceuticalGroups.Find(x => x.PharmaceuticalGroupId == id);
+        return context.PharmaceuticalGroups.FirstOrDefault(x => x.PharmaceuticalGroupId == id);
     }
 
     /// <summary>
@@ -33,7 +33,8 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
     /// <param name="pharmaceuticalGroup">Объект класса фармацевтическая группа</param>
     public void Post(PharmaceuticalGroup pharmaceuticalGroup)
     {
-        dataBase.PharmaceuticalGroups.Add(pharmaceuticalGroup);
+        context.PharmaceuticalGroups.Add(pharmaceuticalGroup);
+        context.SaveChanges();
     }
 
     /// <summary>
@@ -46,8 +47,8 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
         var value = GetById(pharmaceuticalGroup.PharmaceuticalGroupId);
         if (value is null)
             return false;
-        value.ProductId = pharmaceuticalGroup.ProductId;
-        value.Name = pharmaceuticalGroup.Name;
+        context.Entry(value).CurrentValues.SetValues(pharmaceuticalGroup);
+        context.SaveChanges();
         return true;
     }
 
@@ -61,7 +62,8 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
         var value = GetById(id);
         if (value is null)
             return false;
-        dataBase.PharmaceuticalGroups.Remove(value);
+        context.PharmaceuticalGroups.Remove(value);
+        context.SaveChanges();
         return true;
     }
 
@@ -72,7 +74,7 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
     public int GetFreeId()
     {
         var ids = new HashSet<int>();
-        foreach(var value in dataBase.PharmaceuticalGroups)
+        foreach(var value in context.PharmaceuticalGroups.ToList())
         {
             ids.Add(value.PharmaceuticalGroupId);
         }
@@ -91,14 +93,14 @@ public class PharmaceuticalGroupRepository(DataBase dataBase) : IRepository<Phar
     public List<Tuple<string?, string?, decimal?>> GetPharmaceuticalGroupPriceForEachPharmacy()
     {
         var result = new List<Tuple<string?, string?, decimal?>>();
-        foreach (var item in dataBase.Pharmacies)
+        foreach (var item in context.Pharmacies)
         {
             var pharmaceuticalGroupPriceForPharmacy =
-                    (from pharmaceuticalGroup in dataBase.PharmaceuticalGroups
-                     join product in dataBase.Products on pharmaceuticalGroup.ProductId equals product.ProductId
-                     join pharmacyProduct in dataBase.PharmacyProducts on product.ProductId equals pharmacyProduct.ProductId
-                     join pharmacy in dataBase.Pharmacies on pharmacyProduct.PharmacyId equals pharmacy.PharmacyId
-                     join priceListEntry in dataBase.Prices on product.ProductId equals priceListEntry.ProductId
+                    (from pharmaceuticalGroup in context.PharmaceuticalGroups
+                     join product in context.Products on pharmaceuticalGroup.ProductId equals product.ProductId
+                     join pharmacyProduct in context.PharmacyProducts on product.ProductId equals pharmacyProduct.ProductId
+                     join pharmacy in context.Pharmacies on pharmacyProduct.PharmacyId equals pharmacy.PharmacyId
+                     join priceListEntry in context.Prices on product.ProductId equals priceListEntry.ProductId
                      select new
                      {
                          pharmaceuticalGroup.Name,

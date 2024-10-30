@@ -5,8 +5,8 @@ namespace CityPharmacyChain.Domain.Repository;
 /// <summary>
 /// Репозиторий для работы с сущностями класса связь препарат-аптека
 /// </summary>
-/// <param name="dataBase">Объект базы данных</param>
-public class PharmacyProductRepository(DataBase dataBase) : IRepository<PharmacyProduct>
+/// <param name="context">Контекст базы данных</param>
+public class PharmacyProductRepository(CityPharmacyChainContext context) : IRepository<PharmacyProduct>
 {
     /// <summary>
     /// Метод возвращает все объекты класса связь препарат-аптека из базы данных в виде коллекции
@@ -14,7 +14,7 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
     /// <returns>Коллекция объектов класса связь препарат-аптека</returns>
     public IEnumerable<PharmacyProduct> GetAll()
     {
-        return dataBase.PharmacyProducts;
+        return [.. context.PharmacyProducts];
     }
 
     /// <summary>
@@ -24,7 +24,7 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
     /// <returns>Объект класса связь препарат-аптека</returns>
     public PharmacyProduct? GetById(int id)
     {
-        return dataBase.PharmacyProducts.Find(x => x.PharmacyProductId == id);
+        return context.PharmacyProducts.FirstOrDefault(x => x.PharmacyProductId == id);
     }
 
     /// <summary>
@@ -33,7 +33,8 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
     /// <param name="pharmacyProduct">Объект класса связь препарат-аптека</param>
     public void Post(PharmacyProduct pharmacyProduct)
     {
-        dataBase.PharmacyProducts.Add(pharmacyProduct);
+        context.PharmacyProducts.Add(pharmacyProduct);
+        context.SaveChanges();
     }
 
     /// <summary>
@@ -46,10 +47,8 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
         var value = GetById(pharmacyProduct.PharmacyProductId);
         if (value is null)
             return false;
-        value.ProductId = pharmacyProduct.ProductId;
-        value.PharmacyId = pharmacyProduct.PharmacyId;
-        value.Price = pharmacyProduct.Price;
-        value.Count = pharmacyProduct.Count;
+        context.Entry(value).CurrentValues.SetValues(pharmacyProduct);
+        context.SaveChanges();
         return true;
     }
 
@@ -63,7 +62,8 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
         var value = GetById(id);
         if (value is null)
             return false;
-        dataBase.PharmacyProducts.Remove(value);
+        context.PharmacyProducts.Remove(value);
+        context.SaveChanges();
         return true;
     }
 
@@ -74,7 +74,7 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
     public int GetFreeId()
     {
         var ids = new HashSet<int>();
-        foreach (var value in dataBase.PharmacyProducts)
+        foreach (var value in context.PharmacyProducts.ToList())
         {
             ids.Add(value.PharmacyProductId);
         }
@@ -96,9 +96,9 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
     public List<Tuple<string?, int?, int?>> GetTopFivePharmaciesBySoldVolume(string productName, DateTime start, DateTime end)
     {
         var tmpMaxProductSoldVolumes = 
-            (from pharmacy in dataBase.Pharmacies
-            join priceListEntry in dataBase.Prices on pharmacy.PharmacyId equals priceListEntry.PharmacyId
-            join product in dataBase.Products on priceListEntry.ProductId equals product.ProductId
+            (from pharmacy in context.Pharmacies
+            join priceListEntry in context.Prices on pharmacy.PharmacyId equals priceListEntry.PharmacyId
+            join product in context.Products on priceListEntry.ProductId equals product.ProductId
             where product.Name == productName && (priceListEntry.SaleDate > start && priceListEntry.SaleDate < end)
             group priceListEntry by priceListEntry.PharmacyId into groups
             select new
@@ -107,14 +107,14 @@ public class PharmacyProductRepository(DataBase dataBase) : IRepository<Pharmacy
                 SoldCount = groups.Count(),
                 SoldVolume = groups.Sum(p => p.SoldCount),
             }).ToList();
-        return (from maxProductSoldVolume in tmpMaxProductSoldVolumes
-                join pharmacy in dataBase.Pharmacies on maxProductSoldVolume.PharmacyId equals pharmacy.PharmacyId
+        return [.. (from maxProductSoldVolume in tmpMaxProductSoldVolumes
+                join pharmacy in context.Pharmacies on maxProductSoldVolume.PharmacyId equals pharmacy.PharmacyId
                 orderby maxProductSoldVolume.SoldCount descending, maxProductSoldVolume.SoldVolume descending
                 select new Tuple<string?, int?, int?>
                 (
                     pharmacy.Name,
                     maxProductSoldVolume.SoldCount,
                     maxProductSoldVolume.SoldVolume
-                )).Take(5).ToList();
+                )).Take(5)];
     }
 }

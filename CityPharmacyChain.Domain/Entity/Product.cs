@@ -10,6 +10,7 @@ namespace CityPharmacyChain.Domain.Entity;
 /// <param name="productCode">Код препарата</param>
 /// <param name="name">Название препарата</param>
 /// <param name="productGroup">Товарная группа препарата</param>
+[Table("product")]
 public class Product(int productId = 0, int? productCode = null, string? name = null, string? productGroup = null)
 {
     /// <summary>

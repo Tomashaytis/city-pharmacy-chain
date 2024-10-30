@@ -5,8 +5,8 @@ namespace CityPharmacyChain.Domain.Repository;
 /// <summary>
 /// Репозиторий для работы с сущностями класса запись в прайс-листе
 /// </summary>
-/// <param name="dataBase">Объект базы данных</param>
-public class PriceListEntryRepository(DataBase dataBase) : IRepository<PriceListEntry>
+/// <param name="context">Контекст базы данных</param>
+public class PriceListEntryRepository(CityPharmacyChainContext context) : IRepository<PriceListEntry>
 {
     /// <summary>
     /// Метод возвращает все объекты класса запись в прайс-листе из базы данных в виде коллекции
@@ -14,7 +14,7 @@ public class PriceListEntryRepository(DataBase dataBase) : IRepository<PriceList
     /// <returns>Коллекция объектов класса запись в прайс-листе</returns>
     public IEnumerable<PriceListEntry> GetAll()
     {
-        return dataBase.Prices;
+        return [.. context.Prices];
     }
 
     /// <summary>
@@ -24,7 +24,7 @@ public class PriceListEntryRepository(DataBase dataBase) : IRepository<PriceList
     /// <returns>Объект класса запись в прайс-листе</returns>
     public PriceListEntry? GetById(int id)
     {
-        return dataBase.Prices.Find(x => x.PriceListEntryId == id);
+        return context.Prices.FirstOrDefault(x => x.PriceListEntryId == id);
     }
 
     /// <summary>
@@ -33,7 +33,8 @@ public class PriceListEntryRepository(DataBase dataBase) : IRepository<PriceList
     /// <param name="priceListEntry">Объект класса запись в прайс-листе</param>
     public void Post(PriceListEntry priceListEntry)
     {
-        dataBase.Prices.Add(priceListEntry);
+        context.Prices.Add(priceListEntry);
+        context.SaveChanges();
     }
 
     /// <summary>
@@ -46,12 +47,8 @@ public class PriceListEntryRepository(DataBase dataBase) : IRepository<PriceList
         var value = GetById(priceListEntry.PriceListEntryId);
         if (value is null)
             return false;
-        value.ProductId = priceListEntry.ProductId;
-        value.PharmacyId = priceListEntry.PharmacyId;
-        value.Manufacturer = priceListEntry.Manufacturer;
-        value.SaleDate = priceListEntry.SaleDate;;
-        value.PaymentType = priceListEntry.PaymentType;
-        value.SoldCount = priceListEntry.SoldCount;
+        context.Entry(value).CurrentValues.SetValues(priceListEntry);
+        context.SaveChanges();
         return true;
     }
 
@@ -65,7 +62,8 @@ public class PriceListEntryRepository(DataBase dataBase) : IRepository<PriceList
         var value = GetById(id);
         if (value is null)
             return false;
-        dataBase.Prices.Remove(value);
+        context.Prices.Remove(value);
+        context.SaveChanges();
         return true;
     }
 
@@ -76,7 +74,7 @@ public class PriceListEntryRepository(DataBase dataBase) : IRepository<PriceList
     public int GetFreeId()
     {
         var ids = new HashSet<int>();
-        foreach (var value in dataBase.Prices)
+        foreach (var value in context.Prices.ToList())
         {
             ids.Add(value.PriceListEntryId);
         }

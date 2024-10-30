@@ -9,17 +9,17 @@ namespace CityPharmacyChain.Api.Dto;
 /// <param name="pharmacyId">Идентификатор аптеки</param>
 /// <param name="count">Количество препарата на складе аптеки</param>
 /// <param name="price">Цена препарата</param>
-public class PharmacyProductDto(int? productId = null, int? pharmacyId = null, int? count = null, decimal? price = null)
+public class PharmacyProductDto(int productId = 0, int pharmacyId = 0, int? count = null, decimal? price = null)
 {
     /// <summary>
     /// Идентификатор препарата
     /// </summary>
-    public int? ProductId { get; set; } = productId;
+    public int ProductId { get; set; } = productId;
 
     /// <summary>
     /// Идентификатор аптеки
     /// </summary>
-    public int? PharmacyId { get; set; } = pharmacyId;
+    public int PharmacyId { get; set; } = pharmacyId;
 
     /// <summary>
     /// Количество препарата на складе аптеки

@@ -3,12 +3,18 @@
 namespace CityPharmacyChain.Api.Dto;
 
 /// <summary>
-/// Класс DTO для сущности класса фармацевтическая группа
+/// Класс DTO для сущности класса фармацевтическая группа, содержащий её идентификатор
 /// </summary>
+/// <param name="pharmaceuticalGroupId">Идентификатор фармацевтической группы</param>
 /// <param name="productId">Идентификатор препарата</param>
 /// <param name="name">Название фармацевтической группы</param>
-public class PharmaceuticalGroupDto(int productId = 0, string? name = null)
+public class PharmaceuticalGroupFullDto(int pharmaceuticalGroupId = 0,  int productId = 0, string? name = null)
 {
+    /// <summary>
+    /// Идентификатор фармацевтической группы
+    /// </summary>
+    public int PharmaceuticalGroupId { get; set; } = pharmaceuticalGroupId;
+
     /// <summary>
     /// Идентификатор препарата
     /// </summary>

@@ -23,19 +23,17 @@ public class Program
 
         builder.Services.AddDbContext<CityPharmacyChainContext>(options => options.UseMySql(builder.Configuration.GetConnectionString("MySQL"), new MySqlServerVersion(new Version(8, 0, 39))));
 
-        builder.Services.AddSingleton<PharmacyService>();
-        builder.Services.AddSingleton<ProductService>();
-        builder.Services.AddSingleton<PharmaceuticalGroupService>();
-        builder.Services.AddSingleton<PriceListEntryService>();
-        builder.Services.AddSingleton<PharmacyProductService>();
+        builder.Services.AddScoped<PharmacyService>();
+        builder.Services.AddScoped<ProductService>();
+        builder.Services.AddScoped<PharmaceuticalGroupService>();
+        builder.Services.AddScoped<PriceListEntryService>();
+        builder.Services.AddScoped<PharmacyProductService>();
 
-        builder.Services.AddSingleton<PharmacyRepository>();
-        builder.Services.AddSingleton<ProductRepository>();
-        builder.Services.AddSingleton<PharmaceuticalGroupRepository>();
-        builder.Services.AddSingleton<PriceListEntryRepository>();
-        builder.Services.AddSingleton<PharmacyProductRepository>();
-
-        builder.Services.AddSingleton<DataBase>();
+        builder.Services.AddScoped<PharmacyRepository>();
+        builder.Services.AddScoped<ProductRepository>();
+        builder.Services.AddScoped<PharmaceuticalGroupRepository>();
+        builder.Services.AddScoped<PriceListEntryRepository>();
+        builder.Services.AddScoped<PharmacyProductRepository>();
 
         builder.Services.AddAutoMapper(typeof(Mapping));
 
