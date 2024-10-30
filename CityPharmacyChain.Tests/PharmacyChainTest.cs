@@ -94,7 +94,7 @@ namespace CityPharmacyChain.Tests
                 group priceListEntry by priceListEntry.PharmacyId into results
                 select new
                 {
-                    PharmacyId = results.Key ?? 0,
+                    PharmacyId = results.Key,
                     SoldCount = results.Count(),
                     SoldVolume = results.Sum(p => p.SoldCount),
                 }).ToList();

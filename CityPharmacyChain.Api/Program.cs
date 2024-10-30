@@ -1,5 +1,7 @@
 using CityPharmacyChain.Api.Services;
+using CityPharmacyChain.Domain;
 using CityPharmacyChain.Domain.Repository;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace CityPharmacyChain.Api;
@@ -18,6 +20,8 @@ public class Program
             xmlFilename = $"{typeof(IRepository<>).Assembly.GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
+
+        builder.Services.AddDbContext<CityPharmacyChainContext>(options => options.UseMySql(builder.Configuration.GetConnectionString("MySQL"), new MySqlServerVersion(new Version(8, 0, 39))));
 
         builder.Services.AddSingleton<PharmacyService>();
         builder.Services.AddSingleton<ProductService>();

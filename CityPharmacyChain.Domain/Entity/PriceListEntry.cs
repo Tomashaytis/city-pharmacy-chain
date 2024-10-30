@@ -1,4 +1,7 @@
-﻿namespace CityPharmacyChain.Domain.Entity;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CityPharmacyChain.Domain.Entity;
 
 /// <summary>
 /// Класс Entity для сущности класса запись в прайс-листе
@@ -10,40 +13,61 @@
 /// <param name="manufacturer">Производитель препарата</param>
 /// <param name="paymentType">Тип оплаты (наличные/картой)</param>
 /// <param name="saleDate">Дата и время продажи препарата</param>
-public class PriceListEntry(int priceListEntryId = 0, int? productId = null, int? pharmacyId = null, int? soldCount = null, string? manufacturer = null, PaymentType? paymentType = null, DateTime? saleDate = null)
+[Table("price_list")]
+public class PriceListEntry(int priceListEntryId = 0, int productId = 0, int pharmacyId = 0, int? soldCount = null, string? manufacturer = null, PaymentType paymentType = PaymentType.Null, DateTime? saleDate = null)
 {
     /// <summary>
     /// Идентификатор записи в прайс-листе
     /// </summary>
+    [Key]
+    [Column("price_list_entry_id")]
     public int PriceListEntryId { get; set; } = priceListEntryId;
 
     /// <summary>
     /// Идентификатор препарата
     /// </summary>
-    public int? ProductId { get; set; } = productId;
+    [ForeignKey("product_id")]
+    [Column("product_id")]
+    public int ProductId { get; set; } = productId;
 
     /// <summary>
     /// Идентификатор аптеки
     /// </summary>
-    public int? PharmacyId { get; set; } = pharmacyId;
-    
+    [ForeignKey("pharmacy_id")]
+    [Column("pharmacy_id")]
+    public int PharmacyId { get; set; } = pharmacyId;
+
     /// <summary>
     /// Количество проданных препаратов
     /// </summary>
+    [Column("sold_count")]
     public int? SoldCount { get; set; } = soldCount;
-    
+
     /// <summary>
     /// Производитель препарата
     /// </summary>
+    [Column("manufacturer")]
     public string? Manufacturer { get; set; } = manufacturer;
-    
+
     /// <summary>
     /// Тип оплаты (наличные/картой)
     /// </summary>
-    public PaymentType? PaymentType { get; set; } = paymentType;
+    [Column("payment_type")]
+    public PaymentType PaymentType { get; set; } = paymentType;
 
     /// <summary>
     /// Дата и время продажи препарата
     /// </summary>
+    [Column("sale_date")]
     public DateTime? SaleDate { get; set; } = saleDate;
+
+    /// <summary>
+    /// Препарат, к которому относится запись в прайс-листе
+    /// </summary>
+    public Product? Product { get; set; } = null;
+
+    /// <summary>
+    /// Аптека, к которой относится запись в прайс-листе
+    /// </summary>
+    public Pharmacy? Pharmacy { get; set; } = null;
 }

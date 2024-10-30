@@ -14,4 +14,9 @@ public enum PaymentType
     /// Оплата картой
     /// </summary>
     Cashless,
+
+    /// <summary>
+    /// Тип оплаты не задан
+    /// </summary>
+    Null
 }
