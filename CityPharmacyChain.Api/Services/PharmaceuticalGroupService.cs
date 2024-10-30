@@ -10,15 +10,15 @@ namespace CityPharmacyChain.Api.Services;
 /// </summary>
 /// <param name="repository">Репозиторий для работы с сущностями класса фармацевтическая группа</param>
 /// <param name="mapper">Средство для составления отображения между сущностями класса DTO и Entity</param>
-public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository, IMapper mapper) : IService<PharmaceuticalGroup, PharmaceuticalGroupDto>
+public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository, IMapper mapper) : IService<PharmaceuticalGroupFullDto, PharmaceuticalGroupDto>
 {
     /// <summary>
     /// Метод возвращает все объекты класса фармацевтическая группа из базы данных в виде коллекции
     /// </summary>
     /// <returns>Коллекция объектов класса фармацевтическая группа</returns>
-    public IEnumerable<PharmaceuticalGroup> GetAll()
+    public IEnumerable<PharmaceuticalGroupFullDto> GetAll()
     {
-        return mapper.Map<IEnumerable<PharmaceuticalGroup>>(repository.GetAll());
+        return mapper.Map<IEnumerable<PharmaceuticalGroupFullDto>>(repository.GetAll());
     }
 
     /// <summary>
@@ -37,12 +37,12 @@ public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository
     /// <param name="pharmaceuticalGroupDto">Объект класса фармацевтическая группа</param>
     /// <return>Добавленный объект класса фармацевтическая группа</return>
     
-    public PharmaceuticalGroup Post(PharmaceuticalGroupDto pharmaceuticalGroupDto)
+    public PharmaceuticalGroupFullDto Post(PharmaceuticalGroupDto pharmaceuticalGroupDto)
     {
         var entity = mapper.Map<PharmaceuticalGroup>(pharmaceuticalGroupDto);
         entity.PharmaceuticalGroupId = repository.GetFreeId();
         repository.Post(entity);
-        return entity;
+        return mapper.Map< PharmaceuticalGroupFullDto>(entity);
     }
 
     /// <summary>
@@ -51,12 +51,12 @@ public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository
     /// <param name="id">Идентификатор фармацевтической группы</param>
     /// <param name="pharmaceuticalGroupDto">Данные для объекта класса фармацевтическая группа</param>
     /// <returns>Изменённый объект класса фармацевтическая группа или null при отсутствии объекта в базе данных</returns>
-    public PharmaceuticalGroup? Put(int id, PharmaceuticalGroupDto pharmaceuticalGroupDto)
+    public PharmaceuticalGroupFullDto? Put(int id, PharmaceuticalGroupDto pharmaceuticalGroupDto)
     {
         var entity = mapper.Map<PharmaceuticalGroup>(pharmaceuticalGroupDto);
         entity.PharmaceuticalGroupId = id;
         if (repository.Put(entity))
-            return entity;
+            return mapper.Map<PharmaceuticalGroupFullDto>(entity);
         return null;
     }
 

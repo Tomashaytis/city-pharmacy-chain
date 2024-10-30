@@ -5,7 +5,7 @@ namespace CityPharmacyChain.Api.Dto;
 /// <summary>
 /// Класс DTO для сущности класса аптека, содержащий её идентификатор
 /// </summary>
-/// <param name="pharmacyId">Номер аптеки</param>
+/// <param name="pharmacyId">Идентификатор аптеки</param>
 /// <param name="pharmacyNumber">Номер аптеки</param>
 /// <param name="name">Название аптеки</param>
 /// <param name="phoneNumber">Телефон аптеки</param>

@@ -10,15 +10,15 @@ namespace CityPharmacyChain.Api.Services;
 /// </summary>
 /// <param name="repository">Репозиторий для работы с сущностями класса связь препарат-аптека</param>
 /// <param name="mapper">Средство для составления отображения между сущностями класса DTO и Entity</param>
-public class PharmacyProductService(PharmacyProductRepository repository, IMapper mapper) : IService<PharmacyProduct, PharmacyProductDto>
+public class PharmacyProductService(PharmacyProductRepository repository, IMapper mapper) : IService<PharmacyProductFullDto, PharmacyProductDto>
 {
     /// <summary>
     /// Метод возвращает все объекты класса связь препарат-аптека из базы данных в виде коллекции
     /// </summary>
     /// <returns>Коллекция объектов класса связь препарат-аптека</returns>
-    public IEnumerable<PharmacyProduct> GetAll()
+    public IEnumerable<PharmacyProductFullDto> GetAll()
     {
-        return mapper.Map<IEnumerable<PharmacyProduct>>(repository.GetAll());
+        return mapper.Map<IEnumerable<PharmacyProductFullDto>>(repository.GetAll());
     }
 
     /// <summary>
@@ -36,12 +36,12 @@ public class PharmacyProductService(PharmacyProductRepository repository, IMappe
     /// </summary>
     /// <param name="pharmacyProductDto">Объект класса связь препарат-аптека</param>
     /// <return>Добавленный объект класса связь препарат-аптека</return>
-    public PharmacyProduct Post(PharmacyProductDto pharmacyProductDto)
+    public PharmacyProductFullDto Post(PharmacyProductDto pharmacyProductDto)
     {
         var entity = mapper.Map<PharmacyProduct>(pharmacyProductDto);
         entity.PharmacyProductId = repository.GetFreeId();
         repository.Post(entity);
-        return entity;
+        return mapper.Map<PharmacyProductFullDto>(entity);
     }
 
     /// <summary>
@@ -50,12 +50,12 @@ public class PharmacyProductService(PharmacyProductRepository repository, IMappe
     /// <param name="id">Идентификатор связи препарат-аптека</param>
     /// <param name="pharmacyProductDto">Объект класса связь препарат-аптека</param>
     /// <returns>Изменённый объект класса связь препарат-аптека или null при отсутствии объекта в базе данных</returns>
-    public PharmacyProduct? Put(int id, PharmacyProductDto pharmacyProductDto)
+    public PharmacyProductFullDto? Put(int id, PharmacyProductDto pharmacyProductDto)
     {
         var entity = mapper.Map<PharmacyProduct>(pharmacyProductDto);
         entity.PharmacyProductId = id;
         if (repository.Put(entity))
-            return entity;
+            return mapper.Map<PharmacyProductFullDto>(entity);
         return null;
     }
 

@@ -19,5 +19,10 @@ public class Mapping : Profile
         CreateMap<Product, ProductDto>().ReverseMap();
         CreateMap<PriceListEntry, PriceListEntryDto>().ReverseMap();
         CreateMap<PharmacyProduct, PharmacyProductDto>().ReverseMap();
+        CreateMap<Pharmacy, PharmacyFullDto>().ReverseMap();
+        CreateMap<PharmaceuticalGroup, PharmaceuticalGroupFullDto>().ReverseMap();
+        CreateMap<Product, ProductFullDto>().ReverseMap();
+        CreateMap<PriceListEntry, PriceListEntryFullDto>().ReverseMap();
+        CreateMap<PharmacyProduct, PharmacyProductFullDto>().ReverseMap();
     }
 }

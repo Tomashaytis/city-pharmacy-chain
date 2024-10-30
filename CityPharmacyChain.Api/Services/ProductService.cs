@@ -10,15 +10,15 @@ namespace CityPharmacyChain.Api.Services;
 /// </summary>
 /// <param name="repository">Репозиторий для работы с сущностями класса препарат</param>
 /// <param name="mapper">Средство для составления отображения между сущностями класса DTO и Entity</param>
-public class ProductService(ProductRepository repository, IMapper mapper) : IService<Product, ProductDto>
+public class ProductService(ProductRepository repository, IMapper mapper) : IService<ProductFullDto, ProductDto>
 {
     /// <summary>
     /// Метод возвращает все объекты класса препарат из базы данных в виде коллекции
     /// </summary>
     /// <returns>Коллекция объектов класса препарат</returns>
-    public IEnumerable<Product> GetAll()
+    public IEnumerable<ProductFullDto> GetAll()
     {
-        return mapper.Map<IEnumerable<Product>>(repository.GetAll());
+        return mapper.Map<IEnumerable<ProductFullDto>>(repository.GetAll());
     }
 
     /// <summary>
@@ -36,12 +36,12 @@ public class ProductService(ProductRepository repository, IMapper mapper) : ISer
     /// </summary>
     /// <param name="productDto">Объект класса препарат</param>
     /// <return>Добавленный объект класса препарат</return>
-    public Product Post(ProductDto productDto)
+    public ProductFullDto Post(ProductDto productDto)
     {
         var entity = mapper.Map<Product>(productDto);
         entity.ProductId = repository.GetFreeId();
         repository.Post(entity);
-        return entity;
+        return mapper.Map<ProductFullDto>(productDto);
     }
 
     /// <summary>
@@ -50,12 +50,12 @@ public class ProductService(ProductRepository repository, IMapper mapper) : ISer
     /// <param name="id">Идентификатор препарата</param>
     /// <param name="productDto">Объект класса препарат</param>
     /// <returns>Изменённый объект класса препарат или null при отсутствии объекта в базе данных</returns>
-    public Product? Put(int id, ProductDto productDto)
+    public ProductFullDto? Put(int id, ProductDto productDto)
     {
         var entity = mapper.Map<Product>(productDto);
         entity.ProductId = id;
         if (repository.Put(entity))
-            return entity;
+            return mapper.Map<ProductFullDto>(productDto);
         return null;
     }
 

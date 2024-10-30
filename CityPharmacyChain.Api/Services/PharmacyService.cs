@@ -10,15 +10,15 @@ namespace CityPharmacyChain.Api.Services;
 /// </summary>
 /// <param name="repository">Репозиторий для работы с сущностями класса аптека</param>
 /// <param name="mapper">Средство для составления отображения между сущностями класса DTO и Entity</param>
-public class PharmacyService(PharmacyRepository repository, IMapper mapper) : IService<Pharmacy, PharmacyDto>
+public class PharmacyService(PharmacyRepository repository, IMapper mapper) : IService<PharmacyFullDto, PharmacyDto>
 {
     /// <summary>
     /// Метод возвращает все объекты класса аптека из базы данных в виде коллекции
     /// </summary>
     /// <returns>Коллекция объектов класса аптека</returns>
-    public IEnumerable<Pharmacy> GetAll()
+    public IEnumerable<PharmacyFullDto> GetAll()
     {
-        return mapper.Map<IEnumerable<Pharmacy>>(repository.GetAll());
+        return mapper.Map<IEnumerable<PharmacyFullDto>>(repository.GetAll());
     }
 
     /// <summary>
@@ -36,12 +36,12 @@ public class PharmacyService(PharmacyRepository repository, IMapper mapper) : IS
     /// </summary>
     /// <param name="pharmacyDto">Объект класса аптека</param>
     /// <return>Добавленный объект класса аптека</return>
-    public Pharmacy Post(PharmacyDto pharmacyDto)
+    public PharmacyFullDto Post(PharmacyDto pharmacyDto)
     {
         var entity = mapper.Map<Pharmacy>(pharmacyDto);
         entity.PharmacyId = repository.GetFreeId();
         repository.Post(entity);
-        return entity;
+        return mapper.Map<PharmacyFullDto>(entity);
     }
 
     /// <summary>
@@ -50,12 +50,12 @@ public class PharmacyService(PharmacyRepository repository, IMapper mapper) : IS
     /// <param name="id">Идентификатор аптеки</param>
     /// <param name="pharmacyDto">Объект класса аптека</param>
     /// <returns>Изменённый объект класса аптека или null при отсутствии объекта в базе данных</returns>
-    public Pharmacy? Put(int id, PharmacyDto pharmacyDto)
+    public PharmacyFullDto? Put(int id, PharmacyDto pharmacyDto)
     {
         var entity = mapper.Map<Pharmacy>(pharmacyDto);
         entity.PharmacyId = id;
         if (repository.Put(entity))
-            return entity;
+            return mapper.Map<PharmacyFullDto>(entity); ;
         return null;
     }
 
