@@ -3,7 +3,7 @@
 /// <summary>
 /// Интерфейс для сервисов
 /// </summary>
-/// <typeparam name="T">Тип сущности класса Entity</typeparam>
+/// <typeparam name="T">Тип сущности класса Full DTO</typeparam>
 /// <typeparam name="D">Тип сущности класса DTO</typeparam>
 public interface IService<T, D>
 {

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityPharmacyChain.Domain.Migrations
 {
     [DbContext(typeof(CityPharmacyChainContext))]
-    [Migration("20241030074429_Initial")]
+    [Migration("20241031050012_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -114,7 +114,7 @@ namespace CityPharmacyChain.Domain.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("PharmacyProducts");
+                    b.ToTable("pharmacy_product");
                 });
 
             modelBuilder.Entity("CityPharmacyChain.Domain.Entity.PriceListEntry", b =>
@@ -183,7 +183,7 @@ namespace CityPharmacyChain.Domain.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("Products");
+                    b.ToTable("product");
                 });
 
             modelBuilder.Entity("CityPharmacyChain.Domain.Entity.PharmaceuticalGroup", b =>

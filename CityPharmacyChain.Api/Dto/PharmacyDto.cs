@@ -27,7 +27,7 @@ public class PharmacyDto(int? pharmacyNumber = null, string? name = null, long? 
     /// <summary>
     /// Телефон аптеки
     /// </summary>
-    [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Phone number should be valid.")]
+    [RegularExpression(@"^(?!0+$)(\+\d{1,3}[- ]?)?(?!0+$)\d{10,15}$", ErrorMessage = "Phone number should be valid.")]
     public long? PhoneNumber { get; set; } = phoneNumber;
 
     /// <summary>

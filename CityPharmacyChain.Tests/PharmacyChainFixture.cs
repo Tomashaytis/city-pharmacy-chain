@@ -2,14 +2,39 @@
 
 namespace CityPharmacyChain.Tests;
 
+/// <summary>
+/// Класс Fixture с набором данных, используемых в тестах
+/// </summary>
 public class PharmacyChainFixture
 {
+    /// <summary>
+    /// Коллекция записей в прайс-листе
+    /// </summary>
     public List<PriceListEntry> PriceList { get; set; }
+
+    /// <summary>
+    /// Коллекция аптек
+    /// </summary>
     public List<Pharmacy> PharmacyList { get; set; }
+
+    /// <summary>
+    /// Коллекция препаратов
+    /// </summary>
     public List<Product> ProductList { get; set; }
+
+    /// <summary>
+    /// Коллекция фармацевтических групп
+    /// </summary>
     public List<PharmaceuticalGroup> PharmaceuticalGroupList { get; set; }
+
+    /// <summary>
+    /// Коллекция связей препарат-аптека
+    /// </summary>
     public List<PharmacyProduct> PharmacyProductList { get; set; }
 
+    /// <summary>
+    /// Конструктор с инициализацией данных для тестов
+    /// </summary>
     public PharmacyChainFixture()
     {
         PharmacyList =

@@ -36,7 +36,6 @@ public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository
     /// </summary>
     /// <param name="pharmaceuticalGroupDto">Объект класса фармацевтическая группа</param>
     /// <return>Добавленный объект класса фармацевтическая группа</return>
-    
     public PharmaceuticalGroupFullDto Post(PharmaceuticalGroupDto pharmaceuticalGroupDto)
     {
         var entity = mapper.Map<PharmaceuticalGroup>(pharmaceuticalGroupDto);
@@ -59,7 +58,6 @@ public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository
             return mapper.Map<PharmaceuticalGroupFullDto>(entity);
         return null;
     }
-
 
     /// <summary>
     /// Метод удаляет существующий объект класса фармацевтическая группа из базы данных по его идентификатору

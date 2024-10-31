@@ -2,7 +2,6 @@
 using CityPharmacyChain.Api.Dto;
 using Microsoft.AspNetCore.Mvc;
 using CityPharmacyChain.Domain.Entity;
-using Microsoft.Extensions.Logging;
 
 namespace CityPharmacyChain.Api.Controllers;
 

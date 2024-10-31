@@ -37,7 +37,7 @@ namespace CityPharmacyChain.Domain.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "product",
                 columns: table => new
                 {
                     product_id = table.Column<int>(type: "int", nullable: false)
@@ -50,7 +50,7 @@ namespace CityPharmacyChain.Domain.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.product_id);
+                    table.PrimaryKey("PK_product", x => x.product_id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -68,16 +68,16 @@ namespace CityPharmacyChain.Domain.Migrations
                 {
                     table.PrimaryKey("PK_pharmaceutical_group", x => x.pharmaceutical_group_id);
                     table.ForeignKey(
-                        name: "FK_pharmaceutical_group_Products_product_id",
+                        name: "FK_pharmaceutical_group_product_product_id",
                         column: x => x.product_id,
-                        principalTable: "Products",
+                        principalTable: "product",
                         principalColumn: "product_id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "PharmacyProducts",
+                name: "pharmacy_product",
                 columns: table => new
                 {
                     pharmacy_product_id = table.Column<int>(type: "int", nullable: false)
@@ -89,18 +89,18 @@ namespace CityPharmacyChain.Domain.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PharmacyProducts", x => x.pharmacy_product_id);
+                    table.PrimaryKey("PK_pharmacy_product", x => x.pharmacy_product_id);
                     table.ForeignKey(
-                        name: "FK_PharmacyProducts_Products_product_id",
-                        column: x => x.product_id,
-                        principalTable: "Products",
-                        principalColumn: "product_id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PharmacyProducts_pharmacy_pharmacy_id",
+                        name: "FK_pharmacy_product_pharmacy_pharmacy_id",
                         column: x => x.pharmacy_id,
                         principalTable: "pharmacy",
                         principalColumn: "pharmacy_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_pharmacy_product_product_product_id",
+                        column: x => x.product_id,
+                        principalTable: "product",
+                        principalColumn: "product_id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -124,16 +124,16 @@ namespace CityPharmacyChain.Domain.Migrations
                 {
                     table.PrimaryKey("PK_price_list", x => x.price_list_entry_id);
                     table.ForeignKey(
-                        name: "FK_price_list_Products_product_id",
-                        column: x => x.product_id,
-                        principalTable: "Products",
-                        principalColumn: "product_id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_price_list_pharmacy_pharmacy_id",
                         column: x => x.pharmacy_id,
                         principalTable: "pharmacy",
                         principalColumn: "pharmacy_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_price_list_product_product_id",
+                        column: x => x.product_id,
+                        principalTable: "product",
+                        principalColumn: "product_id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -144,13 +144,13 @@ namespace CityPharmacyChain.Domain.Migrations
                 column: "product_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PharmacyProducts_pharmacy_id",
-                table: "PharmacyProducts",
+                name: "IX_pharmacy_product_pharmacy_id",
+                table: "pharmacy_product",
                 column: "pharmacy_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PharmacyProducts_product_id",
-                table: "PharmacyProducts",
+                name: "IX_pharmacy_product_product_id",
+                table: "pharmacy_product",
                 column: "product_id");
 
             migrationBuilder.CreateIndex(
@@ -171,16 +171,16 @@ namespace CityPharmacyChain.Domain.Migrations
                 name: "pharmaceutical_group");
 
             migrationBuilder.DropTable(
-                name: "PharmacyProducts");
+                name: "pharmacy_product");
 
             migrationBuilder.DropTable(
                 name: "price_list");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "pharmacy");
 
             migrationBuilder.DropTable(
-                name: "pharmacy");
+                name: "product");
         }
     }
 }
