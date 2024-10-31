@@ -25,7 +25,7 @@ public interface IService<T, D>
     /// </summary>
     /// <param name="dto">Объект класса T</param>
     /// <return>Добавленный объект класса T</return>
-    public T Post(D dto);
+    public T? Post(D dto);
 
     /// <summary>
     /// Метод модифицирует существующий объект класса T в базе данных по его идентификатору

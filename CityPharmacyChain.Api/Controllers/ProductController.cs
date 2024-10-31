@@ -57,6 +57,11 @@ public class ProductController(ProductService service, ILogger<Product> logger) 
             return BadRequest(ModelState);
         }
         var entity = service.Post(productDto);
+        if (entity is null)
+        {
+            logger.LogError("{date} : BadRequest : Product cannot be added, because it is referring to non-existent entities.", DateTime.Now);
+            return BadRequest($"Product cannot be added, because it is referring to non-existent entities.");
+        }
         logger.LogInformation("{date} : Post : Post product with id={id}.", DateTime.Now, entity.ProductId);
         return Ok(entity);
     }

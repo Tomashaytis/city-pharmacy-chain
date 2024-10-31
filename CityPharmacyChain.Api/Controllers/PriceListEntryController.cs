@@ -57,6 +57,11 @@ public class PriceListEntryController(PriceListEntryService service, ILogger<Pro
             return BadRequest(ModelState);
         }
         var entity = service.Post(priceListEntryDto);
+        if (entity is null)
+        {
+            logger.LogError("{date} : BadRequest : Price list entry cannot be added, because it is referring to non-existent entities.", DateTime.Now);
+            return BadRequest($"PriceListEntry cannot be added, because it is referring to non-existent entities.");
+        }
         logger.LogInformation("{date} : Post : Post price list entry with id={id}.", DateTime.Now, entity.PriceListEntryId);
         return Ok(entity);
     }

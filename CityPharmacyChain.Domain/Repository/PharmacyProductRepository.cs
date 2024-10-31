@@ -31,10 +31,16 @@ public class PharmacyProductRepository(CityPharmacyChainContext context) : IRepo
     /// Метод добавляет новый объект класса связь препарат-аптека в базу данных 
     /// </summary>
     /// <param name="pharmacyProduct">Объект класса связь препарат-аптека</param>
-    public void Post(PharmacyProduct pharmacyProduct)
+    /// <returns>Успешность операции добавления</returns>
+    public bool Post(PharmacyProduct pharmacyProduct)
     {
+        if (context.Products.FirstOrDefault(x => x.ProductId == pharmacyProduct.ProductId) is null)
+            return false;
+        if (context.Pharmacies.FirstOrDefault(x => x.PharmacyId == pharmacyProduct.PharmacyId) is null)
+            return false;
         context.PharmacyProducts.Add(pharmacyProduct);
         context.SaveChanges();
+        return true;
     }
 
     /// <summary>

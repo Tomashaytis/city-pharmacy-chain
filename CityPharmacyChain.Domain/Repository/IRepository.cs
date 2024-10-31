@@ -23,7 +23,8 @@ public interface IRepository<T>
     /// Метод добавляет новый объект класса T в базу данных 
     /// </summary>
     /// <param name="entity">Объект класса T</param>
-    public void Post(T entity);
+    /// <returns>Успешность операции добавления</returns>
+    public bool Post(T entity);
 
     /// <summary>
     /// Метод модифицирует существующий объект класса T в базе данных

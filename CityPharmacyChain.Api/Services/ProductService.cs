@@ -36,12 +36,13 @@ public class ProductService(ProductRepository repository, IMapper mapper) : ISer
     /// </summary>
     /// <param name="productDto">Объект класса препарат</param>
     /// <return>Добавленный объект класса препарат</return>
-    public ProductFullDto Post(ProductDto productDto)
+    public ProductFullDto? Post(ProductDto productDto)
     {
         var entity = mapper.Map<Product>(productDto);
         entity.ProductId = repository.GetFreeId();
-        repository.Post(entity);
-        return mapper.Map<ProductFullDto>(productDto);
+        if (!repository.Post(entity))
+            return null;
+        return mapper.Map<ProductFullDto>(entity);
     }
 
     /// <summary>
@@ -55,7 +56,7 @@ public class ProductService(ProductRepository repository, IMapper mapper) : ISer
         var entity = mapper.Map<Product>(productDto);
         entity.ProductId = id;
         if (repository.Put(entity))
-            return mapper.Map<ProductFullDto>(productDto);
+            return mapper.Map<ProductFullDto>(entity);
         return null;
     }
 

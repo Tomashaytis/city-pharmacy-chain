@@ -36,12 +36,13 @@ public class PharmaceuticalGroupService(PharmaceuticalGroupRepository repository
     /// </summary>
     /// <param name="pharmaceuticalGroupDto">Объект класса фармацевтическая группа</param>
     /// <return>Добавленный объект класса фармацевтическая группа</return>
-    public PharmaceuticalGroupFullDto Post(PharmaceuticalGroupDto pharmaceuticalGroupDto)
+    public PharmaceuticalGroupFullDto? Post(PharmaceuticalGroupDto pharmaceuticalGroupDto)
     {
         var entity = mapper.Map<PharmaceuticalGroup>(pharmaceuticalGroupDto);
         entity.PharmaceuticalGroupId = repository.GetFreeId();
-        repository.Post(entity);
-        return mapper.Map< PharmaceuticalGroupFullDto>(entity);
+        if (!repository.Post(entity))
+            return null;
+        return mapper.Map<PharmaceuticalGroupFullDto>(entity);
     }
 
     /// <summary>

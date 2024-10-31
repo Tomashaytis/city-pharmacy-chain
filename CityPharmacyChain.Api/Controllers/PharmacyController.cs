@@ -57,6 +57,11 @@ public class PharmacyController(PharmacyService service, ILogger<Product> logger
             return BadRequest(ModelState);
         }
         var entity = service.Post(pharmacyDto);
+        if (entity is null)
+        {
+            logger.LogError("{date} : BadRequest : Pharmacy cannot be added, because it is referring to non-existent entities.", DateTime.Now);
+            return BadRequest($"Pharmacy cannot be added, because it is referring to non-existent entities.");
+        }
         logger.LogInformation("{date} : Post : Post pharmacy with id={id}.", DateTime.Now, entity.PharmacyId);
         return Ok(entity);
     }

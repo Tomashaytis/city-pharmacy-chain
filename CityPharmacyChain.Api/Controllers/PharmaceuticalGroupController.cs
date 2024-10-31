@@ -57,6 +57,11 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service, I
             return BadRequest(ModelState);
         }
         var entity = service.Post(pharmaceuticalGroupDto);
+        if (entity is null)
+        {
+            logger.LogError("{date} : BadRequest : Pharmaceutical group cannot be added, because it is referring to non-existent entities.", DateTime.Now);
+            return BadRequest($"PharmaceuticalGroup cannot be added, because it is referring to non-existent entities.");
+        }
         logger.LogInformation("{date} : Post : Post pharmaceutical group with id={id}.", DateTime.Now, entity.PharmaceuticalGroupId);
         return Ok(entity);
     }

@@ -31,10 +31,16 @@ public class PriceListEntryRepository(CityPharmacyChainContext context) : IRepos
     /// Метод добавляет новый объект класса запись в прайс-листе в базу данных 
     /// </summary>
     /// <param name="priceListEntry">Объект класса запись в прайс-листе</param>
-    public void Post(PriceListEntry priceListEntry)
+    /// <returns>Успешность операции добавления</returns>
+    public bool Post(PriceListEntry priceListEntry)
     {
+        if (context.Products.FirstOrDefault(x => x.ProductId == priceListEntry.ProductId) is null)
+            return false;
+        if (context.Pharmacies.FirstOrDefault(x => x.PharmacyId == priceListEntry.PharmacyId) is null)
+            return false;
         context.Prices.Add(priceListEntry);
         context.SaveChanges();
+        return true;
     }
 
     /// <summary>

@@ -31,10 +31,12 @@ public class PharmacyRepository(CityPharmacyChainContext context) : IRepository<
     /// Метод добавляет новый объект класса аптека в базу данных 
     /// </summary>
     /// <param name="pharmacy">Объект класса аптека</param>
-    public void Post(Pharmacy pharmacy)
+    /// <returns>Успешность операции добавления</returns>
+    public bool Post(Pharmacy pharmacy)
     {
         context.Pharmacies.Add(pharmacy);
         context.SaveChanges();
+        return true;
     }
 
     /// <summary>

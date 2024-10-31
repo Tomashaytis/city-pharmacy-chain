@@ -36,11 +36,12 @@ public class PharmacyProductService(PharmacyProductRepository repository, IMappe
     /// </summary>
     /// <param name="pharmacyProductDto">Объект класса связь препарат-аптека</param>
     /// <return>Добавленный объект класса связь препарат-аптека</return>
-    public PharmacyProductFullDto Post(PharmacyProductDto pharmacyProductDto)
+    public PharmacyProductFullDto? Post(PharmacyProductDto pharmacyProductDto)
     {
         var entity = mapper.Map<PharmacyProduct>(pharmacyProductDto);
         entity.PharmacyProductId = repository.GetFreeId();
-        repository.Post(entity);
+        if (!repository.Post(entity))
+            return null;
         return mapper.Map<PharmacyProductFullDto>(entity);
     }
 

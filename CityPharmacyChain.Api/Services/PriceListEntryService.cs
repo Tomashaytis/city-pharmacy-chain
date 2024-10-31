@@ -36,11 +36,12 @@ public class PriceListEntryService(PriceListEntryRepository repository, IMapper 
     /// </summary>
     /// <param name="priceListEntryDto">Объект класса запись в прайс-листе</param>
     /// <return>Добавленный объект класса запись в прайс-листе</return>
-    public PriceListEntryFullDto Post(PriceListEntryDto priceListEntryDto)
+    public PriceListEntryFullDto? Post(PriceListEntryDto priceListEntryDto)
     {
         var entity = mapper.Map<PriceListEntry>(priceListEntryDto);
         entity.PriceListEntryId = repository.GetFreeId();
-        repository.Post(entity);
+        if (!repository.Post(entity))
+            return null;
         return mapper.Map<PriceListEntryFullDto>(entity);
     }
 

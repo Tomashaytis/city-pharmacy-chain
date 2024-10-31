@@ -31,10 +31,14 @@ public class PharmaceuticalGroupRepository(CityPharmacyChainContext context) : I
     /// Метод добавляет новый объект класса фармацевтическая группа в базу данных 
     /// </summary>
     /// <param name="pharmaceuticalGroup">Объект класса фармацевтическая группа</param>
-    public void Post(PharmaceuticalGroup pharmaceuticalGroup)
+    /// <returns>Успешность операции добавления</returns>
+    public bool Post(PharmaceuticalGroup pharmaceuticalGroup)
     {
+        if (context.Products.FirstOrDefault(x => x.ProductId == pharmaceuticalGroup.ProductId) is null)
+            return false;
         context.PharmaceuticalGroups.Add(pharmaceuticalGroup);
         context.SaveChanges();
+        return true;
     }
 
     /// <summary>
