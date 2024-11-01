@@ -1,5 +1,4 @@
-﻿using CityPharmacyChain.Domain.Entity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CityPharmacyChain.Api.Dto;
 
