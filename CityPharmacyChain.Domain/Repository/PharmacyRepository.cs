@@ -9,6 +9,11 @@ namespace CityPharmacyChain.Domain.Repository;
 public class PharmacyRepository(CityPharmacyChainContext context) : IRepository<Pharmacy>
 {
     /// <summary>
+    /// Свободный идентификатор в базе данных для объектов класса аптека
+    /// </summary>
+    public int FreeId { get; private set; } = context.Pharmacies.Any() ? context.Pharmacies.Max(x => x.PharmacyId) + 1 : 1;
+
+    /// <summary>
     /// Метод возвращает все объекты класса аптека из базы данных в виде коллекции
     /// </summary>
     /// <returns>Коллекция объектов класса аптека</returns>
@@ -70,22 +75,12 @@ public class PharmacyRepository(CityPharmacyChainContext context) : IRepository<
     }
 
     /// <summary>
-    /// Метод возвращает минимальный незанятый идентификатор в базе данных для объектов класса аптека
+    /// Метод возвращает свободный идентификатор в базе данных для объектов класса аптека
     /// </summary>
-    /// <returns>Минимальный незанятый идентификатор</returns>
+    /// <returns>Свободный идентификатор</returns>
     public int GetFreeId()
     {
-        var ids = new HashSet<int>();
-        foreach (var value in context.Pharmacies.ToList())
-        {
-            ids.Add(value.PharmacyId);
-        }
-        for (var i = 1; i < ids.Max(); i++)
-        {
-            if (!ids.Contains(i))
-                return i;
-        }
-        return ids.Max() + 1;
+        return FreeId++;
     }
 
     /// <summary>

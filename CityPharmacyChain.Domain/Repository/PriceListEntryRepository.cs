@@ -9,6 +9,11 @@ namespace CityPharmacyChain.Domain.Repository;
 public class PriceListEntryRepository(CityPharmacyChainContext context) : IRepository<PriceListEntry>
 {
     /// <summary>
+    /// Свободный идентификатор в базе данных для объектов класса запись в прайс-листе
+    /// </summary>
+    public int FreeId { get; private set; } = context.Prices.Any() ? context.Prices.Max(x => x.PriceListEntryId) + 1 : 1;
+
+    /// <summary>
     /// Метод возвращает все объекты класса запись в прайс-листе из базы данных в виде коллекции
     /// </summary>
     /// <returns>Коллекция объектов класса запись в прайс-листе</returns>
@@ -74,21 +79,11 @@ public class PriceListEntryRepository(CityPharmacyChainContext context) : IRepos
     }
 
     /// <summary>
-    /// Метод возвращает минимальный незанятый идентификатор в базе данных для объектов класса запись в прайс-листе
+    /// Метод возвращает свободный идентификатор в базе данных для объектов класса запись в прайс-листе
     /// </summary>
-    /// <returns>Минимальный незанятый идентификатор</returns>
+    /// <returns>Свободный идентификатор</returns>
     public int GetFreeId()
     {
-        var ids = new HashSet<int>();
-        foreach (var value in context.Prices.ToList())
-        {
-            ids.Add(value.PriceListEntryId);
-        }
-        for (var i = 1; i < ids.Max(); i++)
-        {
-            if (!ids.Contains(i))
-                return i;
-        }
-        return ids.Max() + 1;
+        return FreeId++;
     }
 }
