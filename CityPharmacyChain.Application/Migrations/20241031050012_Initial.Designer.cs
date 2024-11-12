@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CityPharmacyChain.Domain.Migrations
+namespace CityPharmacyChain.Application.Migrations
 {
     [DbContext(typeof(CityPharmacyChainContext))]
     [Migration("20241031050012_Initial")]

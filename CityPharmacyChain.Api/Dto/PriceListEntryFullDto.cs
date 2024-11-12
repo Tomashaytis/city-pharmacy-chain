@@ -1,7 +1,7 @@
 ﻿using CityPharmacyChain.Domain.Entity;
 using System.ComponentModel.DataAnnotations;
 
-namespace CityPharmacyChain.Api.Dto;
+namespace CityPharmacyChain.Api.Host.Dto;
 
 /// <summary>
 /// Класс DTO для сущности класса запись в прайс-листе, содержащий её идентификатор
@@ -13,7 +13,7 @@ namespace CityPharmacyChain.Api.Dto;
 /// <param name="manufacturer">Производитель препарата</param>
 /// <param name="paymentType">Способ оплаты (наличные/картой)</param>
 /// <param name="saleDate">Дата продажи препарата</param>
-public class PriceListEntryFullDto(int priceListEntryId = 0, int productId = 0, int pharmacyId = 0, int? soldCount = null, string? manufacturer = null, string? paymentType = null, DateTime? saleDate = null)
+public record PriceListEntryFullDto(int priceListEntryId = 0, int productId = 0, int pharmacyId = 0, int? soldCount = null, string? manufacturer = null, string? paymentType = null, DateTime? saleDate = null)
 {
     /// <summary>
     /// Идентификатор записи в прайс-листе

@@ -1,10 +1,11 @@
-using CityPharmacyChain.Api.Services;
-using CityPharmacyChain.Domain;
-using CityPharmacyChain.Domain.Repository;
+using CityPharmacyChain.Api.Host.Services;
+using CityPharmacyChain.Application;
+using CityPharmacyChain.Application.Repository;
+using CityPharmacyChain.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace CityPharmacyChain.Api;
+namespace CityPharmacyChain.Api.Host;
 
 public class Program
 {
@@ -17,7 +18,7 @@ public class Program
         {
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-            xmlFilename = $"{typeof(IRepository<>).Assembly.GetName().Name}.xml";
+            xmlFilename = $"{typeof(Pharmacy).Assembly.GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
 

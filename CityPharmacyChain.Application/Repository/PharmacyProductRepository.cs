@@ -1,6 +1,6 @@
 ﻿using CityPharmacyChain.Domain.Entity;
 
-namespace CityPharmacyChain.Domain.Repository;
+namespace CityPharmacyChain.Application.Repository;
 
 /// <summary>
 /// Репозиторий для работы с сущностями класса связь препарат-аптека

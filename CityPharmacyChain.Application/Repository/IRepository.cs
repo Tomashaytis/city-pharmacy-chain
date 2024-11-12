@@ -1,37 +1,38 @@
-﻿namespace CityPharmacyChain.Domain.Repository;
+﻿namespace CityPharmacyChain.Application.Repository;
 
 /// <summary>
 /// Интерфейс для репозиториев
 /// </summary>
-/// <typeparam name="T">Тип сущности класса Entity</typeparam>
-public interface IRepository<T>
+/// <typeparam name="TEntity">Тип сущности класса Entity</typeparam>
+public interface IRepository<TEntity>
+    where TEntity : class
 {
     /// <summary>
     /// Метод возвращает все объекты класса T из базы данных в виде коллекции
     /// </summary>
     /// <returns>Коллекция объектов класса T</returns>
-    public IEnumerable<T> GetAll();
+    public IEnumerable<TEntity> GetAll();
 
     /// <summary>
     /// Метод возвращает объект класса T из базы данных по его идентификатору
     /// </summary>
     /// <param name="id">Идентификатор объекта</param>
     /// <returns>Объект класса T</returns>
-    public T? GetById(int id);
+    public TEntity? GetById(int id);
 
     /// <summary>
     /// Метод добавляет новый объект класса T в базу данных 
     /// </summary>
     /// <param name="entity">Объект класса T</param>
     /// <returns>Успешность операции добавления</returns>
-    public bool Post(T entity);
+    public bool Post(TEntity entity);
 
     /// <summary>
     /// Метод модифицирует существующий объект класса T в базе данных
     /// </summary>
     /// <param name="entity">Объект класса T</param>
     /// <returns>Успешность операции модификации</returns>
-    public bool Put(T entity);
+    public bool Put(TEntity entity);
 
     /// <summary>
     /// Метод удаляет существующий объект класса T из базы данных по его идентификатору

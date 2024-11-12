@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CityPharmacyChain.Api.Dto;
+namespace CityPharmacyChain.Api.Host.Dto;
 
 /// <summary>
 /// Класс DTO для сущности класса цена препарата с определённой фармацевтической группой в определённой аптеке
@@ -8,7 +8,7 @@ namespace CityPharmacyChain.Api.Dto;
 /// <param name="pharmacyName">Название аптеки</param>
 /// <param name="pharmaceuticalGroupName">Название фармацевтической группы</param>
 /// <param name="price">Цена препарата</param>
-public class PharmaceuticalGroupPriceDto(string? pharmacyName = null, string? pharmaceuticalGroupName = null, decimal? price = null)
+public record PharmaceuticalGroupPriceDto(string? pharmacyName = null, string? pharmaceuticalGroupName = null, decimal? price = null)
 {
     /// <summary>
     /// Название аптеки

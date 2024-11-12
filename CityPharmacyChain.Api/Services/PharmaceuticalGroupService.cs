@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using CityPharmacyChain.Api.Dto;
+using CityPharmacyChain.Api.Host.Dto;
 using CityPharmacyChain.Domain.Entity;
-using CityPharmacyChain.Domain.Repository;
+using CityPharmacyChain.Application.Repository;
 
-namespace CityPharmacyChain.Api.Services;
+namespace CityPharmacyChain.Api.Host.Services;
 
 /// <summary>
 /// Сервис для работы с сущностями класса фармацевтическая группа

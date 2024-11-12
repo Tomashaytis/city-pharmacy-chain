@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CityPharmacyChain.Api.Dto;
+namespace CityPharmacyChain.Api.Host.Dto;
 
 /// <summary>
 /// Класс DTO для сущности класса фармацевтическая группа
 /// </summary>
 /// <param name="productId">Идентификатор препарата</param>
 /// <param name="name">Название фармацевтической группы</param>
-public class PharmaceuticalGroupDto(int productId = 0, string? name = null)
+public record PharmaceuticalGroupDto(int productId = 0, string? name = null)
 {
     /// <summary>
     /// Идентификатор препарата

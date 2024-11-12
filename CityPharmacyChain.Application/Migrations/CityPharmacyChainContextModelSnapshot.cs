@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CityPharmacyChain.Domain.Migrations
+namespace CityPharmacyChain.Application.Migrations
 {
     [DbContext(typeof(CityPharmacyChainContext))]
     partial class CityPharmacyChainContextModelSnapshot : ModelSnapshot

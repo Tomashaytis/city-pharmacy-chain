@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CityPharmacyChain.Api.Dto;
+namespace CityPharmacyChain.Api.Host.Dto;
 
 /// <summary>
 /// Класс DTO для сущности класса аптека, содержащий её идентификатор
@@ -11,7 +11,7 @@ namespace CityPharmacyChain.Api.Dto;
 /// <param name="phoneNumber">Телефон аптеки</param>
 /// <param name="address">Адрес аптеки</param>
 /// <param name="directorFullName">Полное имя директора аптеки</param>
-public class PharmacyFullDto(int pharmacyId = 0,  int? pharmacyNumber = null, string? name = null, long? phoneNumber = null, string? address = null, string? directorFullName = null)
+public record PharmacyFullDto(int pharmacyId = 0,  int? pharmacyNumber = null, string? name = null, long? phoneNumber = null, string? address = null, string? directorFullName = null)
 {
     /// <summary>
     /// Идентификатор аптеки

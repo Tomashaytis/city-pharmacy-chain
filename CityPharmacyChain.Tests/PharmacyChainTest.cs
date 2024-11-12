@@ -61,8 +61,8 @@ public class PharmacyChainTest(PharmacyChainFixture fixture) : IClassFixture<Pha
                  Count = pharmacyProduct.Count ?? 0,
              }).ToList();
         Assert.Equal(productCount,
-            [
-                new { Name = "VITA", Count = 10 },
+                [
+                    new { Name = "VITA", Count = 10 },
                     new { Name = "April", Count = 19 },
                     new { Name = "Implosion", Count = 3 },
                 ]);

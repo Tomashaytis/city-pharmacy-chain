@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CityPharmacyChain.Domain.Migrations
+namespace CityPharmacyChain.Application.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

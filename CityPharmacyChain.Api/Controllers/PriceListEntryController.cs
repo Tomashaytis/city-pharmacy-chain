@@ -1,9 +1,9 @@
-﻿using CityPharmacyChain.Api.Services;
-using CityPharmacyChain.Api.Dto;
+﻿using CityPharmacyChain.Api.Host.Services;
+using CityPharmacyChain.Api.Host.Dto;
 using Microsoft.AspNetCore.Mvc;
 using CityPharmacyChain.Domain.Entity;
 
-namespace CityPharmacyChain.Api.Controllers;
+namespace CityPharmacyChain.Api.Host.Controllers;
 
 /// <summary>
 /// Контроллер для работы с сущностями класса запись в прайс-листе

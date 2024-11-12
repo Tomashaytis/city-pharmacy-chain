@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CityPharmacyChain.Domain.Entity;
-using CityPharmacyChain.Api.Dto;
+using CityPharmacyChain.Api.Host.Dto;
 
-namespace CityPharmacyChain.Api;
+namespace CityPharmacyChain.Api.Host;
 
 /// <summary>
 /// Средство для составления отображения между сущностями класса DTO и Entity

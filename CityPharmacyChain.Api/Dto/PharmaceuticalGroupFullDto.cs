@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CityPharmacyChain.Api.Dto;
+namespace CityPharmacyChain.Api.Host.Dto;
 
 /// <summary>
 /// Класс DTO для сущности класса фармацевтическая группа, содержащий её идентификатор
@@ -8,7 +8,7 @@ namespace CityPharmacyChain.Api.Dto;
 /// <param name="pharmaceuticalGroupId">Идентификатор фармацевтической группы</param>
 /// <param name="productId">Идентификатор препарата</param>
 /// <param name="name">Название фармацевтической группы</param>
-public class PharmaceuticalGroupFullDto(int pharmaceuticalGroupId = 0,  int productId = 0, string? name = null)
+public record PharmaceuticalGroupFullDto(int pharmaceuticalGroupId = 0,  int productId = 0, string? name = null)
 {
     /// <summary>
     /// Идентификатор фармацевтической группы

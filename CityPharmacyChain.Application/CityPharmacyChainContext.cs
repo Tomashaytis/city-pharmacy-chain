@@ -1,7 +1,7 @@
 ﻿using CityPharmacyChain.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace CityPharmacyChain.Domain;
+namespace CityPharmacyChain.Application;
 
 /// <summary>
 /// Контекст для связи с базой данных
