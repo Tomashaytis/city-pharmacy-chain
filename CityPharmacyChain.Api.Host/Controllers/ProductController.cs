@@ -114,7 +114,7 @@ public class ProductController(ProductService service, ILogger<Product> logger) 
     /// <param name="productName">Название препарата</param>
     /// <returns>Коллекция объектов в формате JSON с информацией о всех аптеках, у которых есть в наличии заданный препарат, с указанием количества данного препарата в них</returns>
     [HttpGet("GetProductCountForEachPharmacy")]
-    public ActionResult<IEnumerable<ProductForPharmacyDto>> GetProductsForPharmacy(string productName)
+    public ActionResult<IEnumerable<ProductCountDto>> GetProductsForPharmacy(string productName)
     {
         logger.LogInformation("{date} : Get : Get specific data.", DateTime.Now);
         return Ok(service.GetProductCountForEachPharmacy(productName));

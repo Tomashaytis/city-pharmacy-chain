@@ -222,7 +222,7 @@
         "tags": [
           "PharmaceuticalGroup"
         ],
-        "summary": "GET запрос по получению коллекции объектов в формате JSON с информацией о средней стоимости препаратов в каждой фармацевтической группе для каждой аптеки",
+        "summary": "GET запрос по получению коллекции в формате JSON с информацией о средней стоимости препаратов в каждой фармацевтической группе для каждой аптеки",
         "responses": {
           "200": {
             "description": "OK",
@@ -1359,7 +1359,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProductForPharmacyDto"
+                    "$ref": "#/components/schemas/ProductCountDto"
                   }
                 }
               },
@@ -1367,7 +1367,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProductForPharmacyDto"
+                    "$ref": "#/components/schemas/ProductCountDto"
                   }
                 }
               },
@@ -1375,7 +1375,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProductForPharmacyDto"
+                    "$ref": "#/components/schemas/ProductCountDto"
                   }
                 }
               }
@@ -1709,6 +1709,35 @@
         },
         "additionalProperties": false,
         "description": "Класс DTO для сущности класса запись в прайс-листе, содержащий её идентификатор"
+      },
+      "ProductCountDto": {
+        "type": "object",
+        "properties": {
+          "productName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название препарата",
+            "nullable": true
+          },
+          "pharmacyName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название аптеки",
+            "nullable": true
+          },
+          "count": {
+            "maximum": 1000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Количество препарата на складе аптеки",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса количество препаратов на складе аптеки"
       },
       "ProductDto": {
         "type": "object",

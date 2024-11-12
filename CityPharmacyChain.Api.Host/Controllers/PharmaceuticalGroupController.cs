@@ -109,9 +109,9 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service, I
     }
 
     /// <summary>
-    /// GET запрос по получению коллекции объектов в формате JSON с информацией о средней стоимости препаратов в каждой фармацевтической группе для каждой аптеки
+    /// GET запрос по получению коллекции в формате JSON с информацией о средней стоимости препаратов в каждой фармацевтической группе для каждой аптеки
     /// </summary>
-    /// <returns>Коллекция объектов в формате JSON с информацией о средней стоимости препаратов в каждой фармацевтической группе для каждой аптеки</returns>
+    /// <returns>Коллекция в формате JSON с информацией о средней стоимости препаратов в каждой фармацевтической группе для каждой аптеки</returns>
     [HttpGet("GetPharmaceuticalGroupPriceForEachPharmacy")]
     public ActionResult<IEnumerable<PharmaceuticalGroupPriceDto>> GetProductsForPharmacy()
     {
