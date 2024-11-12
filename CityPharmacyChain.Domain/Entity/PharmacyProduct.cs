@@ -50,10 +50,10 @@ public class PharmacyProduct(int pharmacyProductId = 0, int productId = 0, int p
     /// <summary>
     /// Препарат, к которому относится связь препарат-аптека
     /// </summary>
-    public Product? Product { get; set; } = null;
+    public virtual Product? Product { get; set; } = null;
 
     /// <summary>
     /// Аптека, к которой относится связь препарат-аптека
     /// </summary>
-    public Pharmacy? Pharmacy { get; set; } = null;
+    public virtual Pharmacy? Pharmacy { get; set; } = null;
 }

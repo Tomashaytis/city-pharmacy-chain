@@ -19,7 +19,7 @@ public class PharmacyProductController(PharmacyProductService service, ILogger<P
     /// </summary>
     /// <returns>Коллекция объектов класса связь препарат-аптека в формате JSON</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<PharmacyProduct>> GetAll()
+    public ActionResult<IEnumerable<PharmacyProductFullDto>> GetAll()
     {
         logger.LogInformation("{date} : Get : Get all pharmacy-products.", DateTime.Now);
         return Ok(service.GetAll());
@@ -49,7 +49,7 @@ public class PharmacyProductController(PharmacyProductService service, ILogger<P
     /// <param name="pharmacyProductDto">Объект класса связь препарат-аптека в формате JSON</param>
     /// <returns>Добавленный объект класса связь препарат-аптека в формате JSON</returns>
     [HttpPost]
-    public ActionResult<PharmacyProduct> Post([FromBody] PharmacyProductDto pharmacyProductDto)
+    public ActionResult<PharmacyProductFullDto> Post([FromBody] PharmacyProductDto pharmacyProductDto)
     {
         if (!ModelState.IsValid)
         {
@@ -74,7 +74,7 @@ public class PharmacyProductController(PharmacyProductService service, ILogger<P
     /// <returns>Изменённый объект класса связь препарат-аптека в формате JSON или статус NotFound при отсутствии объекта в базе данных</returns>
 
     [HttpPut("{id}")]
-    public ActionResult<PharmacyProduct> Put(int id, [FromBody] PharmacyProductDto pharmacyProductDto)
+    public ActionResult<PharmacyProductFullDto> Put(int id, [FromBody] PharmacyProductDto pharmacyProductDto)
     {
         if (!ModelState.IsValid)
         {

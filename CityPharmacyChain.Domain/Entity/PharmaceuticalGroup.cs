@@ -35,5 +35,5 @@ public class PharmaceuticalGroup(int pharmaceuticalGroupId = 0, int productId = 
     /// <summary>
     /// Препараты, к которому относится фармацевтическая группа
     /// </summary>
-    public Product? Product { get; set; } = null;
+    public virtual Product? Product { get; set; } = null;
 }

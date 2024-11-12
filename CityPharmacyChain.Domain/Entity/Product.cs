@@ -41,15 +41,15 @@ public class Product(int productId = 0, int? productCode = null, string? name = 
     /// <summary>
     /// Записи в прайс-листе для препарата
     /// </summary>
-    public List<PriceListEntry> PriceListEntries { get; set; } = [];
+    public virtual List<PriceListEntry> PriceListEntries { get; set; } = [];
 
     /// <summary>
     /// Связи препарат-аптека для препарата
     /// </summary>
-    public List<PharmacyProduct> PharmacyProducts { get; set; } = [];
+    public virtual List<PharmacyProduct> PharmacyProducts { get; set; } = [];
 
     /// <summary>
     /// Список фармацевтических групп для препарата
     /// </summary>
-    public List<PharmaceuticalGroup> PharmaceuticalGroups { get; set; } = [];
+    public virtual List<PharmaceuticalGroup> PharmaceuticalGroups { get; set; } = [];
 }

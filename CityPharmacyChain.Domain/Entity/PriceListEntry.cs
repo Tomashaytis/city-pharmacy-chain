@@ -64,10 +64,10 @@ public class PriceListEntry(int priceListEntryId = 0, int productId = 0, int pha
     /// <summary>
     /// Препарат, к которому относится запись в прайс-листе
     /// </summary>
-    public Product? Product { get; set; } = null;
+    public virtual Product? Product { get; set; } = null;
 
     /// <summary>
     /// Аптека, к которой относится запись в прайс-листе
     /// </summary>
-    public Pharmacy? Pharmacy { get; set; } = null;
+    public virtual Pharmacy? Pharmacy { get; set; } = null;
 }

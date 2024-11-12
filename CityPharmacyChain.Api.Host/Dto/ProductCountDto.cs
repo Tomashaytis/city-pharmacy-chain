@@ -8,7 +8,7 @@ namespace CityPharmacyChain.Api.Host.Dto;
 /// <param name="productName">Название препарата</param>
 /// <param name="pharmacyName">Название препарата</param>
 /// <param name="count">Количество препарата на складе аптеки</param>
-public record ProductCountDto(string? productName = null, string? pharmacyName = null, int? count = null)
+public class ProductCountDto(string? productName = null, string? pharmacyName = null, int? count = null)
 {
     /// <summary>
     /// Название препарата

@@ -19,7 +19,7 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service, I
     /// </summary>
     /// <returns>Коллекция объектов класса фармацевтическая группа в формате JSON</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<PharmaceuticalGroup>> GetAll()
+    public ActionResult<IEnumerable<PharmaceuticalGroupFullDto>> GetAll()
     {
         logger.LogInformation("{date} : Get : Get all pharmaceutical groups.", DateTime.Now);
         return Ok(service.GetAll());
@@ -49,7 +49,7 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service, I
     /// <param name="pharmaceuticalGroupDto">Объект класса фармацевтическая группа в формате JSON</param>
     /// <returns>Добавленный объект класса фармацевтическая группа в формате JSON</returns>
     [HttpPost]
-    public ActionResult<PharmaceuticalGroup> Post([FromBody] PharmaceuticalGroupDto pharmaceuticalGroupDto)
+    public ActionResult<PharmaceuticalGroupFullDto> Post([FromBody] PharmaceuticalGroupDto pharmaceuticalGroupDto)
     {
         if (!ModelState.IsValid)
         {
@@ -73,7 +73,7 @@ public class PharmaceuticalGroupController(PharmaceuticalGroupService service, I
     /// <param name="pharmaceuticalGroupDto">Объект класса фармацевтическая группа в формате JSON</param>
     /// <returns>Изменённый объект класса фармацевтическая группа в формате JSON или статус NotFound при отсутствии объекта в базе данных</returns>
     [HttpPut("{id}")]
-    public ActionResult<PharmaceuticalGroup> Put(int id, [FromBody] PharmaceuticalGroupDto pharmaceuticalGroupDto)
+    public ActionResult<PharmaceuticalGroupFullDto> Put(int id, [FromBody] PharmaceuticalGroupDto pharmaceuticalGroupDto)
     {
         if (!ModelState.IsValid)
         {

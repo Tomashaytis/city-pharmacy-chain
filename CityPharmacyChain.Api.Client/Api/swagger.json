@@ -1,0 +1,1867 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "CityPharmacyChain.Api.Host",
+    "version": "1.0"
+  },
+  "paths": {
+    "/PharmaceuticalGroup": {
+      "get": {
+        "tags": [
+          "PharmaceuticalGroup"
+        ],
+        "summary": "GET запрос по получению всех объектов класса фармацевтическая группа из базы данных",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmaceuticalGroupFullDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmaceuticalGroupFullDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmaceuticalGroupFullDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "PharmaceuticalGroup"
+        ],
+        "summary": "POST запрос по добавлению объекта класса фармацевтическая группа в базу данных",
+        "requestBody": {
+          "description": "Объект класса фармацевтическая группа в формате JSON",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmaceuticalGroupDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmaceuticalGroupDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmaceuticalGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmaceuticalGroupFullDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmaceuticalGroupFullDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmaceuticalGroupFullDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PharmaceuticalGroup/{id}": {
+      "get": {
+        "tags": [
+          "PharmaceuticalGroup"
+        ],
+        "summary": "GET запрос по получению объекта класса фармацевтическая группа из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор фармацевтической группы",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmaceuticalGroupDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmaceuticalGroupDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmaceuticalGroupDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "PharmaceuticalGroup"
+        ],
+        "summary": "PUT запрос по модификации объекта класса фармацевтическая группа из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор фармацевтической группы",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект класса фармацевтическая группа в формате JSON",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmaceuticalGroupDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmaceuticalGroupDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmaceuticalGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmaceuticalGroupFullDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmaceuticalGroupFullDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmaceuticalGroupFullDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "PharmaceuticalGroup"
+        ],
+        "summary": "DELETE запрос по удалению существующего объекта класса фармацевтическая группа из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор фармацевтической группы",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/PharmaceuticalGroup/GetPharmaceuticalGroupPriceForEachPharmacy": {
+      "get": {
+        "tags": [
+          "PharmaceuticalGroup"
+        ],
+        "summary": "GET запрос по получению коллекции объектов в формате JSON с информацией о средней стоимости препаратов в каждой фармацевтической группе для каждой аптеки",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmaceuticalGroupPriceDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmaceuticalGroupPriceDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmaceuticalGroupPriceDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Pharmacy": {
+      "get": {
+        "tags": [
+          "Pharmacy"
+        ],
+        "summary": "GET запрос по получению всех объектов класса аптека из базы данных",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmacyFullDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmacyFullDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmacyFullDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pharmacy"
+        ],
+        "summary": "POST запрос по добавлению объекта класса аптека в базу данных",
+        "requestBody": {
+          "description": "Объект класса аптека в формате JSON",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyFullDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyFullDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyFullDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Pharmacy/{id}": {
+      "get": {
+        "tags": [
+          "Pharmacy"
+        ],
+        "summary": "GET запрос по получению объекта класса аптека из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор аптеки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Pharmacy"
+        ],
+        "summary": "PUT запрос по модификации объекта класса аптека из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор аптеки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект класса аптека в формате JSON",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyFullDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyFullDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyFullDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Pharmacy"
+        ],
+        "summary": "DELETE запрос по удалению существующего объекта класса аптека из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор аптеки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Pharmacy/GetProductsForPharmacy": {
+      "get": {
+        "tags": [
+          "Pharmacy"
+        ],
+        "summary": "GET запрос по получению коллекции объектов в формате JSON с информацией о характеристиках препаратов в заданной аптеке, упорядоченный по названию препарата",
+        "parameters": [
+          {
+            "name": "pharmacyName",
+            "in": "query",
+            "description": "Название аптеки",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductForPharmacyDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductForPharmacyDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductForPharmacyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Pharmacy/GetPharmaciesWithLargeProductSoldVolume": {
+      "get": {
+        "tags": [
+          "Pharmacy"
+        ],
+        "summary": "GET запрос по получению коллекции в формате JSON с названиями аптек в заданном районе, продавших заданный препарат больше заданного объёма",
+        "parameters": [
+          {
+            "name": "district",
+            "in": "query",
+            "description": "Район аптеки",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productName",
+            "in": "query",
+            "description": "Название препарата",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "volume",
+            "in": "query",
+            "description": "Объём продажи",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Pharmacy/GetPharmaciesWithMinProductPrice": {
+      "get": {
+        "tags": [
+          "Pharmacy"
+        ],
+        "summary": "GET запрос по получению коллекции в формате JSON с названиями аптек, в которых заданный препарат продаётся с минимальной ценой",
+        "parameters": [
+          {
+            "name": "productName",
+            "in": "query",
+            "description": "Название препарата",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PharmacyProduct": {
+      "get": {
+        "tags": [
+          "PharmacyProduct"
+        ],
+        "summary": "GET запрос по получению всех объектов класса связь препарат-аптека из базы данных",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmacyProductFullDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmacyProductFullDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PharmacyProductFullDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "PharmacyProduct"
+        ],
+        "summary": "POST запрос по добавлению объекта класса связь препарат-аптека в базу данных",
+        "requestBody": {
+          "description": "Объект класса связь препарат-аптека в формате JSON",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyProductDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyProductDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyProductFullDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyProductFullDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyProductFullDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PharmacyProduct/{id}": {
+      "get": {
+        "tags": [
+          "PharmacyProduct"
+        ],
+        "summary": "GET запрос по получению объекта класса связь препарат-аптека из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор связи препарат-аптека",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyProductDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyProductDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyProductDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "PharmacyProduct"
+        ],
+        "summary": "PUT запрос по модификации объекта класса связь препарат-аптека из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор связи препарат-аптека",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект класса связь препарат-аптека в формате JSON",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyProductDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyProductDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PharmacyProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyProductFullDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyProductFullDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PharmacyProductFullDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "PharmacyProduct"
+        ],
+        "summary": "DELETE запрос по удалению существующего объекта класса связь препарат-аптека из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор связи препарат-аптека",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/PharmacyProduct/GetTopFivePharmaciesBySoldVolume": {
+      "get": {
+        "tags": [
+          "PharmacyProduct"
+        ],
+        "summary": "GET запрос по получению коллекции объектов в формате JSON с информацией о топ 5 аптеках по количеству и объёму продаж заданного препарата в заданном временном интервале",
+        "parameters": [
+          {
+            "name": "productName",
+            "in": "query",
+            "description": "Название препарата",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Начало временного интервала",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "Конец временного интервала",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductSoldVolumeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductSoldVolumeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductSoldVolumeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PriceListEntry": {
+      "get": {
+        "tags": [
+          "PriceListEntry"
+        ],
+        "summary": "GET запрос по получению всех объектов класса запись в прайс-листе из базы данных",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PriceListEntryFullDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PriceListEntryFullDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PriceListEntryFullDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "PriceListEntry"
+        ],
+        "summary": "POST запрос по добавлению объекта класса запись в прайс-листе в базу данных",
+        "requestBody": {
+          "description": "Объект класса запись в прайс-листе в формате JSON",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriceListEntryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriceListEntryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriceListEntryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceListEntryFullDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceListEntryFullDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceListEntryFullDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PriceListEntry/{id}": {
+      "get": {
+        "tags": [
+          "PriceListEntry"
+        ],
+        "summary": "GET запрос по получению объекта класса запись в прайс-листе из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор записи в прайс-листе",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceListEntryDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceListEntryDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceListEntryDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "PriceListEntry"
+        ],
+        "summary": "PUT запрос по модификации объекта класса запись в прайс-листе из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор записи в прайс-листе",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект класса запись в прайс-листе в формате JSON",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriceListEntryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriceListEntryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriceListEntryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceListEntryFullDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceListEntryFullDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceListEntryFullDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "PriceListEntry"
+        ],
+        "summary": "DELETE запрос по удалению существующего объекта класса запись в прайс-листе из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор записи в прайс-листе",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Product": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "GET запрос по получению всех объектов класса препарат из базы данных",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductFullDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductFullDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductFullDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "POST запрос по добавлению объекта класса препарат в базу данных",
+        "requestBody": {
+          "description": "Объект класса препарат в формате JSON",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductFullDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductFullDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductFullDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Product/{id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "GET запрос по получению объекта класса препарат из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор препарата",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "PUT запрос по модификации объекта класса препарат из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор препарата",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Объект класса препарат в формате JSON",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductFullDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductFullDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductFullDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "DELETE запрос по удалению существующего объекта класса препарат из базы данных по его идентификатору",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Идентификатор препарата",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Product/GetProductCountForEachPharmacy": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "GET запрос по получению коллекции объектов в формате JSON с информацией о всех аптеках, у которых есть в наличии заданный препарат, с указанием количества данного препарата в них",
+        "parameters": [
+          {
+            "name": "productName",
+            "in": "query",
+            "description": "Название препарата",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductForPharmacyDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductForPharmacyDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductForPharmacyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PharmaceuticalGroupDto": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "description": "Идентификатор препарата",
+            "format": "int32"
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название фармацевтической группы",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса фармацевтическая группа"
+      },
+      "PharmaceuticalGroupFullDto": {
+        "type": "object",
+        "properties": {
+          "pharmaceuticalGroupId": {
+            "type": "integer",
+            "description": "Идентификатор фармацевтической группы",
+            "format": "int32"
+          },
+          "productId": {
+            "type": "integer",
+            "description": "Идентификатор препарата",
+            "format": "int32"
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название фармацевтической группы",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса фармацевтическая группа, содержащий её идентификатор"
+      },
+      "PharmaceuticalGroupPriceDto": {
+        "type": "object",
+        "properties": {
+          "pharmacyName": {
+            "type": "string",
+            "description": "Название аптеки",
+            "nullable": true
+          },
+          "pharmaceuticalGroupName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название фармацевтической группы",
+            "nullable": true
+          },
+          "price": {
+            "maximum": 100000,
+            "minimum": 0,
+            "type": "number",
+            "description": "Цена препарата",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса цена препарата с определённой фармацевтической группой в определённой аптеке"
+      },
+      "PharmacyDto": {
+        "type": "object",
+        "properties": {
+          "pharmacyNumber": {
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Номер аптеки",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название аптеки",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "pattern": "^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$",
+            "type": "integer",
+            "description": "Телефон аптеки",
+            "format": "int64",
+            "nullable": true
+          },
+          "address": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Адрес аптеки",
+            "nullable": true
+          },
+          "directorFullName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Полное имя директора аптеки",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса аптека"
+      },
+      "PharmacyFullDto": {
+        "type": "object",
+        "properties": {
+          "pharmacyId": {
+            "type": "integer",
+            "description": "Идентификатор аптеки",
+            "format": "int32"
+          },
+          "pharmacyNumber": {
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Номер аптеки",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название аптеки",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "pattern": "^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$",
+            "type": "integer",
+            "description": "Телефон аптеки",
+            "format": "int64",
+            "nullable": true
+          },
+          "address": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Адрес аптеки",
+            "nullable": true
+          },
+          "directorFullName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Полное имя директора аптеки",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса аптека, содержащий её идентификатор"
+      },
+      "PharmacyProductDto": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "description": "Идентификатор препарата",
+            "format": "int32"
+          },
+          "pharmacyId": {
+            "type": "integer",
+            "description": "Идентификатор аптеки",
+            "format": "int32"
+          },
+          "count": {
+            "maximum": 1000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Количество препарата на складе аптеки",
+            "format": "int32",
+            "nullable": true
+          },
+          "price": {
+            "maximum": 100000,
+            "minimum": 0,
+            "type": "number",
+            "description": "Цена препарата",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса связь препарат-аптека"
+      },
+      "PharmacyProductFullDto": {
+        "type": "object",
+        "properties": {
+          "pharmacyProductId": {
+            "type": "integer",
+            "description": "Идентификатор связи препарат-аптека",
+            "format": "int32"
+          },
+          "productId": {
+            "type": "integer",
+            "description": "Идентификатор препарата",
+            "format": "int32"
+          },
+          "pharmacyId": {
+            "type": "integer",
+            "description": "Идентификатор аптеки",
+            "format": "int32"
+          },
+          "count": {
+            "maximum": 1000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Количество препарата на складе аптеки",
+            "format": "int32",
+            "nullable": true
+          },
+          "price": {
+            "maximum": 100000,
+            "minimum": 0,
+            "type": "number",
+            "description": "Цена препарата",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса связь препарат-аптека, содержащий её идентификатор"
+      },
+      "PriceListEntryDto": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "description": "Идентификатор препарата",
+            "format": "int32"
+          },
+          "pharmacyId": {
+            "type": "integer",
+            "description": "Идентификатор аптеки",
+            "format": "int32"
+          },
+          "soldCount": {
+            "maximum": 1000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Количество проданных препаратов",
+            "format": "int32",
+            "nullable": true
+          },
+          "manufacturer": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Производитель препарата",
+            "nullable": true
+          },
+          "paymentType": {
+            "type": "string",
+            "description": "Способ оплаты (наличные/картой)",
+            "nullable": true
+          },
+          "saleDate": {
+            "type": "string",
+            "description": "Дата продажи препарата",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса запись в прайс-листе"
+      },
+      "PriceListEntryFullDto": {
+        "type": "object",
+        "properties": {
+          "priceListEntryId": {
+            "type": "integer",
+            "description": "Идентификатор записи в прайс-листе",
+            "format": "int32"
+          },
+          "productId": {
+            "type": "integer",
+            "description": "Идентификатор препарата",
+            "format": "int32"
+          },
+          "pharmacyId": {
+            "type": "integer",
+            "description": "Идентификатор аптеки",
+            "format": "int32"
+          },
+          "soldCount": {
+            "maximum": 1000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Количество проданных препаратов",
+            "format": "int32",
+            "nullable": true
+          },
+          "manufacturer": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Производитель препарата",
+            "nullable": true
+          },
+          "paymentType": {
+            "type": "string",
+            "description": "Способ оплаты (наличные/картой)",
+            "nullable": true
+          },
+          "saleDate": {
+            "type": "string",
+            "description": "Дата продажи препарата",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса запись в прайс-листе, содержащий её идентификатор"
+      },
+      "ProductDto": {
+        "type": "object",
+        "properties": {
+          "productCode": {
+            "maximum": 1000000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Код препарата",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название препарата",
+            "nullable": true
+          },
+          "productGroup": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Товарная группа препарата",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса препарат"
+      },
+      "ProductForPharmacyDto": {
+        "type": "object",
+        "properties": {
+          "pharmacyName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название аптеки",
+            "nullable": true
+          },
+          "count": {
+            "maximum": 1000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Количество препарата на складе аптеки",
+            "format": "int32",
+            "nullable": true
+          },
+          "price": {
+            "maximum": 100000,
+            "minimum": 0,
+            "type": "number",
+            "description": "Цена препарата",
+            "format": "double",
+            "nullable": true
+          },
+          "productCode": {
+            "maximum": 1000000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Код препарата",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название препарата",
+            "nullable": true
+          },
+          "productGroup": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Товарная группа препарата",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса характеристики препаратов в определённой аптеке"
+      },
+      "ProductFullDto": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "description": "Идентификатор препарата",
+            "format": "int32"
+          },
+          "productCode": {
+            "maximum": 1000000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Код препарата",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название препарата",
+            "nullable": true
+          },
+          "productGroup": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Товарная группа препарата",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса препарат, содержащий её идентификатор"
+      },
+      "ProductSoldVolumeDto": {
+        "type": "object",
+        "properties": {
+          "productName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название препарата",
+            "nullable": true
+          },
+          "pharmacyName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Название аптеки",
+            "nullable": true
+          },
+          "soldCount": {
+            "maximum": 1000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Количество продаж препарата",
+            "format": "int32",
+            "nullable": true
+          },
+          "soldVolume": {
+            "maximum": 1000000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Цена препарата, помноженная на количество проданных препаратов этого типа",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Класс DTO для сущности класса количество и объём продаж определённого товара в определённой аптеке"
+      }
+    }
+  }
+}

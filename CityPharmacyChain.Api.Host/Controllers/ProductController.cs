@@ -19,7 +19,7 @@ public class ProductController(ProductService service, ILogger<Product> logger) 
     /// </summary>
     /// <returns>Коллекция объектов класса препарат в формате JSON</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<Product>> GetAll()
+    public ActionResult<IEnumerable<ProductFullDto>> GetAll()
     {
         logger.LogInformation("{date} : Get : Get all products.", DateTime.Now);
         return Ok(service.GetAll());
@@ -49,7 +49,7 @@ public class ProductController(ProductService service, ILogger<Product> logger) 
     /// <param name="productDto">Объект класса препарат в формате JSON</param>
     /// <returns>Добавленный объект класса препарат в формате JSON</returns>
     [HttpPost]
-    public ActionResult<Product> Post([FromBody] ProductDto productDto)
+    public ActionResult<ProductFullDto> Post([FromBody] ProductDto productDto)
     {
         if (!ModelState.IsValid)
         {
@@ -73,7 +73,7 @@ public class ProductController(ProductService service, ILogger<Product> logger) 
     /// <param name="productDto">Объект класса препарат в формате JSON</param>
     /// <returns>Изменённый объект класса препарат в формате JSON или статус NotFound при отсутствии объекта в базе данных</returns>
     [HttpPut("{id}")]
-    public ActionResult<Product> Put(int id, [FromBody] ProductDto productDto)
+    public ActionResult<ProductFullDto> Put(int id, [FromBody] ProductDto productDto)
     {
         if (!ModelState.IsValid)
         {

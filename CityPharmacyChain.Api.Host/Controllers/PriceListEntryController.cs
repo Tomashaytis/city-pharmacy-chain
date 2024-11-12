@@ -19,7 +19,7 @@ public class PriceListEntryController(PriceListEntryService service, ILogger<Pro
     /// </summary>
     /// <returns>Коллекция объектов класса запись в прайс-листе в формате JSON</returns>
     [HttpGet]
-    public ActionResult<IEnumerable<PriceListEntry>> GetAll()
+    public ActionResult<IEnumerable<PriceListEntryFullDto>> GetAll()
     {
         logger.LogInformation("{date} : Get : Get all price list entries.", DateTime.Now);
         return Ok(service.GetAll());
@@ -49,7 +49,7 @@ public class PriceListEntryController(PriceListEntryService service, ILogger<Pro
     /// <param name="priceListEntryDto">Объект класса запись в прайс-листе в формате JSON</param>
     /// <returns>Добавленный объект класса запись в прайс-листе в формате JSON</returns>
     [HttpPost]
-    public ActionResult<PriceListEntry> Post([FromBody] PriceListEntryDto priceListEntryDto)
+    public ActionResult<PriceListEntryFullDto> Post([FromBody] PriceListEntryDto priceListEntryDto)
     {
         if (!ModelState.IsValid)
         {
@@ -73,7 +73,7 @@ public class PriceListEntryController(PriceListEntryService service, ILogger<Pro
     /// <param name="priceListEntryDto">Объект класса запись в прайс-листе в формате JSON</param>
     /// <returns>Изменённый объект класса запись в прайс-листе в формате JSON или статус NotFound при отсутствии объекта в базе данных</returns>
     [HttpPut("{id}")]
-    public ActionResult<PriceListEntry> Put(int id, [FromBody] PriceListEntryDto priceListEntryDto)
+    public ActionResult<PriceListEntryFullDto> Put(int id, [FromBody] PriceListEntryDto priceListEntryDto)
     {
         if (!ModelState.IsValid)
         {

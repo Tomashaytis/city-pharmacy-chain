@@ -9,7 +9,7 @@ namespace CityPharmacyChain.Api.Host.Dto;
 /// <param name="pharmacyName">Название аптеки</param>
 /// <param name="soldCount">Количество продаж препарата</param>
 /// <param name="soldVolume">Цена препарата, помноженная на количество проданных препаратов этого типа</param>
-public record ProductSoldVolumeDto(string? productName = null, string? pharmacyName = null, int? soldCount = null, int? soldVolume = null)
+public class ProductSoldVolumeDto(string? productName = null, string? pharmacyName = null, int? soldCount = null, int? soldVolume = null)
 {
     /// <summary>
     /// Название препарата

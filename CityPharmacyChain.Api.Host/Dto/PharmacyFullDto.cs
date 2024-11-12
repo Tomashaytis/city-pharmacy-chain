@@ -3,15 +3,21 @@
 namespace CityPharmacyChain.Api.Host.Dto;
 
 /// <summary>
-/// Класс DTO для сущности класса аптека
+/// Класс DTO для сущности класса аптека, содержащий её идентификатор
 /// </summary>
+/// <param name="pharmacyId">Идентификатор аптеки</param>
 /// <param name="pharmacyNumber">Номер аптеки</param>
 /// <param name="name">Название аптеки</param>
 /// <param name="phoneNumber">Телефон аптеки</param>
 /// <param name="address">Адрес аптеки</param>
 /// <param name="directorFullName">Полное имя директора аптеки</param>
-public record PharmacyDto(int? pharmacyNumber = null, string? name = null, long? phoneNumber = null, string? address = null, string? directorFullName = null)
+public class PharmacyFullDto(int pharmacyId = 0,  int? pharmacyNumber = null, string? name = null, long? phoneNumber = null, string? address = null, string? directorFullName = null)
 {
+    /// <summary>
+    /// Идентификатор аптеки
+    /// </summary>
+    public int PharmacyId { get; set; } = pharmacyId;
+
     /// <summary>
     /// Номер аптеки
     /// </summary>
@@ -27,7 +33,7 @@ public record PharmacyDto(int? pharmacyNumber = null, string? name = null, long?
     /// <summary>
     /// Телефон аптеки
     /// </summary>
-    [RegularExpression(@"^(?!0+$)(\+\d{1,3}[- ]?)?(?!0+$)\d{10,15}$", ErrorMessage = "Phone number should be valid.")]
+    [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Phone number should be valid.")]
     public long? PhoneNumber { get; set; } = phoneNumber;
 
     /// <summary>

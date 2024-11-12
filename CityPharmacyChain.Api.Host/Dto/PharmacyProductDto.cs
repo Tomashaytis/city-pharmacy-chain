@@ -9,7 +9,7 @@ namespace CityPharmacyChain.Api.Host.Dto;
 /// <param name="pharmacyId">Идентификатор аптеки</param>
 /// <param name="count">Количество препарата на складе аптеки</param>
 /// <param name="price">Цена препарата</param>
-public record PharmacyProductDto(int productId = 0, int pharmacyId = 0, int? count = null, decimal? price = null)
+public class PharmacyProductDto(int productId = 0, int pharmacyId = 0, int? count = null, decimal? price = null)
 {
     /// <summary>
     /// Идентификатор препарата

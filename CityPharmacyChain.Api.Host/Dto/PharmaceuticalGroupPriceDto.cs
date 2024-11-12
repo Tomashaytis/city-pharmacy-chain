@@ -8,7 +8,7 @@ namespace CityPharmacyChain.Api.Host.Dto;
 /// <param name="pharmacyName">Название аптеки</param>
 /// <param name="pharmaceuticalGroupName">Название фармацевтической группы</param>
 /// <param name="price">Цена препарата</param>
-public record PharmaceuticalGroupPriceDto(string? pharmacyName = null, string? pharmaceuticalGroupName = null, decimal? price = null)
+public class PharmaceuticalGroupPriceDto(string? pharmacyName = null, string? pharmaceuticalGroupName = null, decimal? price = null)
 {
     /// <summary>
     /// Название аптеки

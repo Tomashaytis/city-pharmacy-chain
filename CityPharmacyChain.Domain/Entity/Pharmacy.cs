@@ -55,10 +55,10 @@ public class Pharmacy(int pharmacyId = 0, int? pharmacyNumber = null, string? na
     /// <summary>
     /// Записи в прайс-листе для аптеки
     /// </summary>
-    public List<PriceListEntry> PriceListEntries { get; set; } = [];
+    public virtual List<PriceListEntry> PriceListEntries { get; set; } = [];
 
     /// <summary>
     /// Связи препарат-аптека для аптеки
     /// </summary>
-    public List<PharmacyProduct> PharmacyProducts { get; set; } = [];
+    public virtual List<PharmacyProduct> PharmacyProducts { get; set; } = [];
 }

@@ -40,6 +40,13 @@ public class Program
 
         builder.Services.AddControllers();
 
+        builder.Services.AddCors(options => options.AddDefaultPolicy(policy => 
+        { 
+            policy.AllowAnyOrigin();
+            policy.AllowAnyMethod();
+            policy.AllowAnyHeader();
+        }));
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
