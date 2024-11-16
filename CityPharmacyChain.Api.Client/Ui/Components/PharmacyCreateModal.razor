@@ -1,0 +1,69 @@
+﻿﻿
+@inject CityPharmacyChainApiWrapper Client
+
+<Modal @ref="PharmacyModal">
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>Добавление сведений об аптеке</ModalTitle>
+                <CloseButton Clicked="ClosePharmacyModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Номер</FieldLabel>
+                    <NumericEdit @bind-Value="@NewPharmacy.PharmacyNumber" />
+                </Field>
+                <Field>
+                    <FieldLabel>Название</FieldLabel>
+                    <TextEdit @bind-Text="@NewPharmacy.Name" />
+                </Field>
+                <Field>
+                    <FieldLabel>Номер телефона</FieldLabel>
+                    <NumericEdit @bind-Value="@NewPharmacy.PhoneNumber" />
+                </Field>
+                <Field>
+                    <FieldLabel>Адрес</FieldLabel>
+                    <TextEdit @bind-Text="@NewPharmacy.Address" />
+                </Field>
+                <Field>
+                    <FieldLabel>ФИО директора</FieldLabel>
+                    <TextEdit @bind-Text="@NewPharmacy.DirectorFullName" />
+                </Field>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="ClosePharmacyModalAsync">Отмена</Button>
+                <Button Color="Color.Primary" Clicked="CreatePharmacyAsync">Создать</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public int? PharmacyId { get; set; }
+
+    [Parameter]
+    public EventCallback OnPharmacyAdded { get; set; }
+
+    private Modal PharmacyModal { get; set; } = new();
+
+    private PharmacyDto NewPharmacy { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    public async Task Show() => await PharmacyModal.Show();
+
+    private async Task ClosePharmacyModalAsync() => await PharmacyModal.Hide();
+
+    private async Task CreatePharmacyAsync()
+    {
+        var result = await Client.PharmacyPost(NewPharmacy);
+        await PharmacyModal.Hide();
+        await OnPharmacyAdded.InvokeAsync();
+    }
+}

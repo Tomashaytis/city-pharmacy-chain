@@ -11,6 +11,7 @@ public class CityPharmacyChainApiWrapper(IConfiguration configuration)
     /// </summary>
     public readonly CityPharmacyChainApi Client = new(configuration["OpenApi:ServerUrl"], new HttpClient());
 
+
     /// <summary>
     /// Метод посылает GET запрос на получение коллекции объектов типа фармацевтическая группа с сервера
     /// </summary>

@@ -55,6 +55,8 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseCors();
+
         app.UseHttpsRedirection();
 
         app.UseAuthorization();

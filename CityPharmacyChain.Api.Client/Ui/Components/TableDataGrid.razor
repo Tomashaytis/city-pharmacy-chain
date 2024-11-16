@@ -1,0 +1,72 @@
+﻿<Div Margin="Margin.IsAuto.OnX">
+    <Card>
+        <CardHeader Padding="Padding.Is0.FromBottom">
+            <CardTitle Flex="Flex.Column.AlignItems.Start">
+                <Span TextWeight="TextWeight.Bold">Recent orders</Span>
+                <Span TextColor="TextColor.Muted">Over 500 orders</Span>
+            </CardTitle>
+        </CardHeader>
+        <CardBody>
+            <Table Borderless Class="table-bordered table-hover">
+                <TableHeader>
+                    <TableRow>
+                        <TableHeaderCell>#</TableHeaderCell>
+                        @foreach (var headerCell in HeaderCells)
+                        {
+                            <TableHeaderCell>@headerCell</TableHeaderCell>
+                        }
+                        <TableHeaderCell>Actions</TableHeaderCell>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    @foreach (var row in Rows)
+                    {
+                        <TableRow>
+                            <TableRowHeader>
+                                <Span TextColor="TextColor.Dark">
+                                    @RenderTableRow((Rows.IndexOf(row) + 1).ToString())
+                                </Span>
+                            </TableRowHeader>
+                            @foreach (var rowCell in row)
+                            {
+                                <TableRowCell>
+                                    @RenderTableRow(rowCell)
+                                </TableRowCell>
+                            }
+                            <TableRowCell>
+                                <Button Type="ButtonType.Link" Color="Color.Light" Size="Size.Small">
+                                    <Icon Name="IconName.Edit" />
+                                </Button>
+                                <Button Type="ButtonType.Link" Color="Color.Light" Size="Size.Small">
+                                    <Icon Name="IconName.Delete" />
+                                </Button>
+                            </TableRowCell>
+                        </TableRow>
+                    }
+                </TableBody>
+            </Table>
+        </CardBody>
+    </Card>
+</Div>
+
+@code {
+    [Parameter]
+    public List<string> HeaderCells { get; set; } = new();
+
+    [Parameter]
+    public List<List<string>> Rows { get; set; } = new();
+
+    private RenderFragment RenderTableRow(string label, string description = "") => __builder =>
+    {
+        <Span TextColor="TextColor.Primary" TextWeight="TextWeight.Bold">@label</Span>
+        @if (description != "")
+        {
+            <Span TextColor="TextColor.Muted" Display="Display.Block" Style="font-size: 0.85rem;">@description</Span>
+        }
+    };
+
+    private RenderFragment Price(decimal price) => __builder =>
+    {
+        <Span TextColor="TextColor.Dark" TextWeight="TextWeight.Bold">@($"${price}")</Span>
+    };
+}
