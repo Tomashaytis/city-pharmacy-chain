@@ -1,5 +1,6 @@
 ﻿
 @inject CityPharmacyChainApiWrapper Client
+@inject NavigationManager NavManager
 
 <Card>
     <CardHeader>
@@ -16,6 +17,12 @@
     </CardHeader>
     <CardBody>
         <DataGrid TItem="PharmacyFullDto" Data="@Pharmacies" PageSize="5" Responsive Filterable>
+            
+            <DataGridDateColumn Field="@nameof(PharmacyFullDto.PharmacyNumber)" Caption="Number of Pharmacy" Editable />
+            <DataGridDateColumn Field="@nameof(PharmacyFullDto.Name)" Caption="Name of Pharmacy" Editable />
+            <DataGridDateColumn Field="@nameof(PharmacyFullDto.PhoneNumber)" Caption="Phone number of Pharmacy" Editable />
+            <DataGridDateColumn Field="@nameof(PharmacyFullDto.Address)" Caption="Address of Pharmacy" Editable />
+            <DataGridDateColumn Field="@nameof(PharmacyFullDto.DirectorFullName)" Caption="Director full name for Pharmacy" Editable />
             <DataGridColumn Width="150px"
                             TItem="PharmacyFullDto"
                             Field="@nameof(PharmacyFullDto.PharmacyId)"
@@ -36,11 +43,6 @@
                     </Dropdown>
                 </DisplayTemplate>
             </DataGridColumn>
-            <DataGridDateColumn Field="@nameof(PharmacyFullDto.PharmacyNumber)" Caption="Number of Pharmacy" Editable />
-            <DataGridDateColumn Field="@nameof(PharmacyFullDto.Name)" Caption="Name of Pharmacy" Editable />
-            <DataGridDateColumn Field="@nameof(PharmacyFullDto.PhoneNumber)" Caption="Phone number of Pharmacy" Editable />
-            <DataGridDateColumn Field="@nameof(PharmacyFullDto.Address)" Caption="Address of Pharmacy" Editable />
-            <DataGridDateColumn Field="@nameof(PharmacyFullDto.DirectorFullName)" Caption="Director full name for Pharmacy" Editable />
             <DataGridCommandColumn />
         </DataGrid>
     </CardBody>
@@ -67,16 +69,7 @@
 
     private void OpenEditPageAsync(PharmacyFullDto context)
     {
-        //NavManager.NavigateTo($"authors/{context.PharmacyId}");
-    }
-
-    private async Task UnlinkPharmacyAsync(PharmacyFullDto context)
-    {
-        /*var pharmacies = (await Client.PharmacyGetAll()).Where(p => p.PharmacyId == context.PharmacyId);
-        foreach (var pharmacy in pharmacies)
-            await Client.PharmacyDelete(pharmacy.PharmacyId);
-        await RefreshAuthorCollection();
-        await OnDataChanged.InvokeAsync();*/
+        NavManager.NavigateTo($"pharmacy/{context.PharmacyId}");
     }
 
     private async Task DeletePharmacyAsync(PharmacyFullDto context)
@@ -93,8 +86,6 @@
     }
 
     private async Task OpenCreateModal() => await PharmacyCreateModal.Show();
-
-    //private async Task OpenLinkModal() => await AuthorLinkModal.Show();
 
     private async Task RefreshPharmacyCollection()
     {

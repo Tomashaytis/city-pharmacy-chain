@@ -74,7 +74,7 @@ public class CityPharmacyChainApiWrapper(IConfiguration configuration)
     /// <param name="id">Идентификатор объекта типа аптека</param>
     /// <param name="pharmacyDto">Объект типа аптека</param>
     /// <returns>Изменённый объект типа аптека</returns>
-    public async Task<PharmacyFullDto> PharmacyDtoPut(int id, PharmacyDto pharmacyDto) => await Client.PharmacyPUTAsync(id, pharmacyDto);
+    public async Task<PharmacyFullDto> PharmacyPut(int id, PharmacyDto pharmacyDto) => await Client.PharmacyPUTAsync(id, pharmacyDto);
 
     /// <summary>
     /// Метод посылает DELETE запрос на удаление объекта типа аптека по его идентификатору с сервера

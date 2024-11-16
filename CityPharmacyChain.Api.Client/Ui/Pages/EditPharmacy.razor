@@ -1,0 +1,92 @@
+﻿﻿
+@page "/pharmacy/{Id}"
+
+@inject CityPharmacyChainApiWrapper Client
+@inject IJSRuntime JsRuntime
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Изменить информацию об аптеке</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary" Clicked="UpdatePharmacyAsync">
+                    Сохранить
+                </Button>
+                <Button Color="Color.Danger" Clicked="DeletePharmacyAsync">
+                    Удалить
+                </Button>
+                <Button Color="Color.Secondary" onclick="history.back();">
+                    Закрыть
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+
+    <CardBody>
+        <Field>
+            <FieldLabel>Номер</FieldLabel>
+            <NumericEdit @bind-Value="@UpdatedPharmacy.PharmacyNumber" />
+        </Field>
+        <Field>
+            <FieldLabel>Название</FieldLabel>
+            <TextEdit @bind-Text="@UpdatedPharmacy.Name" />
+        </Field>
+        <Field>
+            <FieldLabel>Номер телефона</FieldLabel>
+            <NumericEdit @bind-Value="@UpdatedPharmacy.PhoneNumber" />
+        </Field>
+        <Field>
+            <FieldLabel>Адрес</FieldLabel>
+            <TextEdit @bind-Text="@UpdatedPharmacy.Address" />
+        </Field>
+        <Field>
+            <FieldLabel>ФИО директора</FieldLabel>
+            <TextEdit @bind-Text="@UpdatedPharmacy.DirectorFullName" />
+        </Field>
+    </CardBody>
+</Card>
+
+<PharmacyDataGrid PharmacyId="@PharmacyId" />
+
+@code {
+    [Parameter] 
+    public string Id { get; set; } = "";
+
+    private int PharmacyId { get; set; }
+    private PharmacyDto UpdatedPharmacy { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!int.TryParse(Id, out var id))
+            throw new Exception("Некорректный идентификатор аптеки");
+        PharmacyId = id;
+        UpdatedPharmacy = await Client.PharmacyGetById(PharmacyId);
+        await base.OnInitializedAsync();
+    }
+
+    private async Task DeletePharmacyAsync()
+    {
+        await Client.PharmacyDelete(PharmacyId);
+        await JsRuntime.InvokeVoidAsync("history.back()");
+    }
+
+    private async Task UpdatePharmacyAsync()
+    {
+        var EditedPharmacy = new PharmacyDto
+        {
+            PharmacyNumber = UpdatedPharmacy.PharmacyNumber,
+            Name = UpdatedPharmacy.Name,
+            PhoneNumber = UpdatedPharmacy.PhoneNumber,
+            Address = UpdatedPharmacy.Address,
+            DirectorFullName = UpdatedPharmacy.DirectorFullName,
+        };
+        var updatedPharmacy = await Client.PharmacyPut(PharmacyId, EditedPharmacy);
+        UpdatedPharmacy.PharmacyNumber = updatedPharmacy.PharmacyNumber;
+        UpdatedPharmacy.Name = updatedPharmacy.Name;
+        UpdatedPharmacy.PhoneNumber = updatedPharmacy.PhoneNumber;
+        UpdatedPharmacy.Address = updatedPharmacy.Address;
+        UpdatedPharmacy.DirectorFullName = updatedPharmacy.DirectorFullName;
+    }
+}
