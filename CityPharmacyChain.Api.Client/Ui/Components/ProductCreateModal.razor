@@ -33,25 +33,53 @@
 </Modal>
 
 @code {
+    /// <summary>
+    /// Идентификатор препарата
+    /// </summary>
     [Parameter]
     public int? ProductId { get; set; }
 
+    /// <summary>
+    /// Пробрасываемое событие для оповещения родительского компонента об изменении данных
+    /// </summary>
     [Parameter]
     public EventCallback OnProductAdded { get; set; }
 
+    /// <summary>
+    /// Модальное окно для сущности класса препарат
+    /// </summary>
     private Modal ProductModal { get; set; } = new();
 
+    /// <summary>
+    /// Добавляемая сущность класса препарат
+    /// </summary>
     private ProductDto NewProduct { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод открывает модальное окно
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     public async Task Show() => await ProductModal.Show();
 
+    /// <summary>
+    /// Метод закрывает модальное окно
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task CloseProductModalAsync() => await ProductModal.Hide();
 
+    /// <summary>
+    /// Метод добавляет к данным на сервере новую сущность класса препарат
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task CreateProductAsync()
     {
         var result = await Client.ProductPost(NewProduct);

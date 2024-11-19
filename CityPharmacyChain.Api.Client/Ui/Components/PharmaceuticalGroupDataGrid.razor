@@ -50,27 +50,52 @@
 <PharmaceuticalGroupCreateModal @ref="PharmaceuticalGroupCreateModal" PharmaceuticalGroupId="PharmaceuticalGroupId" OnPharmaceuticalGroupAdded="@HandlePharmaceuticalGroupAdded" />
 
 @code {
+    /// <summary>
+    /// Список сущностей класса фармацевтическая группа
+    /// </summary>
     public List<Tuple<PharmaceuticalGroupFullDto, ProductDto>> PharmaceuticalGroups { get; set; } = [];
 
+    /// <summary>
+    /// Идентификатор фармацевтической группы
+    /// </summary>
     [Parameter]
     public int? PharmaceuticalGroupId { get; set; }
 
+    /// <summary>
+    /// Пробрасываемое событие для оповещения родительского компонента об изменении данных
+    /// </summary>
     [Parameter]
     public EventCallback OnDataChanged { get; set; }
 
+    /// <summary>
+    /// Компонент модальное окно для добавления новой сущности класса фармацевтическая группа
+    /// </summary>
     private PharmaceuticalGroupCreateModal PharmaceuticalGroupCreateModal { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         await RefreshPharmaceuticalGroupCollection();
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод переходит на страницу редактирования данных для сущности классафармацевтическая группа
+    /// </summary>
+    /// <param name="context">Выбранная сущность для редактирования</param>
     private void OpenEditPageAsync(PharmaceuticalGroupFullDto context)
     {
         NavManager.NavigateTo($"pharmaceutical-group/{context.PharmaceuticalGroupId}");
     }
 
+    /// <summary>
+    /// Метод удаляет с сервера сущность класса фармацевтическая группа
+    /// </summary>
+    /// <param name="context">Выбранная сущность для удаления</param>
+    /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmaceuticalGroupAsync(PharmaceuticalGroupFullDto context)
     {
         await Client.PharmaceuticalGroupDelete(context.PharmaceuticalGroupId);
@@ -78,14 +103,26 @@
         await OnDataChanged.InvokeAsync();
     }
 
+    /// <summary>
+    /// Метод обновляет страницу при добавлении новой сущности класса фармацевтическая группа
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task HandlePharmaceuticalGroupAdded()
     {
         await RefreshPharmaceuticalGroupCollection();
         await OnDataChanged.InvokeAsync();
     }
 
+    /// <summary>
+    /// Метод открывает модальное окно при добавлении новой сущности класса связь препарат-аптека
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task OpenCreateModal() => await PharmaceuticalGroupCreateModal.Show();
 
+    /// <summary>
+    /// Метод запрашивает с сервера новые данные для сущности класса фармацевтическая группа
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task RefreshPharmaceuticalGroupCollection()
     {
         var pharmaceuticalGroups = (await Client.PharmaceuticalGroupGetAll()).ToList();

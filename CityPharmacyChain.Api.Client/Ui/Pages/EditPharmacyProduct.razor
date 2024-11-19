@@ -39,28 +39,49 @@
 <PharmacyProductDataGrid PharmacyProductId="@PharmacyProductId" />
 
 @code {
+    /// <summary>
+    /// Идентификатор связи препарат-аптека (строка)
+    /// </summary>
     [Parameter] 
     public string Id { get; set; } = "";
 
+    /// <summary>
+    /// Идентификатор связи препарат-аптека (число)
+    /// </summary>
     private int PharmacyProductId { get; set; }
 
+    /// <summary>
+    /// Обновлённая сущность класса связь препарат-аптека
+    /// </summary>
     private PharmacyProductDto UpdatedPharmacyProduct { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         if (!int.TryParse(Id, out var id))
-            throw new Exception("Некорректный идентификатор аптеки");
+            throw new Exception("Некорректный идентификатор связи препарат-аптека");
         PharmacyProductId = id;
         UpdatedPharmacyProduct = await Client.PharmacyProductGetById(PharmacyProductId);
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод удаляет с сервера сущность класса связь препарат-аптека
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmacyProductAsync()
     {
         await Client.PharmacyProductDelete(PharmacyProductId);
         await JsRuntime.InvokeVoidAsync("history.back");
     }
 
+    /// <summary>
+    /// Метод модифицирует на сервере сущность класса связь препарат-аптека
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task UpdatePharmacyProductAsync()
     {
         var EditedPharmacyProduct = new PharmacyProductDto

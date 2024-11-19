@@ -43,27 +43,49 @@
 <ProductDataGrid ProductId="@ProductId" />
 
 @code {
+    /// <summary>
+    /// Идентификатор препарата (строка)
+    /// </summary>
     [Parameter] 
     public string Id { get; set; } = "";
 
+    /// <summary>
+    /// Идентификатор препарата (число)
+    /// </summary>
     private int ProductId { get; set; }
+
+    /// <summary>
+    /// Обновлённая сущность класса препарат
+    /// </summary>
     private ProductDto UpdatedProduct { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         if (!int.TryParse(Id, out var id))
-            throw new Exception("Некорректный идентификатор аптеки");
+            throw new Exception("Некорректный идентификатор препарата");
         ProductId = id;
         UpdatedProduct = await Client.ProductGetById(ProductId);
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод удаляет с сервера сущность класса препарат
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task DeleteProductAsync()
     {
         await Client.ProductDelete(ProductId);
         await JsRuntime.InvokeVoidAsync("history.back");
     }
 
+    /// <summary>
+    /// Метод модифицирует на сервере сущность класса препарат
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task UpdateProductAsync()
     {
         var EditedProduct = new ProductDto

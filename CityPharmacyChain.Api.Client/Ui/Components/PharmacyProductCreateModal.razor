@@ -38,29 +38,63 @@
 </Modal>
 
 @code {
+    /// <summary>
+    /// Идентификатор связи препарат-аптека
+    /// </summary>
     [Parameter]
     public int? PharmacyProductId { get; set; }
 
+    /// <summary>
+    /// Пробрасываемое событие для оповещения родительского компонента об изменении данных
+    /// </summary>
     [Parameter]
     public EventCallback OnPharmacyProductAdded { get; set; }
 
-    public int PharmacyNumber { get; set; }
+    /// <summary>
+    /// Номер аптеки для получения по нему PharmacyId
+    /// </summary>
+    private int PharmacyNumber { get; set; }
 
-    public int ProductCode { get; set; }
+    /// <summary>
+    /// Код препарата для получения по нему ProductId
+    /// </summary>
+    private int ProductCode { get; set; }
 
+    /// <summary>
+    /// Модальное окно для сущности класса связь препарат-аптека
+    /// </summary>
     private Modal PharmacyProductModal { get; set; } = new();
 
+    /// <summary>
+    /// Добавляемая сущность класса связь препарат-аптека
+    /// </summary>
     private PharmacyProductDto NewPharmacyProduct { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод открывает модальное окно
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     public async Task Show() => await PharmacyProductModal.Show();
 
+    /// <summary>
+    /// Метод закрывает модальное окно
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task ClosePharmacyProductModalAsync() => await PharmacyProductModal.Hide();
 
+    /// <summary>
+    /// Метод добавляет к данным на сервере новую сущность класса связь препарат-аптека
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task CreatePharmacyProductAsync()
     {
         var products = (await Client.ProductGetAll()).ToList();

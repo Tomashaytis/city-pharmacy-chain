@@ -48,13 +48,26 @@
 <PriceListEntryDataGrid PriceListEntryId="@PriceListEntryId" />
 
 @code {
+    /// <summary>
+    /// Идентификатор записи в прайс-листе (строка)
+    /// </summary>
     [Parameter] 
     public string Id { get; set; } = "";
 
+    /// <summary>
+    /// Идентификатор записи в прайс-листе (число)
+    /// </summary>
     private int PriceListEntryId { get; set; }
 
+    /// <summary>
+    /// Обновлённая сущность класса запись в прайс-листе
+    /// </summary>
     private PriceListEntryDto UpdatedPriceListEntry { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         if (!int.TryParse(Id, out var id))
@@ -64,12 +77,20 @@
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод удаляет с сервера сущность класса запись в прайс-листе
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task DeletePriceListEntryAsync()
     {
         await Client.PriceListEntryDelete(PriceListEntryId);
         await JsRuntime.InvokeVoidAsync("history.back");
     }
 
+    /// <summary>
+    /// Метод модифицирует на сервере сущность класса запись в прайс-листе
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task UpdatePriceListEntryAsync()
     {
         if (!(UpdatedPriceListEntry.PaymentType is "Cash" or "Cashless"))

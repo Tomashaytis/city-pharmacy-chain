@@ -35,28 +35,48 @@
 <PharmaceuticalGroupDataGrid PharmaceuticalGroupId="@PharmaceuticalGroupId" />
 
 @code {
+    /// <summary>
+    /// Идентификатор фармацевтической группы (строка)
+    /// </summary>
     [Parameter] 
     public string Id { get; set; } = "";
 
+    /// <summary>
+    /// Идентификатор фармацевтической группы (число)
+    /// </summary>
     private int PharmaceuticalGroupId { get; set; }
 
+    /// <summary>
+    /// Обновлённая сущность класса фармацевтическая группа
+    /// </summary>
     private PharmaceuticalGroupDto UpdatedPharmaceuticalGroup { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         if (!int.TryParse(Id, out var id))
-            throw new Exception("Некорректный идентификатор аптеки");
+            throw new Exception("Некорректный идентификатор фармацевтической группы");
         PharmaceuticalGroupId = id;
         UpdatedPharmaceuticalGroup = await Client.PharmaceuticalGroupGetById(PharmaceuticalGroupId);
         await base.OnInitializedAsync();
     }
-
+    /// <summary>
+    /// Метод удаляет с сервера сущность класса фармацевтическая группа
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmaceuticalGroupAsync()
     {
         await Client.PharmaceuticalGroupDelete(PharmaceuticalGroupId);
         await JsRuntime.InvokeVoidAsync("history.back");
     }
 
+    /// <summary>
+    /// Метод модифицирует на сервере сущность класса фармацевтическая группа
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task UpdatePharmaceuticalGroupAsync()
     {
         var EditedProduct = new PharmaceuticalGroupDto

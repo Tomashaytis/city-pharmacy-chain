@@ -30,27 +30,58 @@
 </Modal>
 
 @code {
+    /// <summary>
+    /// Идентификатор фармацевтической группы
+    /// </summary>
     [Parameter]
     public int? PharmaceuticalGroupId { get; set; }
 
+    /// <summary>
+    /// Пробрасываемое событие для оповещения родительского компонента об изменении данных
+    /// </summary>
     [Parameter]
     public EventCallback OnPharmaceuticalGroupAdded { get; set; }
 
-    public int ProductCode { get; set; }
+    /// <summary>
+    /// Код препарата для получения по нему ProductId
+    /// </summary>
+    private int ProductCode { get; set; }
 
+    /// <summary>
+    /// Модальное окно для сущности класса фармацевтическая группа
+    /// </summary>
     private Modal PharmaceuticalGroupModal { get; set; } = new();
 
+    /// <summary>
+    /// Добавляемая сущность класса фармацевтическая группа
+    /// </summary>
     private PharmaceuticalGroupDto NewPharmaceuticalGroup { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод открывает модальное окно
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     public async Task Show() => await PharmaceuticalGroupModal.Show();
 
+    /// <summary>
+    /// Метод закрывает модальное окно
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task ClosePharmaceuticalGroupModalAsync() => await PharmaceuticalGroupModal.Hide();
 
+    /// <summary>
+    /// Метод добавляет к данным на сервере новую сущность класса фармацевтическая группа
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task CreatePharmaceuticalGroupAsync()
     {
         var products = (await Client.ProductGetAll()).ToList();

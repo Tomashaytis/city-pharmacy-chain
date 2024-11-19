@@ -41,25 +41,53 @@
 </Modal>
 
 @code {
+    /// <summary>
+    /// Идентификатор аптеки
+    /// </summary>
     [Parameter]
     public int? PharmacyId { get; set; }
 
+    /// <summary>
+    /// Пробрасываемое событие для оповещения родительского компонента об изменении данных
+    /// </summary>
     [Parameter]
     public EventCallback OnPharmacyAdded { get; set; }
 
+    /// <summary>
+    /// Модальное окно для сущности класса аптека
+    /// </summary>
     private Modal PharmacyModal { get; set; } = new();
 
+    /// <summary>
+    /// Добавляемая сущность класса аптека
+    /// </summary>
     private PharmacyDto NewPharmacy { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод открывает модальное окно
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     public async Task Show() => await PharmacyModal.Show();
 
+    /// <summary>
+    /// Метод закрывает модальное окно
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task ClosePharmacyModalAsync() => await PharmacyModal.Hide();
 
+    /// <summary>
+    /// Метод добавляет к данным на сервере новую сущность класса аптека
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task CreatePharmacyAsync()
     {
         var result = await Client.PharmacyPost(NewPharmacy);

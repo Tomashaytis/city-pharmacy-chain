@@ -49,27 +49,52 @@
 <ProductCreateModal @ref="ProductCreateModal" ProductId="ProductId" OnProductAdded="@HandleProductAdded" />
 
 @code {
+    /// <summary>
+    /// Список сущностей класса препарат
+    /// </summary>
     public List<ProductFullDto> Products { get; set; } = [];
 
+    /// <summary>
+    /// Идентификатор препарата
+    /// </summary>
     [Parameter]
     public int? ProductId { get; set; }
 
+    /// <summary>
+    /// Пробрасываемое событие для оповещения родительского компонента об изменении данных
+    /// </summary>
     [Parameter]
     public EventCallback OnDataChanged { get; set; }
 
+    /// <summary>
+    /// Компонент модальное окно для добавления новой сущности класса препарат
+    /// </summary>
     private ProductCreateModal ProductCreateModal { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         await RefreshProductCollection();
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод переходит на страницу редактирования данных для сущности класса препарат
+    /// </summary>
+    /// <param name="context">Выбранная сущность для редактирования</param>
     private void OpenEditPageAsync(ProductFullDto context)
     {
         NavManager.NavigateTo($"product/{context.ProductId}");
     }
 
+    /// <summary>
+    /// Метод удаляет с сервера сущность класса препарат
+    /// </summary>
+    /// <param name="context">Выбранная сущность для удаления</param>
+    /// <returns>Асинхронная задача</returns>
     private async Task DeleteProductAsync(ProductFullDto context)
     {
         await Client.ProductDelete(context.ProductId);
@@ -77,14 +102,26 @@
         await OnDataChanged.InvokeAsync();
     }
 
+    /// <summary>
+    /// Метод обновляет страницу при добавлении новой сущности класса препарат
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task HandleProductAdded()
     {
         await RefreshProductCollection();
         await OnDataChanged.InvokeAsync();
     }
 
+    /// <summary>
+    /// Метод открывает модальное окно при добавлении новой сущности класса препарат
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task OpenCreateModal() => await ProductCreateModal.Show();
 
+    /// <summary>
+    /// Метод запрашивает с сервера новые данные для сущности класса препарат
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task RefreshProductCollection()
     {
          Products = (await Client.ProductGetAll()).ToList();

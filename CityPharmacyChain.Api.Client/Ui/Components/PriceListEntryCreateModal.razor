@@ -46,29 +46,63 @@
 </Modal>
 
 @code {
+    /// <summary>
+    /// Идентификатор записи в прайс-листе
+    /// </summary>
     [Parameter]
     public int? PriceListEntryId { get; set; }
 
+    /// <summary>
+    /// Пробрасываемое событие для оповещения родительского компонента об изменении данных
+    /// </summary>
     [Parameter]
     public EventCallback OnPriceListEntryAdded { get; set; }
 
-    public int PharmacyNumber { get; set; }
+    /// <summary>
+    /// Номер аптеки для получения по нему PharmacyId
+    /// </summary>
+    private int PharmacyNumber { get; set; }
 
-    public int ProductCode { get; set; }
+    /// <summary>
+    /// Код препарата для получения по нему ProductId
+    /// </summary>
+    private int ProductCode { get; set; }
 
+    /// <summary>
+    /// Модальное окно для сущности класса запись в прайс-листе
+    /// </summary>
     private Modal PriceListEntryModal { get; set; } = new();
 
+    /// <summary>
+    /// Добавляемая сущность класса запись в прайс-листе
+    /// </summary>
     private PriceListEntryDto NewPriceListEntry { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод открывает модальное окно
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     public async Task Show() => await PriceListEntryModal.Show();
 
+    /// <summary>
+    /// Метод закрывает модальное окно
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task ClosePriceListEntryModalAsync() => await PriceListEntryModal.Hide();
 
+    /// <summary>
+    /// Метод добавляет к данным на сервере новую сущность класса запись в прайс-листе
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task CreatePriceListEntryAsync()
     {
         if (!(NewPriceListEntry.PaymentType is "Cash" or "Cashless"))

@@ -43,10 +43,19 @@
 </div>
 
 @code {
+    /// <summary>
+    /// Необходимо ли сворачивать навигационное меню
+    /// </summary>
     private bool collapseNavMenu = true;
 
+    /// <summary>
+    /// Используемый класс для навигационного меню
+    /// </summary>
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+    /// <summary>
+    /// Изменить состояние навигационного меню
+    /// </summary>
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;

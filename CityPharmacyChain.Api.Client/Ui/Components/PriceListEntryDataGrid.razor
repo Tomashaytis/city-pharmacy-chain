@@ -52,27 +52,52 @@
 <PriceListEntryCreateModal @ref="PriceListEntryCreateModal" PriceListEntryId="PriceListEntryId" OnPriceListEntryAdded="@HandlePriceListEntryAdded" />
 
 @code {
+    /// <summary>
+    /// Список сущностей класса запись в прайс-листе
+    /// </summary>
     public List<Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>> Prices { get; set; } = [];
 
+    /// <summary>
+    /// Идентификатор записи в прайс-листе
+    /// </summary>
     [Parameter]
     public int? PriceListEntryId { get; set; }
 
+    /// <summary>
+    /// Пробрасываемое событие для оповещения родительского компонента об изменении данных
+    /// </summary>
     [Parameter]
     public EventCallback OnDataChanged { get; set; }
 
+    /// <summary>
+    /// Компонент модальное окно для добавления новой сущности класса запись в прайс-листе
+    /// </summary>
     private PriceListEntryCreateModal PriceListEntryCreateModal { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         await RefreshPriceListEntryCollection();
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод переходит на страницу редактирования данных для сущности класса запись в прайс-листе
+    /// </summary>
+    /// <param name="context">Выбранная сущность для редактирования</param>
     private void OpenEditPageAsync(PriceListEntryFullDto context)
     {
         NavManager.NavigateTo($"price-list-entry/{context.PriceListEntryId}");
     }
 
+    /// <summary>
+    /// Метод удаляет с сервера сущность класса запись в прайс-листе
+    /// </summary>
+    /// <param name="context">Выбранная сущность для удаления</param>
+    /// <returns>Асинхронная задача</returns>
     private async Task DeletePriceListEntryAsync(PriceListEntryFullDto context)
     {
         await Client.PriceListEntryDelete(context.PriceListEntryId);
@@ -80,14 +105,26 @@
         await OnDataChanged.InvokeAsync();
     }
 
+    /// <summary>
+    /// Метод обновляет страницу при добавлении новой сущности класса запись в прайс-листе
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task HandlePriceListEntryAdded()
     {
         await RefreshPriceListEntryCollection();
         await OnDataChanged.InvokeAsync();
     }
 
+    /// <summary>
+    /// Метод открывает модальное окно при добавлении новой сущности класса запись в прайс-листе
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task OpenCreateModal() => await PriceListEntryCreateModal.Show();
 
+    /// <summary>
+    /// Метод запрашивает с сервера новые данные для сущности класса запись в прайс-листе
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task RefreshPriceListEntryCollection()
     {
         var prices = (await Client.PriceListEntryGetAll()).ToList();

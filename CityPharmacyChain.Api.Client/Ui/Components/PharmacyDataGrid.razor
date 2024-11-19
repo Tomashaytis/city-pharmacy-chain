@@ -52,27 +52,52 @@
 <PharmacyCreateModal @ref="PharmacyCreateModal" PharmacyId="PharmacyId" OnPharmacyAdded="@HandlePharmacyAdded" />
 
 @code {
+    /// <summary>
+    /// Список сущностей класса аптека
+    /// </summary>
     public List<PharmacyFullDto> Pharmacies { get; set; } = [];
 
+    /// <summary>
+    /// Идентификатор аптеки
+    /// </summary>
     [Parameter]
     public int? PharmacyId { get; set; }
 
+    /// <summary>
+    /// Пробрасываемое событие для оповещения родительского компонента об изменении данных
+    /// </summary>
     [Parameter]
     public EventCallback OnDataChanged { get; set; }
 
+    /// <summary>
+    /// Компонент модальное окно для добавления новой сущности класса аптека
+    /// </summary>
     private PharmacyCreateModal PharmacyCreateModal { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         await RefreshPharmacyCollection();
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод переходит на страницу редактирования данных для сущности класса аптека
+    /// </summary>
+    /// <param name="context">Выбранная сущность для редактирования</param>
     private void OpenEditPageAsync(PharmacyFullDto context)
     {
         NavManager.NavigateTo($"pharmacy/{context.PharmacyId}");
     }
 
+    /// <summary>
+    /// Метод удаляет с сервера сущность класса аптека
+    /// </summary>
+    /// <param name="context">Выбранная сущность для удаления</param>
+    /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmacyAsync(PharmacyFullDto context)
     {
         await Client.PharmacyDelete(context.PharmacyId);
@@ -80,14 +105,26 @@
         await OnDataChanged.InvokeAsync();
     }
 
+    /// <summary>
+    /// Метод обновляет страницу при добавлении новой сущности класса аптека
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task HandlePharmacyAdded()
     {
         await RefreshPharmacyCollection();
         await OnDataChanged.InvokeAsync();
     }
 
+    /// <summary>
+    /// Метод открывает модальное окно при добавлении новой сущности класса аптека
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task OpenCreateModal() => await PharmacyCreateModal.Show();
 
+    /// <summary>
+    /// Метод запрашивает с сервера новые данные для сущности класса аптека
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task RefreshPharmacyCollection()
     {
          Pharmacies = (await Client.PharmacyGetAll()).ToList();

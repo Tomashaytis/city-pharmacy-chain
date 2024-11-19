@@ -50,27 +50,52 @@
 <PharmacyProductCreateModal @ref="PharmacyProductCreateModal" PharmacyProductId="PharmacyProductId" OnPharmacyProductAdded="@HandlePharmacyProductAdded" />
 
 @code {
+    /// <summary>
+    /// Список сущностей класса связь препарат-аптека
+    /// </summary>
     public List<Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>> PharmacyProducts { get; set; } = [];
 
+    /// <summary>
+    /// Идентификатор связи препарат-аптека
+    /// </summary>
     [Parameter]
     public int? PharmacyProductId { get; set; }
 
+    /// <summary>
+    /// Пробрасываемое событие для оповещения родительского компонента об изменении данных
+    /// </summary>
     [Parameter]
     public EventCallback OnDataChanged { get; set; }
 
+    /// <summary>
+    /// Компонент модальное окно для добавления новой сущности класса связь препарат-аптека
+    /// </summary>
     private PharmacyProductCreateModal PharmacyProductCreateModal { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         await RefreshPharmacyProductCollection();
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод переходит на страницу редактирования данных для сущности класса связь препарат-аптека
+    /// </summary>
+    /// <param name="context">Выбранная сущность для редактирования</param>
     private void OpenEditPageAsync(PharmacyProductFullDto context)
     {
         NavManager.NavigateTo($"pharmacy-product/{context.PharmacyProductId}");
     }
 
+    /// <summary>
+    /// Метод удаляет с сервера сущность класса связь препарат-аптека
+    /// </summary>
+    /// <param name="context">Выбранная сущность для удаления</param>
+    /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmacyProductAsync(PharmacyProductFullDto context)
     {
         await Client.PharmacyProductDelete(context.PharmacyProductId);
@@ -78,14 +103,26 @@
         await OnDataChanged.InvokeAsync();
     }
 
+    /// <summary>
+    /// Метод обновляет страницу при добавлении новой сущности класса связь препарат-аптека
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task HandlePharmacyProductAdded()
     {
         await RefreshPharmacyProductCollection();
         await OnDataChanged.InvokeAsync();
     }
 
+    /// <summary>
+    /// Метод открывает модальное окно при добавлении новой сущности класса связь препарат-аптека
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task OpenCreateModal() => await PharmacyProductCreateModal.Show();
 
+    /// <summary>
+    /// Метод запрашивает с сервера новые данные для сущности класса связь препарат-аптека
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task RefreshPharmacyProductCollection()
     {
         var pharmacyProducts = (await Client.PharmacyProductGetAll()).ToList();

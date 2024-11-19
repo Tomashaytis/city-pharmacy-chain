@@ -51,12 +51,26 @@
 <PharmacyDataGrid PharmacyId="@PharmacyId" />
 
 @code {
+    /// <summary>
+    /// Идентификатор препарата (строка)
+    /// </summary>
     [Parameter] 
     public string Id { get; set; } = "";
 
+    /// <summary>
+    /// Идентификатор препарата (число)
+    /// </summary>
     private int PharmacyId { get; set; }
+
+    /// <summary>
+    /// Обновлённая сущность класса препарат
+    /// </summary>
     private PharmacyDto UpdatedPharmacy { get; set; } = new();
 
+    /// <summary>
+    /// Переопределение метода OnInitializedAsync
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     protected override async Task OnInitializedAsync()
     {
         if (!int.TryParse(Id, out var id))
@@ -66,12 +80,20 @@
         await base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Метод удаляет с сервера сущность класса препарат
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmacyAsync()
     {
         await Client.PharmacyDelete(PharmacyId);
         await JsRuntime.InvokeVoidAsync("history.back");
     }
 
+    /// <summary>
+    /// Метод модифицирует на сервере сущность класса препарат
+    /// </summary>
+    /// <returns>Асинхронная задача</returns>
     private async Task UpdatePharmacyAsync()
     {
         var EditedPharmacy = new PharmacyDto
