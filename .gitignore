@@ -396,3 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/CityPharmacyChain.Api.Client/wwwroot/css/bootstrap-icons
