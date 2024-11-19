@@ -1,0 +1,93 @@
+﻿
+@inject CityPharmacyChainApiWrapper Client
+@inject NavigationManager NavManager
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Таблица с данными о препаратах</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary" Clicked="OpenCreateModal">
+                    Добавить
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="ProductFullDto" Data="@Products" PageSize="5" Responsive Filterable>
+            
+            <DataGridDateColumn Field="@nameof(ProductFullDto.ProductCode)" Caption="Код" Editable />
+            <DataGridDateColumn Field="@nameof(ProductFullDto.Name)" Caption="Название" Editable />
+            <DataGridDateColumn Field="@nameof(ProductFullDto.ProductGroup)" Caption="Торговая группа" Editable />
+            <DataGridColumn Width="150px"
+                            TItem="ProductFullDto"
+                            Field="@nameof(ProductFullDto.ProductId)"
+                            Caption="Действия">
+                <DisplayTemplate>
+                    <Dropdown>
+                        <DropdownToggle Color="Color.Primary">
+                            Действия
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem Clicked="() => OpenEditPageAsync(context)">
+                                Редактировать
+                            </DropdownItem>
+                            <DropdownItem Clicked="() => DeleteProductAsync(context)">
+                                Удалить
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </DisplayTemplate>
+            </DataGridColumn>
+            <DataGridCommandColumn />
+        </DataGrid>
+    </CardBody>
+</Card>
+
+<ProductCreateModal @ref="ProductCreateModal" ProductId="ProductId" OnProductAdded="@HandleProductAdded" />
+
+@code {
+    public List<ProductFullDto> Products { get; set; } = [];
+
+    [Parameter]
+    public int? ProductId { get; set; }
+
+    [Parameter]
+    public EventCallback OnDataChanged { get; set; }
+
+    private ProductCreateModal ProductCreateModal { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshProductCollection();
+        await base.OnInitializedAsync();
+    }
+
+    private void OpenEditPageAsync(ProductFullDto context)
+    {
+        NavManager.NavigateTo($"product/{context.ProductId}");
+    }
+
+    private async Task DeleteProductAsync(ProductFullDto context)
+    {
+        await Client.ProductDelete(context.ProductId);
+        await RefreshProductCollection();
+        await OnDataChanged.InvokeAsync();
+    }
+
+    private async Task HandleProductAdded()
+    {
+        await RefreshProductCollection();
+        await OnDataChanged.InvokeAsync();
+    }
+
+    private async Task OpenCreateModal() => await ProductCreateModal.Show();
+
+    private async Task RefreshProductCollection()
+    {
+         Products = (await Client.ProductGetAll()).ToList();
+    }
+}
+

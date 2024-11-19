@@ -182,7 +182,7 @@ public class CityPharmacyChainApiWrapper(IConfiguration configuration)
     /// <param name="id">Идентификатор объекта типа препарат</param>
     /// <param name="productDto">Объект типа препарат</param>
     /// <returns>Изменённый объект типа препарат</returns>
-    public async Task<ProductFullDto> ProductDtoPut(int id, ProductDto productDto) => await Client.ProductPUTAsync(id, productDto);
+    public async Task<ProductFullDto> ProductPut(int id, ProductDto productDto) => await Client.ProductPUTAsync(id, productDto);
 
     /// <summary>
     /// Метод посылает DELETE запрос на удаление объекта типа препарат по его идентификатору с сервера

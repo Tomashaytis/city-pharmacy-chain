@@ -1,0 +1,80 @@
+﻿﻿
+@page "/product/{Id}"
+
+@inject CityPharmacyChainApiWrapper Client
+@inject IJSRuntime JsRuntime
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Изменить информацию о препарате</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary" Clicked="UpdateProductAsync">
+                    Сохранить
+                </Button>
+                <Button Color="Color.Danger" Clicked="DeleteProductAsync">
+                    Удалить
+                </Button>
+                <Button Color="Color.Secondary" onclick="history.back();">
+                    Закрыть
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+
+    <CardBody>
+        <Field>
+            <FieldLabel>Код</FieldLabel>
+            <NumericEdit @bind-Value="@UpdatedProduct.ProductCode" />
+        </Field>
+        <Field>
+            <FieldLabel>Название</FieldLabel>
+            <TextEdit @bind-Text="@UpdatedProduct.Name" />
+        </Field>
+        <Field>
+            <FieldLabel>товарная группа</FieldLabel>
+            <NumericEdit @bind-Value="@UpdatedProduct.ProductGroup" />
+        </Field>
+    </CardBody>
+</Card>
+
+<ProductDataGrid ProductId="@ProductId" />
+
+@code {
+    [Parameter] 
+    public string Id { get; set; } = "";
+
+    private int ProductId { get; set; }
+    private ProductDto UpdatedProduct { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!int.TryParse(Id, out var id))
+            throw new Exception("Некорректный идентификатор аптеки");
+        ProductId = id;
+        UpdatedProduct = await Client.ProductGetById(ProductId);
+        await base.OnInitializedAsync();
+    }
+
+    private async Task DeleteProductAsync()
+    {
+        await Client.ProductDelete(ProductId);
+        await JsRuntime.InvokeVoidAsync("history.back()");
+    }
+
+    private async Task UpdateProductAsync()
+    {
+        var EditedProduct = new ProductDto
+        {
+            ProductCode = UpdatedProduct.ProductCode,
+            Name = UpdatedProduct.Name,
+            ProductGroup = UpdatedProduct.ProductGroup,
+        };
+        var updatedProduct = await Client.ProductPut(ProductId, EditedProduct);
+        UpdatedProduct.ProductCode = updatedProduct.ProductCode;
+        UpdatedProduct.Name = updatedProduct.Name;
+        UpdatedProduct.ProductGroup = updatedProduct.ProductGroup;
+    }
+}

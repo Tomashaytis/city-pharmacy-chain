@@ -6,7 +6,7 @@
     <CardHeader>
         <Row Class="justify-content-between">
             <Column ColumnSize="ColumnSize.IsAuto">
-                <h4>Аптеки</h4>
+                <h4>Таблица с данными об аптеках</h4>
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
                 <Button Color="Color.Primary" Clicked="OpenCreateModal">
@@ -18,11 +18,11 @@
     <CardBody>
         <DataGrid TItem="PharmacyFullDto" Data="@Pharmacies" PageSize="5" Responsive Filterable>
             
-            <DataGridDateColumn Field="@nameof(PharmacyFullDto.PharmacyNumber)" Caption="Number of Pharmacy" Editable />
-            <DataGridDateColumn Field="@nameof(PharmacyFullDto.Name)" Caption="Name of Pharmacy" Editable />
-            <DataGridDateColumn Field="@nameof(PharmacyFullDto.PhoneNumber)" Caption="Phone number of Pharmacy" Editable />
-            <DataGridDateColumn Field="@nameof(PharmacyFullDto.Address)" Caption="Address of Pharmacy" Editable />
-            <DataGridDateColumn Field="@nameof(PharmacyFullDto.DirectorFullName)" Caption="Director full name for Pharmacy" Editable />
+            <DataGridNumericColumn Field="@nameof(PharmacyFullDto.PharmacyNumber)" Caption="Номер" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn Field="@nameof(PharmacyFullDto.Name)" Caption="Название" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridNumericColumn Field="@nameof(PharmacyFullDto.PhoneNumber)" Caption="Номер телефона" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn Field="@nameof(PharmacyFullDto.Address)" Caption="Адрес" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn Field="@nameof(PharmacyFullDto.DirectorFullName)" Caption="ФИО директора" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Width="150px"
                             TItem="PharmacyFullDto"
                             Field="@nameof(PharmacyFullDto.PharmacyId)"
