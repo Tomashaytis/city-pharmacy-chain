@@ -16,12 +16,12 @@
         </Row>
     </CardHeader>
     <CardBody>
-        <DataGrid TItem="ProductFullDto" Data="@Products" PageSize="5" Responsive Filterable>
-            
-            <DataGridDateColumn Field="@nameof(ProductFullDto.ProductCode)" Caption="Код" Editable />
-            <DataGridDateColumn Field="@nameof(ProductFullDto.Name)" Caption="Название" Editable />
-            <DataGridDateColumn Field="@nameof(ProductFullDto.ProductGroup)" Caption="Торговая группа" Editable />
+        <DataGrid TItem="ProductFullDto" Data="@Products" PageSize="40" Responsive Filterable>
+            <DataGridNumericColumn Field="@nameof(ProductFullDto.ProductCode)" Caption="Код препарата" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn Field="@nameof(ProductFullDto.Name)" Caption="Название" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn Field="@nameof(ProductFullDto.ProductGroup)" Caption="Торговая группа" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Width="150px"
+                            Filterable="false"
                             TItem="ProductFullDto"
                             Field="@nameof(ProductFullDto.ProductId)"
                             Caption="Действия">

@@ -146,7 +146,7 @@ public class CityPharmacyChainApiWrapper(IConfiguration configuration)
     /// <param name="id">Идентификатор объекта типа запись в прайс-листе</param>
     /// <param name="priceListEntryDto">Объект типа запись в прайс-листе</param>
     /// <returns>Изменённый объект типа запись в прайс-листе</returns>
-    public async Task<PriceListEntryFullDto> PriceListEntryDtoPut(int id, PriceListEntryDto priceListEntryDto) => await Client.PriceListEntryPUTAsync(id, priceListEntryDto);
+    public async Task<PriceListEntryFullDto> PriceListEntryPut(int id, PriceListEntryDto priceListEntryDto) => await Client.PriceListEntryPUTAsync(id, priceListEntryDto);
 
     /// <summary>
     /// Метод посылает DELETE запрос на удаление объекта типа запись в прайс-листе по его идентификатору с сервера

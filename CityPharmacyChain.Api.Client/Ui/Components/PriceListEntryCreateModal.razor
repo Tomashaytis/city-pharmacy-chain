@@ -1,0 +1,104 @@
+﻿﻿
+@inject CityPharmacyChainApiWrapper Client
+@inject INotificationService NotificationService;
+
+<Modal @ref="PriceListEntryModal">
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>Добавление записи в прайс-лист</ModalTitle>
+                <CloseButton Clicked="ClosePriceListEntryModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Номер аптеки</FieldLabel>
+                    <NumericEdit @bind-Value="@PharmacyNumber" />
+                </Field>
+                <Field>
+                    <FieldLabel>Код препарата</FieldLabel>
+                    <NumericEdit @bind-Value="@ProductCode" />
+                </Field>
+                <Field>
+                    <FieldLabel>Производитель препарата</FieldLabel>
+                    <TextEdit @bind-Text="@NewPriceListEntry.Manufacturer" />
+                </Field>
+                <Field>
+                    <FieldLabel>Продано, шт</FieldLabel>
+                    <NumericEdit @bind-Value="@NewPriceListEntry.SoldCount" />
+                </Field>
+                <Field>
+                    <FieldLabel>Тип оплаты</FieldLabel>
+                    <TextEdit @bind-Text="@NewPriceListEntry.PaymentType" />
+                </Field>
+                <Field>
+                    <FieldLabel>Дата продажи</FieldLabel>
+                    <DateEdit @bind-Date="@NewPriceListEntry.SaleDate" />
+                </Field>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="ClosePriceListEntryModalAsync">Отмена</Button>
+                <Button Color="Color.Primary" Clicked="CreatePriceListEntryAsync">Создать</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public int? PriceListEntryId { get; set; }
+
+    [Parameter]
+    public EventCallback OnPriceListEntryAdded { get; set; }
+
+    public int PharmacyNumber { get; set; }
+
+    public int ProductCode { get; set; }
+
+    private Modal PriceListEntryModal { get; set; } = new();
+
+    private PriceListEntryDto NewPriceListEntry { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    public async Task Show() => await PriceListEntryModal.Show();
+
+    private async Task ClosePriceListEntryModalAsync() => await PriceListEntryModal.Hide();
+
+    private async Task CreatePriceListEntryAsync()
+    {
+        if (!(NewPriceListEntry.PaymentType is "Cash" or "Cashless"))
+        {
+            await NotificationService.Warning("Неверно введённые данные", $"Тип оплаты указан неверно. Возможные значения: 'Cash', 'Cashless'.");
+            return;
+        }
+        var products = (await Client.ProductGetAll()).ToList();
+        var pharmacies = (await Client.PharmacyGetAll()).ToList();
+        var success = false;
+        foreach (var product in products)
+        {
+            if (product.ProductCode == ProductCode)
+            {
+                foreach (var pharmacy in pharmacies)
+                {
+                    if (pharmacy.PharmacyNumber == PharmacyNumber)
+                    {
+                        success = true;
+                        NewPriceListEntry.PharmacyId = pharmacy.PharmacyId;
+                        NewPriceListEntry.ProductId = product.ProductId;
+                        _ = await Client.PriceListEntryPost(NewPriceListEntry);
+                    }
+                }
+            }
+        }
+        if (!success)
+            await NotificationService.Warning("Неверно введённые данные", $"Препарат или аптека не найдены.");
+        await PriceListEntryModal.Hide();
+        await OnPriceListEntryAdded.InvokeAsync();
+    }
+}
+

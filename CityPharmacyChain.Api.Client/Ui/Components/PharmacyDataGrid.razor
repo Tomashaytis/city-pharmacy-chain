@@ -16,14 +16,15 @@
         </Row>
     </CardHeader>
     <CardBody>
-        <DataGrid TItem="PharmacyFullDto" Data="@Pharmacies" PageSize="5" Responsive Filterable>
+        <DataGrid TItem="PharmacyFullDto" Data="@Pharmacies" PageSize="40" Responsive Filterable>
             
-            <DataGridNumericColumn Field="@nameof(PharmacyFullDto.PharmacyNumber)" Caption="Номер" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridNumericColumn Field="@nameof(PharmacyFullDto.PharmacyNumber)" Caption="Номер аптеки" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Field="@nameof(PharmacyFullDto.Name)" Caption="Название" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridNumericColumn Field="@nameof(PharmacyFullDto.PhoneNumber)" Caption="Номер телефона" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Field="@nameof(PharmacyFullDto.Address)" Caption="Адрес" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Field="@nameof(PharmacyFullDto.DirectorFullName)" Caption="ФИО директора" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Width="150px"
+                            Filterable="false"
                             TItem="PharmacyFullDto"
                             Field="@nameof(PharmacyFullDto.PharmacyId)"
                             Caption="Действия">

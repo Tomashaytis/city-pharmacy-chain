@@ -1,0 +1,73 @@
+﻿﻿
+@inject CityPharmacyChainApiWrapper Client
+@inject INotificationService NotificationService;
+
+<Modal @ref="PharmaceuticalGroupModal">
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>Добавление фармацевтической группы</ModalTitle>
+                <CloseButton Clicked="ClosePharmaceuticalGroupModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Название</FieldLabel>
+                    <TextEdit @bind-Text="@NewPharmaceuticalGroup.Name" />
+                </Field>
+                <Field>
+                    <FieldLabel>Код препарата</FieldLabel>
+                    <NumericEdit @bind-Value="@ProductCode" />
+                </Field>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="ClosePharmaceuticalGroupModalAsync">Отмена</Button>
+                <Button Color="Color.Primary" Clicked="CreatePharmaceuticalGroupAsync">Создать</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public int? PharmaceuticalGroupId { get; set; }
+
+    [Parameter]
+    public EventCallback OnPharmaceuticalGroupAdded { get; set; }
+
+    public int ProductCode { get; set; }
+
+    private Modal PharmaceuticalGroupModal { get; set; } = new();
+
+    private PharmaceuticalGroupDto NewPharmaceuticalGroup { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    public async Task Show() => await PharmaceuticalGroupModal.Show();
+
+    private async Task ClosePharmaceuticalGroupModalAsync() => await PharmaceuticalGroupModal.Hide();
+
+    private async Task CreatePharmaceuticalGroupAsync()
+    {
+        var products = (await Client.ProductGetAll()).ToList();
+        var success = false;
+        foreach (var product in products)
+        {
+            if (product.ProductCode == ProductCode)
+            {
+                success = true;
+                NewPharmaceuticalGroup.ProductId = product.ProductId;
+                _ = await Client.PharmaceuticalGroupPost(NewPharmaceuticalGroup);
+            }
+        }
+        if (!success)
+            await NotificationService.Warning("Неверно введённые данные", $"Препарат не найден.");
+        await PharmaceuticalGroupModal.Hide();
+        await OnPharmaceuticalGroupAdded.InvokeAsync();
+    }
+}
+

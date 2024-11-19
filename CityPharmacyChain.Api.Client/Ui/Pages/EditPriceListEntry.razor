@@ -1,0 +1,98 @@
+﻿﻿
+@page "/price-list-entry/{Id}"
+
+@inject CityPharmacyChainApiWrapper Client
+@inject INotificationService NotificationService;
+@inject IJSRuntime JsRuntime
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Изменить запись в прайс-листе</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary" Clicked="UpdatePriceListEntryAsync">
+                    Сохранить
+                </Button>
+                <Button Color="Color.Danger" Clicked="DeletePriceListEntryAsync">
+                    Удалить
+                </Button>
+                <Button Color="Color.Secondary" onclick="history.back();">
+                    Закрыть
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+
+    <CardBody>
+        <Field>
+            <FieldLabel>Производитель</FieldLabel>
+            <TextEdit @bind-Text="@UpdatedPriceListEntry.Manufacturer" />
+        </Field>
+        <Field>
+            <FieldLabel>Продано, шт</FieldLabel>
+            <NumericEdit @bind-Value="@UpdatedPriceListEntry.SoldCount" />
+        </Field>
+        <Field>
+            <FieldLabel>Тип оплаты</FieldLabel>
+            <TextEdit @bind-Text="@UpdatedPriceListEntry.PaymentType" />
+        </Field>
+        <Field>
+            <FieldLabel>Дата продажи</FieldLabel>
+            <DateEdit @bind-Date="@UpdatedPriceListEntry.SaleDate" />
+        </Field>
+    </CardBody>
+</Card>
+
+<PriceListEntryDataGrid PriceListEntryId="@PriceListEntryId" />
+
+@code {
+    [Parameter] 
+    public string Id { get; set; } = "";
+
+    private int PriceListEntryId { get; set; }
+
+    private PriceListEntryDto UpdatedPriceListEntry { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!int.TryParse(Id, out var id))
+            throw new Exception("Некорректный идентификатор записи в прайс-листе");
+        PriceListEntryId = id;
+        UpdatedPriceListEntry = await Client.PriceListEntryGetById(PriceListEntryId);
+        await base.OnInitializedAsync();
+    }
+
+    private async Task DeletePriceListEntryAsync()
+    {
+        await Client.PriceListEntryDelete(PriceListEntryId);
+        await JsRuntime.InvokeVoidAsync("history.back");
+    }
+
+    private async Task UpdatePriceListEntryAsync()
+    {
+        if (!(UpdatedPriceListEntry.PaymentType is "Cash" or "Cashless"))
+        {
+            await NotificationService.Warning("Неверно введённые данные", $"Тип оплаты указан неверно. Возможные значения: 'Cash', 'Cashless'.");
+            return;
+        }
+        var EditedPriceListEntry = new PriceListEntryDto
+        {
+            PharmacyId = UpdatedPriceListEntry.PharmacyId,
+            ProductId = UpdatedPriceListEntry.ProductId,
+            Manufacturer = UpdatedPriceListEntry.Manufacturer,
+            SoldCount = UpdatedPriceListEntry.SoldCount,
+            PaymentType = UpdatedPriceListEntry.PaymentType,
+            SaleDate = UpdatedPriceListEntry.SaleDate,
+        };
+        var updatedPriceListEntry = await Client.PriceListEntryPut(PriceListEntryId, EditedPriceListEntry);
+        UpdatedPriceListEntry.PharmacyId = updatedPriceListEntry.PharmacyId;
+        UpdatedPriceListEntry.ProductId = updatedPriceListEntry.ProductId;
+        UpdatedPriceListEntry.Manufacturer = updatedPriceListEntry.Manufacturer;
+        UpdatedPriceListEntry.SoldCount = updatedPriceListEntry.SoldCount;
+        UpdatedPriceListEntry.PaymentType = updatedPriceListEntry.PaymentType;
+        UpdatedPriceListEntry.SaleDate = updatedPriceListEntry.SaleDate;
+        await JsRuntime.InvokeVoidAsync("history.back");
+    }
+}

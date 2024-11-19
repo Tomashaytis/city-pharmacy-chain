@@ -69,7 +69,7 @@
     private async Task DeletePharmacyAsync()
     {
         await Client.PharmacyDelete(PharmacyId);
-        await JsRuntime.InvokeVoidAsync("history.back()");
+        await JsRuntime.InvokeVoidAsync("history.back");
     }
 
     private async Task UpdatePharmacyAsync()
@@ -88,5 +88,6 @@
         UpdatedPharmacy.PhoneNumber = updatedPharmacy.PhoneNumber;
         UpdatedPharmacy.Address = updatedPharmacy.Address;
         UpdatedPharmacy.DirectorFullName = updatedPharmacy.DirectorFullName;
+        await JsRuntime.InvokeVoidAsync("history.back");
     }
 }

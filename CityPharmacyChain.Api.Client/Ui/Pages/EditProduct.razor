@@ -35,7 +35,7 @@
         </Field>
         <Field>
             <FieldLabel>товарная группа</FieldLabel>
-            <NumericEdit @bind-Value="@UpdatedProduct.ProductGroup" />
+            <TextEdit @bind-Text="@UpdatedProduct.ProductGroup" />
         </Field>
     </CardBody>
 </Card>
@@ -61,7 +61,7 @@
     private async Task DeleteProductAsync()
     {
         await Client.ProductDelete(ProductId);
-        await JsRuntime.InvokeVoidAsync("history.back()");
+        await JsRuntime.InvokeVoidAsync("history.back");
     }
 
     private async Task UpdateProductAsync()
@@ -76,5 +76,6 @@
         UpdatedProduct.ProductCode = updatedProduct.ProductCode;
         UpdatedProduct.Name = updatedProduct.Name;
         UpdatedProduct.ProductGroup = updatedProduct.ProductGroup;
+        await JsRuntime.InvokeVoidAsync("history.back");
     }
 }

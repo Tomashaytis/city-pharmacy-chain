@@ -1,0 +1,80 @@
+﻿﻿
+@page "/pharmacy-product/{Id}"
+
+@inject CityPharmacyChainApiWrapper Client
+@inject IJSRuntime JsRuntime
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Изменить информацию о препарате в аптеке</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary" Clicked="UpdatePharmacyProductAsync">
+                    Сохранить
+                </Button>
+                <Button Color="Color.Danger" Clicked="DeletePharmacyProductAsync">
+                    Удалить
+                </Button>
+                <Button Color="Color.Secondary" onclick="history.back();">
+                    Закрыть
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+
+    <CardBody>
+        <Field>
+            <FieldLabel>Цена, ₽</FieldLabel>
+            <NumericEdit @bind-Value="@UpdatedPharmacyProduct.Price" />
+        </Field>
+        <Field>
+            <FieldLabel>В наличии, шт</FieldLabel>
+            <NumericEdit @bind-Value="@UpdatedPharmacyProduct.Count" />
+        </Field>
+    </CardBody>
+</Card>
+
+<PharmacyProductDataGrid PharmacyProductId="@PharmacyProductId" />
+
+@code {
+    [Parameter] 
+    public string Id { get; set; } = "";
+
+    private int PharmacyProductId { get; set; }
+
+    private PharmacyProductDto UpdatedPharmacyProduct { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!int.TryParse(Id, out var id))
+            throw new Exception("Некорректный идентификатор аптеки");
+        PharmacyProductId = id;
+        UpdatedPharmacyProduct = await Client.PharmacyProductGetById(PharmacyProductId);
+        await base.OnInitializedAsync();
+    }
+
+    private async Task DeletePharmacyProductAsync()
+    {
+        await Client.PharmacyProductDelete(PharmacyProductId);
+        await JsRuntime.InvokeVoidAsync("history.back");
+    }
+
+    private async Task UpdatePharmacyProductAsync()
+    {
+        var EditedPharmacyProduct = new PharmacyProductDto
+        {
+            PharmacyId = UpdatedPharmacyProduct.PharmacyId,
+            ProductId = UpdatedPharmacyProduct.ProductId,
+            Price = UpdatedPharmacyProduct.Price,
+            Count = UpdatedPharmacyProduct.Count,
+        };
+        var updatedPharmacyProduct = await Client.PharmacyProductPut(PharmacyProductId, EditedPharmacyProduct);
+        UpdatedPharmacyProduct.PharmacyId = updatedPharmacyProduct.PharmacyId;
+        UpdatedPharmacyProduct.ProductId = updatedPharmacyProduct.ProductId;
+        UpdatedPharmacyProduct.Price = updatedPharmacyProduct.Price;
+        UpdatedPharmacyProduct.Count = updatedPharmacyProduct.Count;
+        await JsRuntime.InvokeVoidAsync("history.back");
+    }
+}

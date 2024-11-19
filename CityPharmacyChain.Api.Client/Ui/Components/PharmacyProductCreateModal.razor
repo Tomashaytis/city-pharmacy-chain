@@ -1,0 +1,91 @@
+﻿﻿
+@inject CityPharmacyChainApiWrapper Client
+@inject INotificationService NotificationService;
+
+<Modal @ref="PharmacyProductModal">
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>Добавление данных о препарате для аптеки</ModalTitle>
+                <CloseButton Clicked="ClosePharmacyProductModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Номер аптеки</FieldLabel>
+                    <NumericEdit @bind-Value="@PharmacyNumber" />
+                </Field>
+                <Field>
+                    <FieldLabel>Код препарата</FieldLabel>
+                    <NumericEdit @bind-Value="@ProductCode" />
+                </Field>
+                <Field>
+                    <FieldLabel>Цена, ₽</FieldLabel>
+                    <NumericEdit @bind-Value="@NewPharmacyProduct.Price" />
+                </Field>
+                <Field>
+                    <FieldLabel>В наличии, шт</FieldLabel>
+                    <NumericEdit @bind-Value="@NewPharmacyProduct.Count" />
+                </Field>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="ClosePharmacyProductModalAsync">Отмена</Button>
+                <Button Color="Color.Primary" Clicked="CreatePharmacyProductAsync">Создать</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public int? PharmacyProductId { get; set; }
+
+    [Parameter]
+    public EventCallback OnPharmacyProductAdded { get; set; }
+
+    public int PharmacyNumber { get; set; }
+
+    public int ProductCode { get; set; }
+
+    private Modal PharmacyProductModal { get; set; } = new();
+
+    private PharmacyProductDto NewPharmacyProduct { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    public async Task Show() => await PharmacyProductModal.Show();
+
+    private async Task ClosePharmacyProductModalAsync() => await PharmacyProductModal.Hide();
+
+    private async Task CreatePharmacyProductAsync()
+    {
+        var products = (await Client.ProductGetAll()).ToList();
+        var pharmacies = (await Client.PharmacyGetAll()).ToList();
+        var success = false;
+        foreach (var product in products)
+        {
+            if (product.ProductCode == ProductCode)
+            {
+                foreach (var pharmacy in pharmacies)
+                {
+                    if (pharmacy.PharmacyNumber == PharmacyNumber)
+                    {
+                        success = true;
+                        NewPharmacyProduct.PharmacyId = pharmacy.PharmacyId;
+                        NewPharmacyProduct.ProductId = product.ProductId;
+                        _ = await Client.PharmacyProductPost(NewPharmacyProduct);
+                    }
+                }
+            }
+        }
+        if (!success)
+            await NotificationService.Warning("Неверно введённые данные", $"Препарат или аптека не найдены.");
+        await PharmacyProductModal.Hide();
+        await OnPharmacyProductAdded.InvokeAsync();
+    }
+}
+

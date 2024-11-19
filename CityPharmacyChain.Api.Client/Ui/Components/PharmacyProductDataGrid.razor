@@ -1,0 +1,99 @@
+﻿
+@inject CityPharmacyChainApiWrapper Client
+@inject NavigationManager NavManager
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Таблица с данными о препараты в аптеках</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary" Clicked="OpenCreateModal">
+                    Добавить
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Data="@PharmacyProducts" PageSize="40" Responsive Filterable>
+            <DataGridColumn TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Field="Item1.Name" Caption="Аптеки" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Field="Item3.Name" Caption="Препарат" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridNumericColumn TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Field="Item2.Price" Caption="Цена, ₽" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridNumericColumn TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Field="Item2.Count" Caption="В наличии, шт." Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn Width="150px"
+            Filterable="false"
+            TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>"
+            Field="Item2.PharmacyProductId"
+            Caption="Действия">
+                <DisplayTemplate>
+                    <Dropdown>
+                        <DropdownToggle Color="Color.Primary">
+                            Действия
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem Clicked="() => OpenEditPageAsync(context.Item2)">
+                                Редактировать
+                            </DropdownItem>
+                            <DropdownItem Clicked="() => DeletePharmacyProductAsync(context.Item2)">
+                                Удалить
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </DisplayTemplate>
+            </DataGridColumn>
+            <DataGridCommandColumn />
+        </DataGrid>
+    </CardBody>
+</Card>
+
+<PharmacyProductCreateModal @ref="PharmacyProductCreateModal" PharmacyProductId="PharmacyProductId" OnPharmacyProductAdded="@HandlePharmacyProductAdded" />
+
+@code {
+    public List<Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>> PharmacyProducts { get; set; } = [];
+
+    [Parameter]
+    public int? PharmacyProductId { get; set; }
+
+    [Parameter]
+    public EventCallback OnDataChanged { get; set; }
+
+    private PharmacyProductCreateModal PharmacyProductCreateModal { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshPharmacyProductCollection();
+        await base.OnInitializedAsync();
+    }
+
+    private void OpenEditPageAsync(PharmacyProductFullDto context)
+    {
+        NavManager.NavigateTo($"pharmacy-product/{context.PharmacyProductId}");
+    }
+
+    private async Task DeletePharmacyProductAsync(PharmacyProductFullDto context)
+    {
+        await Client.PharmacyProductDelete(context.PharmacyProductId);
+        await RefreshPharmacyProductCollection();
+        await OnDataChanged.InvokeAsync();
+    }
+
+    private async Task HandlePharmacyProductAdded()
+    {
+        await RefreshPharmacyProductCollection();
+        await OnDataChanged.InvokeAsync();
+    }
+
+    private async Task OpenCreateModal() => await PharmacyProductCreateModal.Show();
+
+    private async Task RefreshPharmacyProductCollection()
+    {
+        var pharmacyProducts = (await Client.PharmacyProductGetAll()).ToList();
+        PharmacyProducts = [];
+        foreach (var pharmacyProduct in pharmacyProducts)
+        {
+            PharmacyProducts.Add(new Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>(await Client.PharmacyGetById(pharmacyProduct.PharmacyId), pharmacyProduct, await Client.ProductGetById(pharmacyProduct.ProductId)));
+        }
+    }
+}
+

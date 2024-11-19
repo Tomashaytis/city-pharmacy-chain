@@ -1,0 +1,72 @@
+﻿﻿
+@page "/pharmaceutical-group/{Id}"
+
+@inject CityPharmacyChainApiWrapper Client
+@inject IJSRuntime JsRuntime
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Изменить информацию о фармацевтической группе для препарата</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary" Clicked="UpdatePharmaceuticalGroupAsync">
+                    Сохранить
+                </Button>
+                <Button Color="Color.Danger" Clicked="DeletePharmaceuticalGroupAsync">
+                    Удалить
+                </Button>
+                <Button Color="Color.Secondary" onclick="history.back();">
+                    Закрыть
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+
+    <CardBody>
+        <Field>
+            <FieldLabel>Название группы</FieldLabel>
+            <TextEdit @bind-Text="@UpdatedPharmaceuticalGroup.Name" />
+        </Field>
+    </CardBody>
+</Card>
+
+<PharmaceuticalGroupDataGrid PharmaceuticalGroupId="@PharmaceuticalGroupId" />
+
+@code {
+    [Parameter] 
+    public string Id { get; set; } = "";
+
+    private int PharmaceuticalGroupId { get; set; }
+
+    private PharmaceuticalGroupDto UpdatedPharmaceuticalGroup { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!int.TryParse(Id, out var id))
+            throw new Exception("Некорректный идентификатор аптеки");
+        PharmaceuticalGroupId = id;
+        UpdatedPharmaceuticalGroup = await Client.PharmaceuticalGroupGetById(PharmaceuticalGroupId);
+        await base.OnInitializedAsync();
+    }
+
+    private async Task DeletePharmaceuticalGroupAsync()
+    {
+        await Client.PharmaceuticalGroupDelete(PharmaceuticalGroupId);
+        await JsRuntime.InvokeVoidAsync("history.back");
+    }
+
+    private async Task UpdatePharmaceuticalGroupAsync()
+    {
+        var EditedProduct = new PharmaceuticalGroupDto
+        {
+            Name = UpdatedPharmaceuticalGroup.Name,
+            ProductId = UpdatedPharmaceuticalGroup.ProductId,
+        };
+        var updatedProduct = await Client.PharmaceuticalGroupPut(PharmaceuticalGroupId, EditedProduct);
+        UpdatedPharmaceuticalGroup.Name = updatedProduct.Name;
+        UpdatedPharmaceuticalGroup.ProductId = updatedProduct.ProductId;
+        await JsRuntime.InvokeVoidAsync("history.back");
+    }
+}

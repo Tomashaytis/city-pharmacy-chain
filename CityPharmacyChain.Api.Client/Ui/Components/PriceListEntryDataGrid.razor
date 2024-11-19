@@ -1,0 +1,101 @@
+﻿
+@inject CityPharmacyChainApiWrapper Client
+@inject NavigationManager NavManager
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Таблица с записями в прайс-листе</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary" Clicked="OpenCreateModal">
+                    Добавить
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Data="@Prices" PageSize="40" Responsive Filterable>
+            <DataGridColumn TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Field="Item1.Name" Caption="Аптеки" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Field="Item3.Name" Caption="Препарат" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Field="Item2.Manufacturer" Caption="Производитель" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridNumericColumn TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Field="Item2.SoldCount" Caption="Продано, шт" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Field="Item2.PaymentType" Caption="Тип оплаты" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridDateColumn TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Field="Item2.SaleDate" Caption="Дата продажи" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn Width="150px"
+            Filterable="false"
+            TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>"
+            Field="Item2.PriceListEntryId"
+            Caption="Действия">
+                <DisplayTemplate>
+                    <Dropdown>
+                        <DropdownToggle Color="Color.Primary">
+                            Действия
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem Clicked="() => OpenEditPageAsync(context.Item2)">
+                                Редактировать
+                            </DropdownItem>
+                            <DropdownItem Clicked="() => DeletePriceListEntryAsync(context.Item2)">
+                                Удалить
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </DisplayTemplate>
+            </DataGridColumn>
+            <DataGridCommandColumn />
+        </DataGrid>
+    </CardBody>
+</Card>
+
+<PriceListEntryCreateModal @ref="PriceListEntryCreateModal" PriceListEntryId="PriceListEntryId" OnPriceListEntryAdded="@HandlePriceListEntryAdded" />
+
+@code {
+    public List<Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>> Prices { get; set; } = [];
+
+    [Parameter]
+    public int? PriceListEntryId { get; set; }
+
+    [Parameter]
+    public EventCallback OnDataChanged { get; set; }
+
+    private PriceListEntryCreateModal PriceListEntryCreateModal { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshPriceListEntryCollection();
+        await base.OnInitializedAsync();
+    }
+
+    private void OpenEditPageAsync(PriceListEntryFullDto context)
+    {
+        NavManager.NavigateTo($"price-list-entry/{context.PriceListEntryId}");
+    }
+
+    private async Task DeletePriceListEntryAsync(PriceListEntryFullDto context)
+    {
+        await Client.PriceListEntryDelete(context.PriceListEntryId);
+        await RefreshPriceListEntryCollection();
+        await OnDataChanged.InvokeAsync();
+    }
+
+    private async Task HandlePriceListEntryAdded()
+    {
+        await RefreshPriceListEntryCollection();
+        await OnDataChanged.InvokeAsync();
+    }
+
+    private async Task OpenCreateModal() => await PriceListEntryCreateModal.Show();
+
+    private async Task RefreshPriceListEntryCollection()
+    {
+        var prices = (await Client.PriceListEntryGetAll()).ToList();
+        Prices = [];
+        foreach (var priceListEntry in prices)
+        {
+            Prices.Add(new Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>(await Client.PharmacyGetById(priceListEntry.PharmacyId), priceListEntry, await Client.ProductGetById(priceListEntry.ProductId)));
+        }
+    }
+}
+
