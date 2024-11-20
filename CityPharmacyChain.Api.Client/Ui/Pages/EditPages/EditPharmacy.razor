@@ -58,18 +58,18 @@
 
 @code {
     /// <summary>
-    /// Идентификатор препарата (строка)
+    /// Идентификатор аптеки (строка)
     /// </summary>
     [Parameter] 
     public string Id { get; set; } = "";
 
     /// <summary>
-    /// Идентификатор препарата (число)
+    /// Идентификатор аптеки (число)
     /// </summary>
     private int PharmacyId { get; set; }
 
     /// <summary>
-    /// Обновлённая сущность класса препарат
+    /// Обновлённая сущность класса аптека
     /// </summary>
     private PharmacyDto UpdatedPharmacy { get; set; } = new();
 
@@ -87,7 +87,7 @@
     }
 
     /// <summary>
-    /// Метод удаляет с сервера сущность класса препарат
+    /// Метод удаляет с сервера сущность класса аптека
     /// </summary>
     /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmacyAsync()
@@ -97,7 +97,7 @@
     }
 
     /// <summary>
-    /// Метод модифицирует на сервере сущность класса препарат
+    /// Метод модифицирует на сервере сущность класса аптека
     /// </summary>
     /// <returns>Асинхронная задача</returns>
     private async Task UpdatePharmacyAsync()
