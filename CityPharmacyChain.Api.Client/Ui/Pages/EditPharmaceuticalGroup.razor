@@ -79,12 +79,12 @@
     /// <returns>Асинхронная задача</returns>
     private async Task UpdatePharmaceuticalGroupAsync()
     {
-        var EditedProduct = new PharmaceuticalGroupDto
+        var editedProduct = new PharmaceuticalGroupDto
         {
             Name = UpdatedPharmaceuticalGroup.Name,
             ProductId = UpdatedPharmaceuticalGroup.ProductId,
         };
-        var updatedProduct = await ClientApi.PharmaceuticalGroupPut(PharmaceuticalGroupId, EditedProduct);
+        var updatedProduct = await ClientApi.PharmaceuticalGroupPut(PharmaceuticalGroupId, editedProduct);
         UpdatedPharmaceuticalGroup.Name = updatedProduct.Name;
         UpdatedPharmaceuticalGroup.ProductId = updatedProduct.ProductId;
         await JsRuntime.InvokeVoidAsync("history.back");

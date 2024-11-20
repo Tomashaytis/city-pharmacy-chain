@@ -111,9 +111,9 @@
     /// <returns>Асинхронная задача</returns>
     private async Task CreatePriceListEntryAsync()
     {
-        if (!(NewPriceListEntry.PaymentType is "Cash" or "Cashless"))
+        if (NewPriceListEntry.PaymentType is not ("Cash" or "Cashless"))
         {
-            await NotificationService.Warning("Неверно введённые данные", $"Тип оплаты указан неверно. Возможные значения: 'Cash', 'Cashless'.");
+            await NotificationService.Warning("Неверно введённые данные", "Тип оплаты указан неверно. Возможные значения: 'Cash', 'Cashless'.");
             return;
         }
         var products = (await ClientApi.ProductGetAll()).ToList();

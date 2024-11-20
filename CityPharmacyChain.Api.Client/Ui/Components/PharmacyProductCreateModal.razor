@@ -117,7 +117,7 @@
             }
         }
         if (!success)
-            await NotificationService.Warning("Неверно введённые данные", $"Препарат или аптека не найдены.");
+            await NotificationService.Warning("Неверно введённые данные", "Препарат или аптека не найдены.");
         await PharmacyProductModal.Hide();
         await OnPharmacyProductAdded.InvokeAsync();
     }

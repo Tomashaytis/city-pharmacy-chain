@@ -84,14 +84,14 @@
     /// <returns>Асинхронная задача</returns>
     private async Task UpdatePharmacyProductAsync()
     {
-        var EditedPharmacyProduct = new PharmacyProductDto
+        var editedPharmacyProduct = new PharmacyProductDto
         {
             PharmacyId = UpdatedPharmacyProduct.PharmacyId,
             ProductId = UpdatedPharmacyProduct.ProductId,
             Price = UpdatedPharmacyProduct.Price,
             Count = UpdatedPharmacyProduct.Count,
         };
-        var updatedPharmacyProduct = await ClientApi.PharmacyProductPut(PharmacyProductId, EditedPharmacyProduct);
+        var updatedPharmacyProduct = await ClientApi.PharmacyProductPut(PharmacyProductId, editedPharmacyProduct);
         UpdatedPharmacyProduct.PharmacyId = updatedPharmacyProduct.PharmacyId;
         UpdatedPharmacyProduct.ProductId = updatedPharmacyProduct.ProductId;
         UpdatedPharmacyProduct.Price = updatedPharmacyProduct.Price;

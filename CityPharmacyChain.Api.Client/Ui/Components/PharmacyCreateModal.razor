@@ -96,7 +96,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task CreatePharmacyAsync()
     {
-        var result = await ClientApi.PharmacyPost(NewPharmacy);
+        _ = await ClientApi.PharmacyPost(NewPharmacy);
         await PharmacyModal.Hide();
         await OnPharmacyAdded.InvokeAsync();
     }

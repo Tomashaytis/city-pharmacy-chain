@@ -96,7 +96,7 @@
             }
         }
         if (!success)
-            await NotificationService.Warning("Неверно введённые данные", $"Препарат не найден.");
+            await NotificationService.Warning("Неверно введённые данные", "Препарат не найден.");
         await PharmaceuticalGroupModal.Hide();
         await OnPharmaceuticalGroupAdded.InvokeAsync();
     }

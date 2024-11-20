@@ -99,12 +99,12 @@
     /// <returns>Асинхронная задача</returns>
     private async Task UpdatePriceListEntryAsync()
     {
-        if (!(UpdatedPriceListEntry.PaymentType is "Cash" or "Cashless"))
+        if (UpdatedPriceListEntry.PaymentType is not ("Cash" or "Cashless"))
         {
-            await NotificationService.Warning("Неверно введённые данные", $"Тип оплаты указан неверно. Возможные значения: 'Cash', 'Cashless'.");
+            await NotificationService.Warning("Неверно введённые данные", "Тип оплаты указан неверно. Возможные значения: 'Cash', 'Cashless'.");
             return;
         }
-        var EditedPriceListEntry = new PriceListEntryDto
+        var editedPriceListEntry = new PriceListEntryDto
         {
             PharmacyId = UpdatedPriceListEntry.PharmacyId,
             ProductId = UpdatedPriceListEntry.ProductId,
@@ -113,7 +113,7 @@
             PaymentType = UpdatedPriceListEntry.PaymentType,
             SaleDate = UpdatedPriceListEntry.SaleDate,
         };
-        var updatedPriceListEntry = await ClientApi.PriceListEntryPut(PriceListEntryId, EditedPriceListEntry);
+        var updatedPriceListEntry = await ClientApi.PriceListEntryPut(PriceListEntryId, editedPriceListEntry);
         UpdatedPriceListEntry.PharmacyId = updatedPriceListEntry.PharmacyId;
         UpdatedPriceListEntry.ProductId = updatedPriceListEntry.ProductId;
         UpdatedPriceListEntry.Manufacturer = updatedPriceListEntry.Manufacturer;

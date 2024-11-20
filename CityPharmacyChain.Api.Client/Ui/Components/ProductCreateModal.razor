@@ -82,7 +82,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task CreateProductAsync()
     {
-        var result = await ClientApi.ProductPost(NewProduct);
+        _ = await ClientApi.ProductPost(NewProduct);
         await ProductModal.Hide();
         await OnProductAdded.InvokeAsync();
     }

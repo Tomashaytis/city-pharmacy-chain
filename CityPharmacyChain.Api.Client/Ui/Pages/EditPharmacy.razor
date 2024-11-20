@@ -102,7 +102,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task UpdatePharmacyAsync()
     {
-        var EditedPharmacy = new PharmacyDto
+        var editedPharmacy = new PharmacyDto
         {
             PharmacyNumber = UpdatedPharmacy.PharmacyNumber,
             Name = UpdatedPharmacy.Name,
@@ -110,7 +110,7 @@
             Address = UpdatedPharmacy.Address,
             DirectorFullName = UpdatedPharmacy.DirectorFullName,
         };
-        var updatedPharmacy = await ClientApi.PharmacyPut(PharmacyId, EditedPharmacy);
+        var updatedPharmacy = await ClientApi.PharmacyPut(PharmacyId, editedPharmacy);
         UpdatedPharmacy.PharmacyNumber = updatedPharmacy.PharmacyNumber;
         UpdatedPharmacy.Name = updatedPharmacy.Name;
         UpdatedPharmacy.PhoneNumber = updatedPharmacy.PhoneNumber;
