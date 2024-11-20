@@ -1,5 +1,5 @@
 ﻿﻿
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject INotificationService NotificationService;
 
 <Modal @ref="PharmaceuticalGroupModal">
@@ -12,11 +12,11 @@
 
             <ModalBody>
                 <Field>
-                    <FieldLabel>Название</FieldLabel>
+                    <FieldLabel RequiredIndicator>Название фармацевтической группы</FieldLabel>
                     <TextEdit @bind-Text="@NewPharmaceuticalGroup.Name" />
                 </Field>
                 <Field>
-                    <FieldLabel>Код препарата</FieldLabel>
+                    <FieldLabel RequiredIndicator>Код препарата</FieldLabel>
                     <NumericEdit @bind-Value="@ProductCode" />
                 </Field>
             </ModalBody>
@@ -84,7 +84,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task CreatePharmaceuticalGroupAsync()
     {
-        var products = (await Client.ProductGetAll()).ToList();
+        var products = (await ClientApi.ProductGetAll()).ToList();
         var success = false;
         foreach (var product in products)
         {
@@ -92,7 +92,7 @@
             {
                 success = true;
                 NewPharmaceuticalGroup.ProductId = product.ProductId;
-                _ = await Client.PharmaceuticalGroupPost(NewPharmaceuticalGroup);
+                _ = await ClientApi.PharmaceuticalGroupPost(NewPharmaceuticalGroup);
             }
         }
         if (!success)

@@ -1,5 +1,5 @@
 ﻿
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject NavigationManager NavManager
 
 <Card>
@@ -19,7 +19,7 @@
         <DataGrid TItem="PharmacyFullDto" Data="@Pharmacies" PageSize="40" Responsive Filterable>
             
             <DataGridNumericColumn Field="@nameof(PharmacyFullDto.PharmacyNumber)" Caption="Номер аптеки" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
-            <DataGridColumn Field="@nameof(PharmacyFullDto.Name)" Caption="Название" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn Field="@nameof(PharmacyFullDto.Name)" Caption="Название аптеки" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridNumericColumn Field="@nameof(PharmacyFullDto.PhoneNumber)" Caption="Номер телефона" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Field="@nameof(PharmacyFullDto.Address)" Caption="Адрес" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Field="@nameof(PharmacyFullDto.DirectorFullName)" Caption="ФИО директора" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
@@ -100,7 +100,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmacyAsync(PharmacyFullDto context)
     {
-        await Client.PharmacyDelete(context.PharmacyId);
+        await ClientApi.PharmacyDelete(context.PharmacyId);
         await RefreshPharmacyCollection();
         await OnDataChanged.InvokeAsync();
     }
@@ -127,7 +127,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task RefreshPharmacyCollection()
     {
-         Pharmacies = (await Client.PharmacyGetAll()).ToList();
+        Pharmacies = (await ClientApi.PharmacyGetAll()).ToList();
     }
 }
 

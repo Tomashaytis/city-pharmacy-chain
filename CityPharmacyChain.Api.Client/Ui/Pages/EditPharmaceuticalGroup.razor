@@ -1,7 +1,7 @@
 ﻿﻿
 @page "/pharmaceutical-group/{Id}"
 
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject IJSRuntime JsRuntime
 
 <Card>
@@ -26,7 +26,7 @@
 
     <CardBody>
         <Field>
-            <FieldLabel>Название группы</FieldLabel>
+            <FieldLabel>Название фармацевтической группы</FieldLabel>
             <TextEdit @bind-Text="@UpdatedPharmaceuticalGroup.Name" />
         </Field>
     </CardBody>
@@ -60,7 +60,7 @@
         if (!int.TryParse(Id, out var id))
             throw new Exception("Некорректный идентификатор фармацевтической группы");
         PharmaceuticalGroupId = id;
-        UpdatedPharmaceuticalGroup = await Client.PharmaceuticalGroupGetById(PharmaceuticalGroupId);
+        UpdatedPharmaceuticalGroup = await ClientApi.PharmaceuticalGroupGetById(PharmaceuticalGroupId);
         await base.OnInitializedAsync();
     }
     /// <summary>
@@ -69,7 +69,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmaceuticalGroupAsync()
     {
-        await Client.PharmaceuticalGroupDelete(PharmaceuticalGroupId);
+        await ClientApi.PharmaceuticalGroupDelete(PharmaceuticalGroupId);
         await JsRuntime.InvokeVoidAsync("history.back");
     }
 
@@ -84,7 +84,7 @@
             Name = UpdatedPharmaceuticalGroup.Name,
             ProductId = UpdatedPharmaceuticalGroup.ProductId,
         };
-        var updatedProduct = await Client.PharmaceuticalGroupPut(PharmaceuticalGroupId, EditedProduct);
+        var updatedProduct = await ClientApi.PharmaceuticalGroupPut(PharmaceuticalGroupId, EditedProduct);
         UpdatedPharmaceuticalGroup.Name = updatedProduct.Name;
         UpdatedPharmaceuticalGroup.ProductId = updatedProduct.ProductId;
         await JsRuntime.InvokeVoidAsync("history.back");

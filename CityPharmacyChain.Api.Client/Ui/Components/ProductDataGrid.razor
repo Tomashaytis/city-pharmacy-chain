@@ -1,5 +1,5 @@
 ﻿
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject NavigationManager NavManager
 
 <Card>
@@ -17,8 +17,9 @@
     </CardHeader>
     <CardBody>
         <DataGrid TItem="ProductFullDto" Data="@Products" PageSize="40" Responsive Filterable>
+
             <DataGridNumericColumn Field="@nameof(ProductFullDto.ProductCode)" Caption="Код препарата" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
-            <DataGridColumn Field="@nameof(ProductFullDto.Name)" Caption="Название" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn Field="@nameof(ProductFullDto.Name)" Caption="Название препарата" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Field="@nameof(ProductFullDto.ProductGroup)" Caption="Торговая группа" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Width="150px"
                             Filterable="false"
@@ -97,7 +98,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task DeleteProductAsync(ProductFullDto context)
     {
-        await Client.ProductDelete(context.ProductId);
+        await ClientApi.ProductDelete(context.ProductId);
         await RefreshProductCollection();
         await OnDataChanged.InvokeAsync();
     }
@@ -124,7 +125,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task RefreshProductCollection()
     {
-         Products = (await Client.ProductGetAll()).ToList();
+        Products = (await ClientApi.ProductGetAll()).ToList();
     }
 }
 

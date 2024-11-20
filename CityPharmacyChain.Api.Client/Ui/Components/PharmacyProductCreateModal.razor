@@ -1,5 +1,5 @@
 ﻿﻿
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject INotificationService NotificationService;
 
 <Modal @ref="PharmacyProductModal">
@@ -12,19 +12,19 @@
 
             <ModalBody>
                 <Field>
-                    <FieldLabel>Номер аптеки</FieldLabel>
+                    <FieldLabel RequiredIndicator>Номер аптеки</FieldLabel>
                     <NumericEdit @bind-Value="@PharmacyNumber" />
                 </Field>
                 <Field>
-                    <FieldLabel>Код препарата</FieldLabel>
+                    <FieldLabel RequiredIndicator>Код препарата</FieldLabel>
                     <NumericEdit @bind-Value="@ProductCode" />
                 </Field>
                 <Field>
-                    <FieldLabel>Цена, ₽</FieldLabel>
+                    <FieldLabel RequiredIndicator>Цена препарата, ₽</FieldLabel>
                     <NumericEdit @bind-Value="@NewPharmacyProduct.Price" />
                 </Field>
                 <Field>
-                    <FieldLabel>В наличии, шт</FieldLabel>
+                    <FieldLabel> RequiredIndicatorВ наличии, шт</FieldLabel>
                     <NumericEdit @bind-Value="@NewPharmacyProduct.Count" />
                 </Field>
             </ModalBody>
@@ -97,8 +97,8 @@
     /// <returns>Асинхронная задача</returns>
     private async Task CreatePharmacyProductAsync()
     {
-        var products = (await Client.ProductGetAll()).ToList();
-        var pharmacies = (await Client.PharmacyGetAll()).ToList();
+        var products = (await ClientApi.ProductGetAll()).ToList();
+        var pharmacies = (await ClientApi.PharmacyGetAll()).ToList();
         var success = false;
         foreach (var product in products)
         {
@@ -111,7 +111,7 @@
                         success = true;
                         NewPharmacyProduct.PharmacyId = pharmacy.PharmacyId;
                         NewPharmacyProduct.ProductId = product.ProductId;
-                        _ = await Client.PharmacyProductPost(NewPharmacyProduct);
+                        _ = await ClientApi.PharmacyProductPost(NewPharmacyProduct);
                     }
                 }
             }

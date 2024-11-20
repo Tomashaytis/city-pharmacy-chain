@@ -1,7 +1,7 @@
 ﻿﻿
 @page "/price-list-entry/{Id}"
 
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject INotificationService NotificationService;
 @inject IJSRuntime JsRuntime
 
@@ -27,7 +27,7 @@
 
     <CardBody>
         <Field>
-            <FieldLabel>Производитель</FieldLabel>
+            <FieldLabel>Производитель препарата</FieldLabel>
             <TextEdit @bind-Text="@UpdatedPriceListEntry.Manufacturer" />
         </Field>
         <Field>
@@ -35,11 +35,17 @@
             <NumericEdit @bind-Value="@UpdatedPriceListEntry.SoldCount" />
         </Field>
         <Field>
-            <FieldLabel>Тип оплаты</FieldLabel>
-            <TextEdit @bind-Text="@UpdatedPriceListEntry.PaymentType" />
+            <FieldLabel>Тип оплаты (наличные/карта)</FieldLabel>
+            <Validation UsePattern>
+                <TextEdit @bind-Text="@UpdatedPriceListEntry.PaymentType" Pattern="Cash|Cashless">
+                    <Feedback>
+                        <ValidationError>Тип оплаты может принимать значение Cash или Cashless.</ValidationError>
+                    </Feedback>
+                </TextEdit>
+            </Validation>
         </Field>
         <Field>
-            <FieldLabel>Дата продажи</FieldLabel>
+            <FieldLabel>Дата продажи препарата</FieldLabel>
             <DateEdit @bind-Date="@UpdatedPriceListEntry.SaleDate" />
         </Field>
     </CardBody>
@@ -73,7 +79,7 @@
         if (!int.TryParse(Id, out var id))
             throw new Exception("Некорректный идентификатор записи в прайс-листе");
         PriceListEntryId = id;
-        UpdatedPriceListEntry = await Client.PriceListEntryGetById(PriceListEntryId);
+        UpdatedPriceListEntry = await ClientApi.PriceListEntryGetById(PriceListEntryId);
         await base.OnInitializedAsync();
     }
 
@@ -83,7 +89,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task DeletePriceListEntryAsync()
     {
-        await Client.PriceListEntryDelete(PriceListEntryId);
+        await ClientApi.PriceListEntryDelete(PriceListEntryId);
         await JsRuntime.InvokeVoidAsync("history.back");
     }
 
@@ -107,7 +113,7 @@
             PaymentType = UpdatedPriceListEntry.PaymentType,
             SaleDate = UpdatedPriceListEntry.SaleDate,
         };
-        var updatedPriceListEntry = await Client.PriceListEntryPut(PriceListEntryId, EditedPriceListEntry);
+        var updatedPriceListEntry = await ClientApi.PriceListEntryPut(PriceListEntryId, EditedPriceListEntry);
         UpdatedPriceListEntry.PharmacyId = updatedPriceListEntry.PharmacyId;
         UpdatedPriceListEntry.ProductId = updatedPriceListEntry.ProductId;
         UpdatedPriceListEntry.Manufacturer = updatedPriceListEntry.Manufacturer;

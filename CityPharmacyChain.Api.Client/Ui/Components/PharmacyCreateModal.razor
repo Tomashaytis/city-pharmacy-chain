@@ -1,5 +1,5 @@
 ﻿﻿
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 
 <Modal @ref="PharmacyModal">
     <ModalContent Centered>
@@ -11,23 +11,29 @@
 
             <ModalBody>
                 <Field>
-                    <FieldLabel>Номер</FieldLabel>
+                    <FieldLabel RequiredIndicator>Номер аптеки</FieldLabel>
                     <NumericEdit @bind-Value="@NewPharmacy.PharmacyNumber" />
                 </Field>
                 <Field>
-                    <FieldLabel>Название</FieldLabel>
+                    <FieldLabel RequiredIndicator>Название аптеки</FieldLabel>
                     <TextEdit @bind-Text="@NewPharmacy.Name" />
                 </Field>
                 <Field>
-                    <FieldLabel>Номер телефона</FieldLabel>
-                    <NumericEdit @bind-Value="@NewPharmacy.PhoneNumber" />
+                    <FieldLabel RequiredIndicator>Номер телефона аптеки</FieldLabel>
+                    <Validation UsePattern>
+                        <NumericEdit @bind-Value="@NewPharmacy.PhoneNumber" Pattern="^(?!0+$)(\+\d{1,3}[- ]?)?(?!0+$)\d{10,15}$">
+                            <Feedback>
+                                <ValidationError>Неправильный формат номера телефона.</ValidationError>
+                            </Feedback>
+                        </NumericEdit>
+                    </Validation>
                 </Field>
                 <Field>
-                    <FieldLabel>Адрес</FieldLabel>
+                    <FieldLabel RequiredIndicator>Адрес аптеки</FieldLabel>
                     <TextEdit @bind-Text="@NewPharmacy.Address" />
                 </Field>
                 <Field>
-                    <FieldLabel>ФИО директора</FieldLabel>
+                    <FieldLabel RequiredIndicator>ФИО директора аптеки</FieldLabel>
                     <TextEdit @bind-Text="@NewPharmacy.DirectorFullName" />
                 </Field>
             </ModalBody>
@@ -90,7 +96,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task CreatePharmacyAsync()
     {
-        var result = await Client.PharmacyPost(NewPharmacy);
+        var result = await ClientApi.PharmacyPost(NewPharmacy);
         await PharmacyModal.Hide();
         await OnPharmacyAdded.InvokeAsync();
     }

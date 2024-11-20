@@ -1,5 +1,5 @@
 ﻿﻿
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject INotificationService NotificationService;
 
 <Modal @ref="PriceListEntryModal">
@@ -12,27 +12,33 @@
 
             <ModalBody>
                 <Field>
-                    <FieldLabel>Номер аптеки</FieldLabel>
+                    <FieldLabel RequiredIndicator>Номер аптеки</FieldLabel>
                     <NumericEdit @bind-Value="@PharmacyNumber" />
                 </Field>
                 <Field>
-                    <FieldLabel>Код препарата</FieldLabel>
+                    <FieldLabel RequiredIndicator>Код препарата</FieldLabel>
                     <NumericEdit @bind-Value="@ProductCode" />
                 </Field>
                 <Field>
-                    <FieldLabel>Производитель препарата</FieldLabel>
+                    <FieldLabel RequiredIndicator>Производитель препарата</FieldLabel>
                     <TextEdit @bind-Text="@NewPriceListEntry.Manufacturer" />
                 </Field>
                 <Field>
-                    <FieldLabel>Продано, шт</FieldLabel>
+                    <FieldLabel RequiredIndicator>Продано, шт</FieldLabel>
                     <NumericEdit @bind-Value="@NewPriceListEntry.SoldCount" />
                 </Field>
                 <Field>
-                    <FieldLabel>Тип оплаты</FieldLabel>
-                    <TextEdit @bind-Text="@NewPriceListEntry.PaymentType" />
+                    <FieldLabel RequiredIndicator>Тип оплаты (наличные/карта)</FieldLabel>
+                    <Validation UsePattern>
+                        <TextEdit @bind-Text="@NewPriceListEntry.PaymentType" Pattern="Cash|Cashless">
+                            <Feedback>
+                                <ValidationError>Тип оплаты может принимать значение Cash или Cashless.</ValidationError>
+                            </Feedback>
+                        </TextEdit>
+                    </Validation>
                 </Field>
                 <Field>
-                    <FieldLabel>Дата продажи</FieldLabel>
+                    <FieldLabel RequiredIndicator>Дата продажи препарата</FieldLabel>
                     <DateEdit @bind-Date="@NewPriceListEntry.SaleDate" />
                 </Field>
             </ModalBody>
@@ -110,8 +116,8 @@
             await NotificationService.Warning("Неверно введённые данные", $"Тип оплаты указан неверно. Возможные значения: 'Cash', 'Cashless'.");
             return;
         }
-        var products = (await Client.ProductGetAll()).ToList();
-        var pharmacies = (await Client.PharmacyGetAll()).ToList();
+        var products = (await ClientApi.ProductGetAll()).ToList();
+        var pharmacies = (await ClientApi.PharmacyGetAll()).ToList();
         var success = false;
         foreach (var product in products)
         {
@@ -124,7 +130,7 @@
                         success = true;
                         NewPriceListEntry.PharmacyId = pharmacy.PharmacyId;
                         NewPriceListEntry.ProductId = product.ProductId;
-                        _ = await Client.PriceListEntryPost(NewPriceListEntry);
+                        _ = await ClientApi.PriceListEntryPost(NewPriceListEntry);
                     }
                 }
             }

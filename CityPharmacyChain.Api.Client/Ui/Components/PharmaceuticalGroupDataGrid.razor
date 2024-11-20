@@ -1,5 +1,5 @@
 ﻿
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject NavigationManager NavManager
 
 <Card>
@@ -17,8 +17,9 @@
     </CardHeader>
     <CardBody>
         <DataGrid TItem="Tuple<PharmaceuticalGroupFullDto, ProductDto>" Data="@PharmaceuticalGroups" PageSize="40" Responsive Filterable>
+
             <DataGridNumericColumn TItem="Tuple<PharmaceuticalGroupFullDto, ProductDto>" Field="Item2.ProductCode" Caption="Код препарата" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
-            <DataGridColumn TItem="Tuple<PharmaceuticalGroupFullDto, ProductDto>" Field="Item2.Name" Caption="Название" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridColumn TItem="Tuple<PharmaceuticalGroupFullDto, ProductDto>" Field="Item2.Name" Caption="Название препарата" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn TItem="Tuple<PharmaceuticalGroupFullDto, ProductDto>" Field="Item2.ProductGroup" Caption="Торговая группа" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn TItem="Tuple<PharmaceuticalGroupFullDto, ProductDto>" Field="Item1.Name" Caption="Фармацевтическая группа" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Width="150px"
@@ -98,7 +99,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmaceuticalGroupAsync(PharmaceuticalGroupFullDto context)
     {
-        await Client.PharmaceuticalGroupDelete(context.PharmaceuticalGroupId);
+        await ClientApi.PharmaceuticalGroupDelete(context.PharmaceuticalGroupId);
         await RefreshPharmaceuticalGroupCollection();
         await OnDataChanged.InvokeAsync();
     }
@@ -125,11 +126,11 @@
     /// <returns>Асинхронная задача</returns>
     private async Task RefreshPharmaceuticalGroupCollection()
     {
-        var pharmaceuticalGroups = (await Client.PharmaceuticalGroupGetAll()).ToList();
+        var pharmaceuticalGroups = (await ClientApi.PharmaceuticalGroupGetAll()).ToList();
         PharmaceuticalGroups = [];
         foreach (var pharmaceuticalGroup in pharmaceuticalGroups)
         {
-            PharmaceuticalGroups.Add(new Tuple<PharmaceuticalGroupFullDto, ProductDto>(pharmaceuticalGroup, await Client.ProductGetById(pharmaceuticalGroup.ProductId)));
+            PharmaceuticalGroups.Add(new Tuple<PharmaceuticalGroupFullDto, ProductDto>(pharmaceuticalGroup, await ClientApi.ProductGetById(pharmaceuticalGroup.ProductId)));
         }
     }
 }

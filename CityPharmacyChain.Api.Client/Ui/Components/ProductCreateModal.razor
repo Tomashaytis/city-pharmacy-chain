@@ -1,5 +1,5 @@
 ﻿﻿
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 
 <Modal @ref="ProductModal">
     <ModalContent Centered>
@@ -11,15 +11,15 @@
 
             <ModalBody>
                 <Field>
-                    <FieldLabel>Код</FieldLabel>
+                    <FieldLabel RequiredIndicator>Код препарата</FieldLabel>
                     <NumericEdit @bind-Value="@NewProduct.ProductCode" />
                 </Field>
                 <Field>
-                    <FieldLabel>Название</FieldLabel>
+                    <FieldLabel RequiredIndicator>Название препарата</FieldLabel>
                     <TextEdit @bind-Text="@NewProduct.Name" />
                 </Field>
                 <Field>
-                    <FieldLabel>Товарная группа</FieldLabel>
+                    <FieldLabel RequiredIndicator>Товарная группа препарата</FieldLabel>
                     <TextEdit @bind-Text="@NewProduct.ProductGroup" />
                 </Field>
             </ModalBody>
@@ -82,7 +82,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task CreateProductAsync()
     {
-        var result = await Client.ProductPost(NewProduct);
+        var result = await ClientApi.ProductPost(NewProduct);
         await ProductModal.Hide();
         await OnProductAdded.InvokeAsync();
     }

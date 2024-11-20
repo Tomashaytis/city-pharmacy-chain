@@ -1,7 +1,7 @@
 ﻿﻿
 @page "/pharmacy-product/{Id}"
 
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject IJSRuntime JsRuntime
 
 <Card>
@@ -26,7 +26,7 @@
 
     <CardBody>
         <Field>
-            <FieldLabel>Цена, ₽</FieldLabel>
+            <FieldLabel>Цена препарата, ₽</FieldLabel>
             <NumericEdit @bind-Value="@UpdatedPharmacyProduct.Price" />
         </Field>
         <Field>
@@ -64,7 +64,7 @@
         if (!int.TryParse(Id, out var id))
             throw new Exception("Некорректный идентификатор связи препарат-аптека");
         PharmacyProductId = id;
-        UpdatedPharmacyProduct = await Client.PharmacyProductGetById(PharmacyProductId);
+        UpdatedPharmacyProduct = await ClientApi.PharmacyProductGetById(PharmacyProductId);
         await base.OnInitializedAsync();
     }
 
@@ -74,7 +74,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmacyProductAsync()
     {
-        await Client.PharmacyProductDelete(PharmacyProductId);
+        await ClientApi.PharmacyProductDelete(PharmacyProductId);
         await JsRuntime.InvokeVoidAsync("history.back");
     }
 
@@ -91,7 +91,7 @@
             Price = UpdatedPharmacyProduct.Price,
             Count = UpdatedPharmacyProduct.Count,
         };
-        var updatedPharmacyProduct = await Client.PharmacyProductPut(PharmacyProductId, EditedPharmacyProduct);
+        var updatedPharmacyProduct = await ClientApi.PharmacyProductPut(PharmacyProductId, EditedPharmacyProduct);
         UpdatedPharmacyProduct.PharmacyId = updatedPharmacyProduct.PharmacyId;
         UpdatedPharmacyProduct.ProductId = updatedPharmacyProduct.ProductId;
         UpdatedPharmacyProduct.Price = updatedPharmacyProduct.Price;

@@ -1,7 +1,7 @@
 ﻿﻿
 @page "/product/{Id}"
 
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject IJSRuntime JsRuntime
 
 <Card>
@@ -68,7 +68,7 @@
         if (!int.TryParse(Id, out var id))
             throw new Exception("Некорректный идентификатор препарата");
         ProductId = id;
-        UpdatedProduct = await Client.ProductGetById(ProductId);
+        UpdatedProduct = await ClientApi.ProductGetById(ProductId);
         await base.OnInitializedAsync();
     }
 
@@ -78,7 +78,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task DeleteProductAsync()
     {
-        await Client.ProductDelete(ProductId);
+        await ClientApi.ProductDelete(ProductId);
         await JsRuntime.InvokeVoidAsync("history.back");
     }
 
@@ -94,7 +94,7 @@
             Name = UpdatedProduct.Name,
             ProductGroup = UpdatedProduct.ProductGroup,
         };
-        var updatedProduct = await Client.ProductPut(ProductId, EditedProduct);
+        var updatedProduct = await ClientApi.ProductPut(ProductId, EditedProduct);
         UpdatedProduct.ProductCode = updatedProduct.ProductCode;
         UpdatedProduct.Name = updatedProduct.Name;
         UpdatedProduct.ProductGroup = updatedProduct.ProductGroup;

@@ -1,5 +1,5 @@
 ﻿
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject NavigationManager NavManager
 
 <Card>
@@ -17,9 +17,10 @@
     </CardHeader>
     <CardBody>
         <DataGrid TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Data="@PharmacyProducts" PageSize="40" Responsive Filterable>
-            <DataGridColumn TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Field="Item1.Name" Caption="Аптеки" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+
+            <DataGridColumn TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Field="Item1.Name" Caption="Аптека" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Field="Item3.Name" Caption="Препарат" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
-            <DataGridNumericColumn TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Field="Item2.Price" Caption="Цена, ₽" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+            <DataGridNumericColumn TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Field="Item2.Price" Caption="Цена препарата, ₽" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridNumericColumn TItem="Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>" Field="Item2.Count" Caption="В наличии, шт." Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn Width="150px"
             Filterable="false"
@@ -98,7 +99,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task DeletePharmacyProductAsync(PharmacyProductFullDto context)
     {
-        await Client.PharmacyProductDelete(context.PharmacyProductId);
+        await ClientApi.PharmacyProductDelete(context.PharmacyProductId);
         await RefreshPharmacyProductCollection();
         await OnDataChanged.InvokeAsync();
     }
@@ -125,11 +126,11 @@
     /// <returns>Асинхронная задача</returns>
     private async Task RefreshPharmacyProductCollection()
     {
-        var pharmacyProducts = (await Client.PharmacyProductGetAll()).ToList();
+        var pharmacyProducts = (await ClientApi.PharmacyProductGetAll()).ToList();
         PharmacyProducts = [];
         foreach (var pharmacyProduct in pharmacyProducts)
         {
-            PharmacyProducts.Add(new Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>(await Client.PharmacyGetById(pharmacyProduct.PharmacyId), pharmacyProduct, await Client.ProductGetById(pharmacyProduct.ProductId)));
+            PharmacyProducts.Add(new Tuple<PharmacyDto, PharmacyProductFullDto, ProductDto>(await ClientApi.PharmacyGetById(pharmacyProduct.PharmacyId), pharmacyProduct, await ClientApi.ProductGetById(pharmacyProduct.ProductId)));
         }
     }
 }

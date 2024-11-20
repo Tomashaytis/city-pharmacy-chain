@@ -1,5 +1,5 @@
 ﻿
-@inject CityPharmacyChainApiWrapper Client
+@inject CityPharmacyChainApiWrapper ClientApi
 @inject NavigationManager NavManager
 
 <Card>
@@ -17,7 +17,8 @@
     </CardHeader>
     <CardBody>
         <DataGrid TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Data="@Prices" PageSize="40" Responsive Filterable>
-            <DataGridColumn TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Field="Item1.Name" Caption="Аптеки" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
+
+            <DataGridColumn TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Field="Item1.Name" Caption="Аптека" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Field="Item3.Name" Caption="Препарат" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridColumn TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Field="Item2.Manufacturer" Caption="Производитель" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
             <DataGridNumericColumn TItem="Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>" Field="Item2.SoldCount" Caption="Продано, шт" Editable FilterMethod="DataGridColumnFilterMethod.StartsWith" />
@@ -100,7 +101,7 @@
     /// <returns>Асинхронная задача</returns>
     private async Task DeletePriceListEntryAsync(PriceListEntryFullDto context)
     {
-        await Client.PriceListEntryDelete(context.PriceListEntryId);
+        await ClientApi.PriceListEntryDelete(context.PriceListEntryId);
         await RefreshPriceListEntryCollection();
         await OnDataChanged.InvokeAsync();
     }
@@ -127,11 +128,11 @@
     /// <returns>Асинхронная задача</returns>
     private async Task RefreshPriceListEntryCollection()
     {
-        var prices = (await Client.PriceListEntryGetAll()).ToList();
+        var prices = (await ClientApi.PriceListEntryGetAll()).ToList();
         Prices = [];
         foreach (var priceListEntry in prices)
         {
-            Prices.Add(new Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>(await Client.PharmacyGetById(priceListEntry.PharmacyId), priceListEntry, await Client.ProductGetById(priceListEntry.ProductId)));
+            Prices.Add(new Tuple<PharmacyDto, PriceListEntryFullDto, ProductDto>(await ClientApi.PharmacyGetById(priceListEntry.PharmacyId), priceListEntry, await ClientApi.ProductGetById(priceListEntry.ProductId)));
         }
     }
 }
